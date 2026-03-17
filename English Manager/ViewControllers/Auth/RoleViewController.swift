@@ -16,11 +16,14 @@ final class RoleViewController: UIViewController {
     
     // MARK: - Properties
     private weak var router: AuthRouterProtocol?
+    private var viewModel: RoleViewModelProtocol
     
     // MARK: - Init
     init(
+        viewModel: RoleViewModelProtocol = RoleViewModel(),
         router: AuthRouterProtocol
     ) {
+        self.viewModel = viewModel
         self.router = router
         super.init(nibName: nil, bundle: nil)
     }
@@ -90,15 +93,17 @@ final class RoleViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func teacherButtonTapped() {
-        UserDefaults.standard.set(UserRole.teacher.rawValue,
-                                  forKey: UDKeys.userRole)
-        router?.showMainScreen(role: .teacher)
+        updateRole(.teacher)
     }
     
     @objc private func studentButtonTapped() {
-        UserDefaults.standard.set(UserRole.student.rawValue,
-                                  forKey: UDKeys.userRole)
-        router?.showMainScreen(role: .student)
+        updateRole(.student)
+    }
+    
+    private func updateRole(_ role: UserRole) {
+        UserDefaults.standard.set(role.rawValue, forKey: UDKeys.userRole)
+        viewModel.updateUserRole(role)
+        router?.showMainScreen(role: role)
     }
 }
 

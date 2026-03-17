@@ -7,15 +7,21 @@
 
 import Foundation
 
+struct SourceLink: Codable, Hashable {
+    let url: String
+    let title: String
+}
+
 struct Lesson: Codable {
     var id: String?
     let studentId: String
     let teacherId: String
-    let studentName: String
-    let date: Date
-    let topic: String
-    let bookTitle: String
-    let pages: String
-    let attended: Bool
+    var studentName: String
+    var date: Date
+    var topic: String
+    var bookTitle: String
+    var pages: String
+    var attended: Bool
     var vocabulary: [String]
+    var sourceLinks: [SourceLink]
 }

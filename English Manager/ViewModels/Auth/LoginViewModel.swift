@@ -25,14 +25,17 @@ final class LoginViewModel: LoginViewModelProtocol {
     // MARK: - Properties
     private let authService: AuthServiceProtocol
     private let validator: ValidationServiceProtocol
+    private let firestoreService: FirestoreServiceProtocol
     
     // MARK: - Init
     init(
         authService: AuthServiceProtocol = AuthService(),
-        validator: ValidationServiceProtocol = ValidationService()
+        validator: ValidationServiceProtocol = ValidationService(),
+        firestoreService: FirestoreServiceProtocol = FirestoreService()
     ) {
         self.authService = authService
         self.validator = validator
+        self.firestoreService = firestoreService
     }
     
     // MARK: - Login
@@ -56,6 +59,12 @@ final class LoginViewModel: LoginViewModelProtocol {
         performAuth {
             try await self.authService.signUp(email: email,
                                               password: password)
+            guard let userId = self.authService.currentUserId else { return }
+            let user = User(id: userId,
+                            name: "",
+                            email: email,
+                            role: nil)
+            try await self.firestoreService.saveUser(user)
         }
     }
     

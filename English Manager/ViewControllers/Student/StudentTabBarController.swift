@@ -51,31 +51,34 @@ final class StudentTabBarController: UITabBarController {
     // MARK: - Tabs
     private func makeStudentLessonsTabs() -> UIViewController {
         let vc = StudentLessonsViewController(router: router)
-        vc.tabBarItem = UITabBarItem(
+        let nav = UINavigationController(rootViewController: vc)
+        nav.tabBarItem = UITabBarItem(
             title: "Lessons",
             image: UIImage(systemName: "calendar"),
             selectedImage: UIImage(systemName: "calendar.fill")
         )
-        return vc
+        return nav
     }
     
     private func makeHomeworkTab() -> UIViewController {
         let vc = StudentHomeworkViewController(router: router)
-        vc.tabBarItem = UITabBarItem(
+        let nav = UINavigationController(rootViewController: vc)
+        nav.tabBarItem = UITabBarItem(
             title: "Homework",
             image: UIImage(systemName: "doc.text"),
             selectedImage: UIImage(systemName: "doc.text.fill")
         )
-        return vc
+        return nav
     }
     
     private func makePaymentsTab() -> UIViewController {
         let vc = StudentPaymentsViewController(router: router)
-        vc.tabBarItem = UITabBarItem(
+        let nav = UINavigationController(rootViewController: vc)
+        nav.tabBarItem = UITabBarItem(
             title: "Payment",
             image: UIImage(systemName: "creditcard"),
             selectedImage: UIImage(systemName: "creditcard.fill")
         )
-        return vc
+        return nav
     }
 }
