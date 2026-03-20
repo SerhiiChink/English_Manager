@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		574B83DA2F6E05520042045B /* TeacherPaymentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83D52F6E05520042045B /* TeacherPaymentsViewController.swift */; };
+		574B83DB2F6E05520042045B /* StudentLessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83CD2F6E05520042045B /* StudentLessonsViewController.swift */; };
+		574B83DC2F6E05520042045B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83C42F6E05520042045B /* LoginViewController.swift */; };
+		574B83DD2F6E05520042045B /* TeacherLessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83D42F6E05520042045B /* TeacherLessonsViewController.swift */; };
+		574B83DE2F6E05520042045B /* RoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83C52F6E05520042045B /* RoleViewController.swift */; };
+		574B83DF2F6E05520042045B /* TeacherProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83D62F6E05520042045B /* TeacherProfileViewController.swift */; };
+		574B83E02F6E05520042045B /* StudentLessonDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83CB2F6E05520042045B /* StudentLessonDetailViewController.swift */; };
+		574B83E12F6E05520042045B /* StudentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83D22F6E05520042045B /* StudentsViewController.swift */; };
+		574B83E22F6E05520042045B /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83C62F6E05520042045B /* SplashViewController.swift */; };
+		574B83E32F6E05520042045B /* TeacherHomeworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83D32F6E05520042045B /* TeacherHomeworkViewController.swift */; };
+		574B83E42F6E05520042045B /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83C32F6E05520042045B /* EditProfileViewController.swift */; };
+		574B83E52F6E05520042045B /* StudentTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83CF2F6E05520042045B /* StudentTabBarController.swift */; };
+		574B83E62F6E05520042045B /* StudentHomeworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83D12F6E05520042045B /* StudentHomeworkViewController.swift */; };
+		574B83E72F6E05520042045B /* TeacherTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83D72F6E05520042045B /* TeacherTabBarController.swift */; };
+		574B83E82F6E05520042045B /* StudentPaymentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83CE2F6E05520042045B /* StudentPaymentsViewController.swift */; };
 		575091C42F56F373002132EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575091BA2F56F373002132EF /* AppDelegate.swift */; };
 		575091C52F56F373002132EF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575091C12F56F373002132EF /* SceneDelegate.swift */; };
 		575091C72F56F373002132EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 575091BB2F56F373002132EF /* Assets.xcassets */; };
@@ -31,20 +46,16 @@
 		575092472F5AEA38002132EF /* ValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575092462F5AEA38002132EF /* ValidationService.swift */; };
 		575092492F5AEA95002132EF /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575092482F5AEA95002132EF /* ValidationResult.swift */; };
 		5750924B2F5AEEFF002132EF /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5750924A2F5AEEFF002132EF /* LoginViewModel.swift */; };
-		5750924D2F5AF467002132EF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5750924C2F5AF467002132EF /* LoginViewController.swift */; };
 		5750924F2F5B0A16002132EF /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5750924E2F5B0A16002132EF /* AuthRouter.swift */; };
-		575092512F5B0FA7002132EF /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575092502F5B0FA7002132EF /* SplashViewController.swift */; };
-		575092532F5B1166002132EF /* RoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575092522F5B1166002132EF /* RoleViewController.swift */; };
-		575092552F5B1248002132EF /* TeacherTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575092542F5B1248002132EF /* TeacherTabBarController.swift */; };
-		575092572F5B12AA002132EF /* StudentTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575092562F5B12AA002132EF /* StudentTabBarController.swift */; };
+		5797B8F02F6AB6EA004416DF /* TeacherProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */; };
+		5797B8F42F6ABBBA004416DF /* StatItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8F32F6ABBBA004416DF /* StatItemView.swift */; };
+		5797B8F82F6C07D4004416DF /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8F72F6C07D4004416DF /* EditProfileViewModel.swift */; };
+		5797B8FA2F6D734D004416DF /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8F92F6D734D004416DF /* AvatarView.swift */; };
+		5797B8FC2F6D8F9A004416DF /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8FB2F6D8F9A004416DF /* StorageService.swift */; };
+		5797B8FE2F6D9D19004416DF /* ImagePickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8FD2F6D9D19004416DF /* ImagePickerService.swift */; };
+		5797B9012F6DF478004416DF /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5797B9002F6DF478004416DF /* Kingfisher */; };
+		5797B9052F6DF935004416DF /* UIScrollView+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B9042F6DF935004416DF /* UIScrollView+Refresh.swift */; };
 		57D9D11D2F602C3F0061605F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57D9D11C2F602C3F0061605F /* SnapKit */; };
-		57D9D1202F617A660061605F /* TeacherLessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D11F2F617A660061605F /* TeacherLessonsViewController.swift */; };
-		57D9D1682F617BAD0061605F /* TeacherHomeworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1672F617BAD0061605F /* TeacherHomeworkViewController.swift */; };
-		57D9D16B2F617BD50061605F /* TeacherPaymentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D16A2F617BD50061605F /* TeacherPaymentsViewController.swift */; };
-		57D9D16D2F617BF30061605F /* StudentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D16C2F617BF30061605F /* StudentsViewController.swift */; };
-		57D9D1B42F6180BD0061605F /* StudentLessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1B32F6180BD0061605F /* StudentLessonsViewController.swift */; };
-		57D9D1B62F6180F90061605F /* StudentHomeworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1B52F6180F90061605F /* StudentHomeworkViewController.swift */; };
-		57D9D1B82F6181110061605F /* StudentPaymentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1B72F6181110061605F /* StudentPaymentsViewController.swift */; };
 		57D9D1BA2F65727B0061605F /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1B92F65727B0061605F /* FirestoreService.swift */; };
 		57D9D1BC2F6574170061605F /* QuerySnapshot+Decode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1BB2F6574170061605F /* QuerySnapshot+Decode.swift */; };
 		57D9D1C02F65826C0061605F /* TeacherLessonsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1BF2F65826C0061605F /* TeacherLessonsViewModel.swift */; };
@@ -56,7 +67,6 @@
 		57D9D1D32F66BFB90061605F /* RoleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1D22F66BFB90061605F /* RoleViewModel.swift */; };
 		57D9D1D62F685A220061605F /* StudentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1D52F685A220061605F /* StudentCell.swift */; };
 		57D9D1DA2F68BC670061605F /* StudentLessonsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1D92F68BC670061605F /* StudentLessonsViewModel.swift */; };
-		57D9D1DD2F68C2880061605F /* StudentLessonDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1DC2F68C2880061605F /* StudentLessonDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +87,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		574B83C32F6E05520042045B /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		574B83C42F6E05520042045B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		574B83C52F6E05520042045B /* RoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleViewController.swift; sourceTree = "<group>"; };
+		574B83C62F6E05520042045B /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		574B83CB2F6E05520042045B /* StudentLessonDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLessonDetailViewController.swift; sourceTree = "<group>"; };
+		574B83CD2F6E05520042045B /* StudentLessonsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLessonsViewController.swift; sourceTree = "<group>"; };
+		574B83CE2F6E05520042045B /* StudentPaymentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPaymentsViewController.swift; sourceTree = "<group>"; };
+		574B83CF2F6E05520042045B /* StudentTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentTabBarController.swift; sourceTree = "<group>"; };
+		574B83D12F6E05520042045B /* StudentHomeworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentHomeworkViewController.swift; sourceTree = "<group>"; };
+		574B83D22F6E05520042045B /* StudentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsViewController.swift; sourceTree = "<group>"; };
+		574B83D32F6E05520042045B /* TeacherHomeworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherHomeworkViewController.swift; sourceTree = "<group>"; };
+		574B83D42F6E05520042045B /* TeacherLessonsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherLessonsViewController.swift; sourceTree = "<group>"; };
+		574B83D52F6E05520042045B /* TeacherPaymentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPaymentsViewController.swift; sourceTree = "<group>"; };
+		574B83D62F6E05520042045B /* TeacherProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherProfileViewController.swift; sourceTree = "<group>"; };
+		574B83D72F6E05520042045B /* TeacherTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherTabBarController.swift; sourceTree = "<group>"; };
 		575091862F56F356002132EF /* English Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "English Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5750919C2F56F357002132EF /* English ManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "English ManagerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		575091A62F56F357002132EF /* English ManagerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "English ManagerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,19 +126,14 @@
 		575092462F5AEA38002132EF /* ValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
 		575092482F5AEA95002132EF /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		5750924A2F5AEEFF002132EF /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		5750924C2F5AF467002132EF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5750924E2F5B0A16002132EF /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
-		575092502F5B0FA7002132EF /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
-		575092522F5B1166002132EF /* RoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleViewController.swift; sourceTree = "<group>"; };
-		575092542F5B1248002132EF /* TeacherTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherTabBarController.swift; sourceTree = "<group>"; };
-		575092562F5B12AA002132EF /* StudentTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentTabBarController.swift; sourceTree = "<group>"; };
-		57D9D11F2F617A660061605F /* TeacherLessonsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherLessonsViewController.swift; sourceTree = "<group>"; };
-		57D9D1672F617BAD0061605F /* TeacherHomeworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherHomeworkViewController.swift; sourceTree = "<group>"; };
-		57D9D16A2F617BD50061605F /* TeacherPaymentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPaymentsViewController.swift; sourceTree = "<group>"; };
-		57D9D16C2F617BF30061605F /* StudentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsViewController.swift; sourceTree = "<group>"; };
-		57D9D1B32F6180BD0061605F /* StudentLessonsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLessonsViewController.swift; sourceTree = "<group>"; };
-		57D9D1B52F6180F90061605F /* StudentHomeworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentHomeworkViewController.swift; sourceTree = "<group>"; };
-		57D9D1B72F6181110061605F /* StudentPaymentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPaymentsViewController.swift; sourceTree = "<group>"; };
+		5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherProfileViewModel.swift; sourceTree = "<group>"; };
+		5797B8F32F6ABBBA004416DF /* StatItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatItemView.swift; sourceTree = "<group>"; };
+		5797B8F72F6C07D4004416DF /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		5797B8F92F6D734D004416DF /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		5797B8FB2F6D8F9A004416DF /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		5797B8FD2F6D9D19004416DF /* ImagePickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerService.swift; sourceTree = "<group>"; };
+		5797B9042F6DF935004416DF /* UIScrollView+Refresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Refresh.swift"; sourceTree = "<group>"; };
 		57D9D1B92F65727B0061605F /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		57D9D1BB2F6574170061605F /* QuerySnapshot+Decode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuerySnapshot+Decode.swift"; sourceTree = "<group>"; };
 		57D9D1BF2F65826C0061605F /* TeacherLessonsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherLessonsViewModel.swift; sourceTree = "<group>"; };
@@ -125,7 +145,6 @@
 		57D9D1D22F66BFB90061605F /* RoleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleViewModel.swift; sourceTree = "<group>"; };
 		57D9D1D52F685A220061605F /* StudentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentCell.swift; sourceTree = "<group>"; };
 		57D9D1D92F68BC670061605F /* StudentLessonsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLessonsViewModel.swift; sourceTree = "<group>"; };
-		57D9D1DC2F68C2880061605F /* StudentLessonDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLessonDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5797B9012F6DF478004416DF /* Kingfisher in Frameworks */,
 				575091E62F5849B0002132EF /* FirebaseMessaging in Frameworks */,
 				575091E82F5849B0002132EF /* FirebaseStorage in Frameworks */,
 				575091E22F5849B0002132EF /* FirebaseAuth in Frameworks */,
@@ -158,13 +178,67 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		574B83C72F6E05520042045B /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				574B83C62F6E05520042045B /* SplashViewController.swift */,
+				574B83C42F6E05520042045B /* LoginViewController.swift */,
+				574B83C52F6E05520042045B /* RoleViewController.swift */,
+				574B83C32F6E05520042045B /* EditProfileViewController.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		574B83CC2F6E05520042045B /* Detail Screen */ = {
+			isa = PBXGroup;
+			children = (
+				574B83CB2F6E05520042045B /* StudentLessonDetailViewController.swift */,
+			);
+			path = "Detail Screen";
+			sourceTree = "<group>";
+		};
+		574B83D02F6E05520042045B /* Student */ = {
+			isa = PBXGroup;
+			children = (
+				574B83CF2F6E05520042045B /* StudentTabBarController.swift */,
+				574B83CD2F6E05520042045B /* StudentLessonsViewController.swift */,
+				574B83D12F6E05520042045B /* StudentHomeworkViewController.swift */,
+				574B83CE2F6E05520042045B /* StudentPaymentsViewController.swift */,
+				574B83CC2F6E05520042045B /* Detail Screen */,
+			);
+			path = Student;
+			sourceTree = "<group>";
+		};
+		574B83D82F6E05520042045B /* Teacher */ = {
+			isa = PBXGroup;
+			children = (
+				574B83D72F6E05520042045B /* TeacherTabBarController.swift */,
+				574B83D62F6E05520042045B /* TeacherProfileViewController.swift */,
+				574B83D42F6E05520042045B /* TeacherLessonsViewController.swift */,
+				574B83D22F6E05520042045B /* StudentsViewController.swift */,
+				574B83D32F6E05520042045B /* TeacherHomeworkViewController.swift */,
+				574B83D52F6E05520042045B /* TeacherPaymentsViewController.swift */,
+			);
+			path = Teacher;
+			sourceTree = "<group>";
+		};
+		574B83D92F6E05520042045B /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				574B83C72F6E05520042045B /* Auth */,
+				574B83D82F6E05520042045B /* Teacher */,
+				574B83D02F6E05520042045B /* Student */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		5750917D2F56F356002132EF = {
 			isa = PBXGroup;
 			children = (
-				575091C32F56F373002132EF /* English Manager */,
 				575091CC2F56F380002132EF /* English ManagerTests */,
 				575091D02F56F385002132EF /* English ManagerUITests */,
 				575091872F56F356002132EF /* Products */,
+				575091C32F56F373002132EF /* English Manager */,
 			);
 			sourceTree = "<group>";
 		};
@@ -189,10 +263,10 @@
 				575091D92F583F56002132EF /* Cells */,
 				575091D82F583F4C002132EF /* Extensions */,
 				575091D72F583F3E002132EF /* Formatters */,
+				574B83D92F6E05520042045B /* ViewControllers */,
 				575091D52F56F3F0002132EF /* Storyboards */,
 				575091D42F56F3BB002132EF /* SupportingFiles */,
 				575091D32F56F3A9002132EF /* Resources */,
-				575091D62F56F413002132EF /* ViewControllers */,
 			);
 			path = "English Manager";
 			sourceTree = "<group>";
@@ -243,17 +317,6 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		575091D62F56F413002132EF /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				57D9D1DB2F68C25F0061605F /* Shared */,
-				575091F22F598EB9002132EF /* Student */,
-				575091F12F598EB0002132EF /* Teacher */,
-				575091F02F598EA8002132EF /* Auth */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
 		575091D72F583F3E002132EF /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,6 +332,7 @@
 				57D9D1BB2F6574170061605F /* QuerySnapshot+Decode.swift */,
 				57D9D1C82F65E5D30061605F /* UICollectionViewLayout+Layouts.swift */,
 				57D9D1CC2F65ED950061605F /* UIViewController+Alert.swift */,
+				5797B9042F6DF935004416DF /* UIScrollView+Refresh.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -288,6 +352,8 @@
 				575091FF2F599B22002132EF /* AuthService.swift */,
 				575092462F5AEA38002132EF /* ValidationService.swift */,
 				57D9D1B92F65727B0061605F /* FirestoreService.swift */,
+				5797B8FB2F6D8F9A004416DF /* StorageService.swift */,
+				5797B8FD2F6D9D19004416DF /* ImagePickerService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -318,6 +384,8 @@
 		575091EB2F598E45002132EF /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5797B8F32F6ABBBA004416DF /* StatItemView.swift */,
+				5797B8F92F6D734D004416DF /* AvatarView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -335,6 +403,7 @@
 			children = (
 				5750924A2F5AEEFF002132EF /* LoginViewModel.swift */,
 				57D9D1D22F66BFB90061605F /* RoleViewModel.swift */,
+				5797B8F72F6C07D4004416DF /* EditProfileViewModel.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -344,6 +413,7 @@
 			children = (
 				57D9D1BF2F65826C0061605F /* TeacherLessonsViewModel.swift */,
 				57D9D1D02F66B8490061605F /* StudentsViewModel.swift */,
+				5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */,
 			);
 			path = Teacher;
 			sourceTree = "<group>";
@@ -352,39 +422,6 @@
 			isa = PBXGroup;
 			children = (
 				57D9D1D92F68BC670061605F /* StudentLessonsViewModel.swift */,
-			);
-			path = Student;
-			sourceTree = "<group>";
-		};
-		575091F02F598EA8002132EF /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				5750924C2F5AF467002132EF /* LoginViewController.swift */,
-				575092502F5B0FA7002132EF /* SplashViewController.swift */,
-				575092522F5B1166002132EF /* RoleViewController.swift */,
-			);
-			path = Auth;
-			sourceTree = "<group>";
-		};
-		575091F12F598EB0002132EF /* Teacher */ = {
-			isa = PBXGroup;
-			children = (
-				575092542F5B1248002132EF /* TeacherTabBarController.swift */,
-				57D9D11F2F617A660061605F /* TeacherLessonsViewController.swift */,
-				57D9D16C2F617BF30061605F /* StudentsViewController.swift */,
-				57D9D1672F617BAD0061605F /* TeacherHomeworkViewController.swift */,
-				57D9D16A2F617BD50061605F /* TeacherPaymentsViewController.swift */,
-			);
-			path = Teacher;
-			sourceTree = "<group>";
-		};
-		575091F22F598EB9002132EF /* Student */ = {
-			isa = PBXGroup;
-			children = (
-				575092562F5B12AA002132EF /* StudentTabBarController.swift */,
-				57D9D1B32F6180BD0061605F /* StudentLessonsViewController.swift */,
-				57D9D1B52F6180F90061605F /* StudentHomeworkViewController.swift */,
-				57D9D1B72F6181110061605F /* StudentPaymentsViewController.swift */,
 			);
 			path = Student;
 			sourceTree = "<group>";
@@ -403,14 +440,6 @@
 				57D9D1D52F685A220061605F /* StudentCell.swift */,
 			);
 			path = Student;
-			sourceTree = "<group>";
-		};
-		57D9D1DB2F68C25F0061605F /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				57D9D1DC2F68C2880061605F /* StudentLessonDetailViewController.swift */,
-			);
-			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -435,6 +464,7 @@
 				575091E52F5849B0002132EF /* FirebaseMessaging */,
 				575091E72F5849B0002132EF /* FirebaseStorage */,
 				57D9D11C2F602C3F0061605F /* SnapKit */,
+				5797B9002F6DF478004416DF /* Kingfisher */,
 			);
 			productName = "English Manager";
 			productReference = 575091862F56F356002132EF /* English Manager.app */;
@@ -515,6 +545,7 @@
 			packageReferences = (
 				575091E02F5849B0002132EF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				57D9D11B2F602C3F0061605F /* XCRemoteSwiftPackageReference "SnapKit" */,
+				5797B8FF2F6DF478004416DF /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 575091872F56F356002132EF /* Products */;
@@ -561,44 +592,53 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				574B83DA2F6E05520042045B /* TeacherPaymentsViewController.swift in Sources */,
+				574B83DB2F6E05520042045B /* StudentLessonsViewController.swift in Sources */,
+				574B83DC2F6E05520042045B /* LoginViewController.swift in Sources */,
+				574B83DD2F6E05520042045B /* TeacherLessonsViewController.swift in Sources */,
+				574B83DE2F6E05520042045B /* RoleViewController.swift in Sources */,
+				574B83DF2F6E05520042045B /* TeacherProfileViewController.swift in Sources */,
+				574B83E02F6E05520042045B /* StudentLessonDetailViewController.swift in Sources */,
+				574B83E12F6E05520042045B /* StudentsViewController.swift in Sources */,
+				574B83E22F6E05520042045B /* SplashViewController.swift in Sources */,
+				574B83E32F6E05520042045B /* TeacherHomeworkViewController.swift in Sources */,
+				574B83E42F6E05520042045B /* EditProfileViewController.swift in Sources */,
+				574B83E52F6E05520042045B /* StudentTabBarController.swift in Sources */,
+				574B83E62F6E05520042045B /* StudentHomeworkViewController.swift in Sources */,
+				574B83E72F6E05520042045B /* TeacherTabBarController.swift in Sources */,
+				574B83E82F6E05520042045B /* StudentPaymentsViewController.swift in Sources */,
 				57D9D1D32F66BFB90061605F /* RoleViewModel.swift in Sources */,
-				57D9D1DD2F68C2880061605F /* StudentLessonDetailViewController.swift in Sources */,
-				5750924D2F5AF467002132EF /* LoginViewController.swift in Sources */,
 				575091F42F599127002132EF /* Constants.swift in Sources */,
 				57D9D1D62F685A220061605F /* StudentCell.swift in Sources */,
-				57D9D1682F617BAD0061605F /* TeacherHomeworkViewController.swift in Sources */,
+				5797B8F42F6ABBBA004416DF /* StatItemView.swift in Sources */,
 				575092492F5AEA95002132EF /* ValidationResult.swift in Sources */,
 				575091FE2F5998E5002132EF /* Vocabulary.swift in Sources */,
 				575092472F5AEA38002132EF /* ValidationService.swift in Sources */,
 				57D9D1DA2F68BC670061605F /* StudentLessonsViewModel.swift in Sources */,
-				575092532F5B1166002132EF /* RoleViewController.swift in Sources */,
+				5797B8F02F6AB6EA004416DF /* TeacherProfileViewModel.swift in Sources */,
 				57D9D1BA2F65727B0061605F /* FirestoreService.swift in Sources */,
-				57D9D1B82F6181110061605F /* StudentPaymentsViewController.swift in Sources */,
-				57D9D1B62F6180F90061605F /* StudentHomeworkViewController.swift in Sources */,
-				57D9D16D2F617BF30061605F /* StudentsViewController.swift in Sources */,
-				575092552F5B1248002132EF /* TeacherTabBarController.swift in Sources */,
-				575092572F5B12AA002132EF /* StudentTabBarController.swift in Sources */,
+				5797B9052F6DF935004416DF /* UIScrollView+Refresh.swift in Sources */,
 				57D9D1C52F658DCE0061605F /* LessonCell.swift in Sources */,
 				575091C42F56F373002132EF /* AppDelegate.swift in Sources */,
 				57D9D1CD2F65ED950061605F /* UIViewController+Alert.swift in Sources */,
 				575091F62F599306002132EF /* User.swift in Sources */,
 				5750924F2F5B0A16002132EF /* AuthRouter.swift in Sources */,
+				5797B8FC2F6D8F9A004416DF /* StorageService.swift in Sources */,
 				5750924B2F5AEEFF002132EF /* LoginViewModel.swift in Sources */,
 				57D9D1C02F65826C0061605F /* TeacherLessonsViewModel.swift in Sources */,
 				575091FC2F599842002132EF /* PaymentRequest.swift in Sources */,
 				575092002F599B22002132EF /* AuthService.swift in Sources */,
 				57D9D1D12F66B8490061605F /* StudentsViewModel.swift in Sources */,
 				575091DD2F584136002132EF /* UIColor+App.swift in Sources */,
+				5797B8F82F6C07D4004416DF /* EditProfileViewModel.swift in Sources */,
 				575091C52F56F373002132EF /* SceneDelegate.swift in Sources */,
 				57D9D1C72F65E3140061605F /* LessonFormatter.swift in Sources */,
-				57D9D1B42F6180BD0061605F /* StudentLessonsViewController.swift in Sources */,
+				5797B8FE2F6D9D19004416DF /* ImagePickerService.swift in Sources */,
 				57D9D1BC2F6574170061605F /* QuerySnapshot+Decode.swift in Sources */,
-				57D9D1202F617A660061605F /* TeacherLessonsViewController.swift in Sources */,
+				5797B8FA2F6D734D004416DF /* AvatarView.swift in Sources */,
 				575091FA2F5995C9002132EF /* Homework.swift in Sources */,
-				57D9D16B2F617BD50061605F /* TeacherPaymentsViewController.swift in Sources */,
 				575091F82F59940C002132EF /* Lesson.swift in Sources */,
 				57D9D1C92F65E5D30061605F /* UICollectionViewLayout+Layouts.swift in Sources */,
-				575092512F5B0FA7002132EF /* SplashViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -975,6 +1015,14 @@
 				minimumVersion = 12.10.0;
 			};
 		};
+		5797B8FF2F6DF478004416DF /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.8.0;
+			};
+		};
 		57D9D11B2F602C3F0061605F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1005,6 +1053,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 575091E02F5849B0002132EF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		5797B9002F6DF478004416DF /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5797B8FF2F6DF478004416DF /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		57D9D11C2F602C3F0061605F /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

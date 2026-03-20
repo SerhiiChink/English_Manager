@@ -18,7 +18,7 @@ final class TeacherLessonsViewController: UIViewController {
                     forCellWithReuseIdentifier: LessonCell.reuseId)
         return cv
     }()
-    private let activityIndicator =  UIActivityIndicatorView(style: .medium)
+//    private let activityIndicator =  UIActivityIndicatorView(style: .medium)
     private let emptyLabel = UILabel()
     
     // MARK: - Properties
@@ -47,6 +47,7 @@ final class TeacherLessonsViewController: UIViewController {
         setupUI()
         setupNavigationBar()
         bindViewModel()
+        refreshContoller()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,7 +59,7 @@ final class TeacherLessonsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .appBackground
         setupCollectionView()
-        setupActivityIndicator()
+//        setupActivityIndicator()
         setupEmptyLabel()
     }
     
@@ -71,13 +72,13 @@ final class TeacherLessonsViewController: UIViewController {
         }
     }
     
-    private func setupActivityIndicator() {
-        activityIndicator.hidesWhenStopped = true
-        view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-    }
+//    private func setupActivityIndicator() {
+//        activityIndicator.hidesWhenStopped = true
+//        view.addSubview(activityIndicator)
+//        activityIndicator.snp.makeConstraints {
+//            $0.center.equalToSuperview()
+//        }
+//    }
     
     private func setupEmptyLabel() {
         emptyLabel.text = "No lessons yet"// localiz
@@ -110,16 +111,18 @@ final class TeacherLessonsViewController: UIViewController {
     // MARK: - Binding
     private func bindViewModel() {
         viewModel.onUpdate = { [weak self] in
+            self?.collectionView.endRefreshing()
             self?.reloadData()
         }
         viewModel.onError = { [weak self] message in
+            self?.collectionView.endRefreshing()
             self?.showAlert(title: "Error", message: message)
         }
-        viewModel.onLoading = { [weak self] isLoading in
-            isLoading
-            ? self?.activityIndicator.startAnimating()
-            : self?.activityIndicator.stopAnimating()
-        }
+//        viewModel.onLoading = { [weak self] isLoading in
+//            isLoading
+//            ? self?.activityIndicator.startAnimating()
+//            : self?.activityIndicator.stopAnimating()
+//        }
     }
     
     // MARK: - Actions
@@ -129,6 +132,10 @@ final class TeacherLessonsViewController: UIViewController {
     
     @objc private func filterTapped() {
         showFilterAlert()
+    }
+    
+    @objc private func refreshTapped() {
+        viewModel.fetchLessons()
     }
     
     // MARK: - Private
@@ -165,6 +172,10 @@ final class TeacherLessonsViewController: UIViewController {
         emptyLabel.isHidden = !isEmpty
         collectionView.isHidden = isEmpty
         collectionView.reloadData()
+    }
+    
+    private func refreshContoller() {
+        collectionView.addRefreshControl(target: self, action: #selector(refreshTapped))
     }
 }
 

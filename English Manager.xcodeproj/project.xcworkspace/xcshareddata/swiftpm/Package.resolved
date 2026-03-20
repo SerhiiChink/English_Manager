@@ -1,5 +1,5 @@
 {
-  "originHash" : "4f03b9c1cccf5d229c7c27d34cb1e40067bab5ae12056add28c636cf8a2da5a4",
+  "originHash" : "50f7b57eda4f3be0c378781299d66b87b1bce37e4c11563aab3a4d252b722a2e",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -89,6 +89,15 @@
       "state" : {
         "revision" : "040d087ac2267d2ddd4cca36c757d1c6a05fdbfe",
         "version" : "101.0.0"
+      }
+    },
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher.git",
+      "state" : {
+        "revision" : "c92b84898e34ab46ff0dad86c02a0acbe2d87008",
+        "version" : "8.8.0"
       }
     },
     {

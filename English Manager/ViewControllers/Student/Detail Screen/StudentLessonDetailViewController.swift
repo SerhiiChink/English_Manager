@@ -151,6 +151,7 @@ final class StudentLessonDetailViewController: UIViewController {
         }
     }
     
+    
     // MARK: - Private
     private func openLink(_ urlString: String) {
         var urlStr = urlString

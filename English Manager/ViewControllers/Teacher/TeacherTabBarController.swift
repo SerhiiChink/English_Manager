@@ -33,12 +33,13 @@ final class TeacherTabBarController: UITabBarController {
     
     // MARK: - Setup
     private func setupTabs() {
+        let profileVC = makeProfileTab()
         let lessonsVC = makeLessonsTab()
         let studentsVC = makeStudentsTab()
         let homeworkVC = makeHomeworkTab()
         let paymentsVC = makePaymentsTab()
         setViewControllers(
-            [lessonsVC, studentsVC, homeworkVC, paymentsVC],
+            [profileVC, lessonsVC, studentsVC, homeworkVC, paymentsVC],
             animated: false
         )
     }
@@ -50,6 +51,17 @@ final class TeacherTabBarController: UITabBarController {
     }
     
     // MARK: - Tabs
+    private func makeProfileTab() -> UIViewController {
+        let vc = TeacherProfileViewController(router: router)
+        let nav = UINavigationController(rootViewController: vc)
+        nav.tabBarItem = UITabBarItem(
+            title: "Profile",
+            image: UIImage(systemName: "person.circle"),
+            selectedImage: UIImage(systemName: "person.circle.fill")
+        )
+        return nav
+    }
+    
     private func makeLessonsTab() -> UIViewController {
         let vc = TeacherLessonsViewController(router: router)
         let nav = UINavigationController(rootViewController: vc)

@@ -15,6 +15,7 @@ protocol AuthServiceProtocol {
     func signUp(email: String, password: String) async throws
     func signOut() throws
     func resetPassword(email: String) async throws
+    func changePassword(_ password: String) async throws
 }
 
 final class AuthService: AuthServiceProtocol {
@@ -46,5 +47,10 @@ final class AuthService: AuthServiceProtocol {
     
     func resetPassword(email: String) async throws {
         try await Auth.auth().sendPasswordReset(withEmail: email)
+    }
+    
+    // MARK: - Change Password
+    func changePassword(_ password: String) async throws {
+        try await Auth.auth().currentUser?.updatePassword(to: password)
     }
 }

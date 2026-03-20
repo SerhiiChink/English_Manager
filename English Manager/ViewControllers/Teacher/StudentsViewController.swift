@@ -18,7 +18,7 @@ final class StudentsViewController: UIViewController {
                     forCellWithReuseIdentifier: StudentCell.reuseId)
         return cv
     }()
-    private let activityIndicator =  UIActivityIndicatorView(style: .medium)
+//    private let activityIndicator =  UIActivityIndicatorView(style: .medium)
     private let emptyLabel = UILabel()
     
     // MARK: - Properties
@@ -46,6 +46,7 @@ final class StudentsViewController: UIViewController {
         setupUI()
         setupNavigationBar()
         bindViewModel()
+        refreshContoller()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +58,7 @@ final class StudentsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .appBackground
         setupCollectionView()
-        setupActivityIndicator()
+//        setupActivityIndicator()
         setupEmptyLabel()
     }
     
@@ -70,13 +71,13 @@ final class StudentsViewController: UIViewController {
         }
     }
     
-    private func setupActivityIndicator() {
-        activityIndicator.hidesWhenStopped = true
-        view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-    }
+//    private func setupActivityIndicator() {
+//        activityIndicator.hidesWhenStopped = true
+//        view.addSubview(activityIndicator)
+//        activityIndicator.snp.makeConstraints {
+//            $0.center.equalToSuperview()
+//        }
+//    }
     
     private func setupEmptyLabel() {
         emptyLabel.text = "No students yet"
@@ -102,16 +103,18 @@ final class StudentsViewController: UIViewController {
     // MARK: - Binding
     private func bindViewModel() {
         viewModel.onUpdate = { [weak self] in
+            self?.collectionView.endRefreshing()
             self?.reloadData()
         }
         viewModel.onError = { [weak self] message in
+            self?.collectionView.endRefreshing()
             self?.showAlert(title: "Error", message: message)
         }
-        viewModel.onLoading = { [weak self] isLoading in
-            isLoading
-            ? self?.activityIndicator.startAnimating()
-            : self?.activityIndicator.stopAnimating()
-        }
+//        viewModel.onLoading = { [weak self] isLoading in
+//            isLoading
+//            ? self?.activityIndicator.startAnimating()
+//            : self?.activityIndicator.stopAnimating()
+//        }
     }
     
     // MARK: - Actions
@@ -119,13 +122,21 @@ final class StudentsViewController: UIViewController {
         showAddStudentAlert()
     }
     
+    @objc private func refreshTapped() {
+        viewModel.fetchStudents()
+    }
+    
     // MARK: - Private
     private func reloadData() {
-        activityIndicator.stopAnimating()
+//        activityIndicator.stopAnimating()
         let isEmpty = viewModel.students.isEmpty
         emptyLabel.isHidden = !isEmpty
         collectionView.isHidden = isEmpty
         collectionView.reloadData()
+    }
+    
+    private func refreshContoller() {
+        collectionView.addRefreshControl(target: self, action: #selector(refreshTapped))
     }
 }
 

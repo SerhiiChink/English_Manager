@@ -62,6 +62,7 @@ final class LoginViewModel: LoginViewModelProtocol {
             guard let userId = self.authService.currentUserId else { return }
             let user = User(id: userId,
                             name: "",
+                            surname: "",
                             email: email,
                             role: nil)
             try await self.firestoreService.saveUser(user)
