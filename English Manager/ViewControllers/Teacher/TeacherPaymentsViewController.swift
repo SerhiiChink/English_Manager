@@ -9,10 +9,10 @@ import UIKit
 
 final class TeacherPaymentsViewController: UIViewController {
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
+    private let router: TeacherRouterProtocol
     
     // MARK: - Init
-    init(router: AuthRouterProtocol?) {
+    init(router: TeacherRouterProtocol) {
         self.router = router
         super.init(nibName: nil, bundle: nil)
     }

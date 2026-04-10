@@ -18,16 +18,15 @@ final class StudentLessonsViewController: UIViewController {
                     forCellWithReuseIdentifier: LessonCell.reuseId)
         return cv
     }()
-//    private let activityIndicator =  UIActivityIndicatorView(style: .medium)
     private let emptyLabel = UILabel()
     
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
+    private let router: StudentRouterProtocol
     private var viewModel: StudentLessonsViewModelProtocol
     
     // MARK: - Init
     init(
-        router: AuthRouterProtocol?,
+        router: StudentRouterProtocol,
         viewModel: StudentLessonsViewModelProtocol = StudentLessonsViewModel()
     ) {
         self.router = router
@@ -58,7 +57,6 @@ final class StudentLessonsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .appBackground
         setupCollectionView()
-//        setupActivityIndicator()
         setupEmptyLabel()
     }
     
@@ -70,14 +68,6 @@ final class StudentLessonsViewController: UIViewController {
             $0.edges.equalToSuperview()
         }
     }
-    
-//    private func setupActivityIndicator() {
-//        activityIndicator.hidesWhenStopped = true
-//        view.addSubview(activityIndicator)
-//        activityIndicator.snp.makeConstraints {
-//            $0.center.equalToSuperview()
-//        }
-//    }
     
     private func setupEmptyLabel() {
         emptyLabel.text = "No lessons yet"
@@ -106,11 +96,6 @@ final class StudentLessonsViewController: UIViewController {
             self?.collectionView.endRefreshing()
             self?.showAlert(title: "Error", message: message)
         }
-//        viewModel.onLoading = { [weak self] isLoading in
-//            isLoading
-//            ? self?.activityIndicator.startAnimating()
-//            : self?.activityIndicator.stopAnimating()
-//        }
     }
     
     // MARK: - Action
@@ -124,11 +109,6 @@ final class StudentLessonsViewController: UIViewController {
         emptyLabel.isHidden = !isEmpty
         collectionView.isHidden = isEmpty
         collectionView.reloadData()
-    }
-    
-    private func showLessonDetails(lesson: Lesson) {
-        let vc = StudentLessonDetailViewController(lesson: lesson)
-        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func refreshContoller() {
@@ -158,6 +138,6 @@ extension StudentLessonsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         let lesson = viewModel.lessons[indexPath.item]
-        showLessonDetails(lesson: lesson)
+        router.showLessonDetail(lesson)
     }
 }

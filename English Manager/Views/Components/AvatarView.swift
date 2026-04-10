@@ -29,6 +29,11 @@ final class AvatarView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageView.layer.cornerRadius = bounds.width / 2
+    }
+    
     // MARK: - Setup UI
     private func setupUI() {
         setupImageView()
@@ -90,7 +95,14 @@ final class AvatarView: UIView {
     // MARK: - Load Image
     func loadImage(from urlString: String) {
         guard let url = URL(string: urlString) else { return }
-        imageView.kf.setImage(with: url) { [weak self] result in
+        imageView.kf.setImage(
+            with: url,
+            options: [
+                .cacheOriginalImage,
+                .diskCacheExpiration(.days(7)),
+                .memoryCacheExpiration(.seconds(300))
+            ]
+        ) { [weak self] result in
             switch result {
             case .success:
                 self?.initialsLabel.isHidden = true

@@ -11,13 +11,24 @@ struct Homework: Codable {
     var id: String?
     let studentId: String
     let teacherId: String
-    let lessonId: String
-    var photoURL: String
+    let lessonId: String?
+    var studentName: String
+    var title: String
+    var description: String
+    var sourceLink: String
     var status: HomeworkStatus
-    var teacherComment: String
-    var grade: String
-    let uploadedAt: Date
+    var grade: Int?
+    var teacherFeedback: String?
+    let createdAt: Date
     var reviewedAt: Date?
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Homework, rhs: Homework) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 enum HomeworkStatus: String, Codable {

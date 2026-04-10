@@ -29,6 +29,7 @@ final class StorageService: StorageServiceProtocol {
             )
         }
         let ref = storage.child("avatars").child("\(userId).jpg")
+        try? await ref.delete()
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
         _ = try await ref.putDataAsync(imageData, metadata: metadata)

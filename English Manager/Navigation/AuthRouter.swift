@@ -45,10 +45,10 @@ final class AuthRouter: AuthRouterProtocol {
     func showMainScreen(role: UserRole) {
         switch role {
         case .teacher:
-            let vc = TeacherTabBarController(router: self)
+            let vc = TeacherTabBarController(authRouter: self)
             navigationController.setViewControllers([vc], animated: true)
         case .student:
-            let vc = StudentTabBarController(router: self)
+            let vc = StudentTabBarController(authRouter: self)
             navigationController.setViewControllers([vc], animated: true)
         }
     }

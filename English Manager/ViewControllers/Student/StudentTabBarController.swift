@@ -9,13 +9,11 @@ import UIKit
 
 final class StudentTabBarController: UITabBarController {
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
+    private let authRouter: AuthRouterProtocol
     
     // MARK: - Init
-    init(
-        router: AuthRouterProtocol
-    ) {
-        self.router = router
+    init(authRouter: AuthRouterProtocol) {
+        self.authRouter = authRouter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -33,13 +31,12 @@ final class StudentTabBarController: UITabBarController {
     
     // MARK: - Setup
     private func setupTabs() {
-        let lessonsVC = makeStudentLessonsTabs()
-        let homeworkVC = makeHomeworkTab()
-        let paymentsVC = makePaymentsTab()
-        setViewControllers(
-            [lessonsVC, homeworkVC, paymentsVC],
-            animated: false
-        )
+        setViewControllers([
+            makeProfileTab(),
+            makeStudentLessonsTabs(),
+            makeHomeworkTab(),
+            makePaymentsTab()
+        ], animated: false)
     }
     
     private func setupAppearance() {
@@ -49,9 +46,18 @@ final class StudentTabBarController: UITabBarController {
     }
     
     // MARK: - Tabs
-    private func makeStudentLessonsTabs() -> UIViewController {
-        let vc = StudentLessonsViewController(router: router)
-        let nav = UINavigationController(rootViewController: vc)
+    private func makeProfileTab() -> UINavigationController {
+        let nav = makeNav { StudentProfileViewController(router: $0) }
+        nav.tabBarItem = UITabBarItem(
+            title: "Profile",
+            image: UIImage(systemName: "person.circle"),
+            selectedImage: UIImage(systemName: "person.circle.fill")
+        )
+        return nav
+    }
+    
+    private func makeStudentLessonsTabs() -> UINavigationController {
+        let nav = makeNav { StudentLessonsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
             title: "Lessons",
             image: UIImage(systemName: "calendar"),
@@ -61,8 +67,7 @@ final class StudentTabBarController: UITabBarController {
     }
     
     private func makeHomeworkTab() -> UIViewController {
-        let vc = StudentHomeworkViewController(router: router)
-        let nav = UINavigationController(rootViewController: vc)
+        let nav = makeNav { StudentHomeworkViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
             title: "Homework",
             image: UIImage(systemName: "doc.text"),
@@ -72,13 +77,23 @@ final class StudentTabBarController: UITabBarController {
     }
     
     private func makePaymentsTab() -> UIViewController {
-        let vc = StudentPaymentsViewController(router: router)
-        let nav = UINavigationController(rootViewController: vc)
+        let nav = makeNav { StudentPaymentsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
             title: "Payment",
             image: UIImage(systemName: "creditcard"),
             selectedImage: UIImage(systemName: "creditcard.fill")
         )
+        return nav
+    }
+    
+    // MARK: - Helper
+    private func makeNav(_ build: (StudentRouter) -> UIViewController
+    ) -> UINavigationController {
+        let nav = UINavigationController()
+        let router = StudentRouter(navigationController: nav,
+                                   authRouter: authRouter)
+        let vc = build(router)
+        nav.viewControllers = [vc]
         return nav
     }
 }

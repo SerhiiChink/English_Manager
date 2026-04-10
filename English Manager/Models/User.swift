@@ -14,8 +14,10 @@ struct User: Codable {
     let email: String
     var role: UserRole?
     var photoURL: String?
+    var teacherAlias: String?
     var fcmToken: String?
     var lessonsBalance: Int?
+    var totalLessonsPaid: Int?
     var teacherId: String?
     
     var fullName: String {
@@ -23,6 +25,10 @@ struct User: Codable {
             .compactMap { $0 }
             .filter { !$0.isEmpty }
             .joined(separator: " ")
+    }
+    
+    var displayName: String {
+        fullName.isEmpty ? email : fullName
     }
 }
 

@@ -33,6 +33,7 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
     private let authService: AuthServiceProtocol
+    private var isFetching = false
     
     // MARK: - Init
     init(
@@ -45,10 +46,12 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
     
     // MARK: - Fetch
     func fetchProfile() {
+        guard !isFetching else { return }
         guard let userId = authService.currentUserId else {
             onError?("User not found")
             return
         }
+        isFetching = true
         onLoading?(true)
         Task {
             do {
@@ -64,12 +67,14 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
                     self?.user = fetchedUser
                     self?.studentsCount = fetchedStudents.count
                     self?.lessonsCount = fetchedLessons.count
+                    self?.isFetching = false
                     self?.onLoading?(false)
                     self?.onUpdate?()
                 }
             } catch {
                 print("fetchProfile error: \(error)")
                 await MainActor.run { [weak self] in
+                    self?.isFetching = false
                     self?.onLoading?(false)
                     self?.onError?(error.localizedDescription)
                 }

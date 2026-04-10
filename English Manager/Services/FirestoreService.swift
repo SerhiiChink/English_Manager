@@ -11,24 +11,25 @@ import FirebaseFirestore
 protocol FirestoreServiceProtocol {
     func saveUser(_ user: User) async throws
     func fetchUser(id: String) async throws -> User
-    func saveLesson(_ lesson: Lesson) async throws
+    func saveLesson(_ lesson: Lesson) async throws -> Lesson
     func fetchLessons(teacherId: String) async throws -> [Lesson]
     func fetchStudentLessons(studentId: String) async throws -> [Lesson]
     func deleteLesson(id: String) async throws
+    func adjustLessonsBalance(studentId: String, delta: Int) async throws
     func fetchStudents(teacherId: String) async throws -> [User]
     func saveHomework(_ homework: Homework) async throws
     func fetchHomeworks(teacherId: String) async throws -> [Homework]
     func fetchStudentHomeworks(studentId: String) async throws -> [Homework]
     func updateHomework(_ homework: Homework) async throws
-    func savePayment(_ payment: PaymentRequest) async throws
-    func fetchPayments(teacherId: String) async throws -> [PaymentRequest]
-    func fetchStudentPayments(studentId: String) async throws -> [PaymentRequest]
-    func updatePayment(_ payment: PaymentRequest) async throws
+    func saveSchedule(_ schedule: Schedule) async throws -> Schedule
+    func fetchSchedules(teacherId: String) async throws -> [Schedule]
+    func fetchStudentSchedule(studentId: String) async throws -> Schedule?
+    func deleteSchedule(id: String) async throws
     func findUserByEmail(_ email: String) async throws -> User?
     func updateTeacher(studentId: String,
                        teacherId: String) async throws
     func updateUserRole(userId: String, role: UserRole) async throws
-    func updateUserName(userId: String, name: String) async throws
+    func updateTeacherAlias(studentId: String, alias: String) async throws
     func updateUserAvatar(userId: String, url: String) async throws
     func removeStudent(studentId: String) async throws
 }
@@ -71,10 +72,10 @@ final class FirestoreService: FirestoreServiceProtocol {
             .updateData(["role": role.rawValue])
     }
     
-    func updateUserName(userId: String, name: String) async throws {
+    func updateTeacherAlias(studentId: String, alias: String) async throws {
         try await collection(Collections.users)
-            .document(userId)
-            .updateData(["name": name])
+            .document(studentId)
+            .updateData(["teacherAlias": alias])
     }
     
     func updateUserAvatar(userId: String, url: String) async throws {
@@ -84,7 +85,7 @@ final class FirestoreService: FirestoreServiceProtocol {
     }
     
     // MARK: - Lessons
-    func saveLesson(_ lesson: Lesson) async throws {
+    func saveLesson(_ lesson: Lesson) async throws -> Lesson {
         let id = lesson.id ?? collection(Collections.lessons)
             .document().documentID
         var lesson = lesson
@@ -92,6 +93,7 @@ final class FirestoreService: FirestoreServiceProtocol {
         try collection(Collections.lessons)
             .document(id)
             .setData(from: lesson)
+        return lesson
     }
     
     func fetchLessons(teacherId: String) async throws -> [Lesson] {
@@ -114,6 +116,14 @@ final class FirestoreService: FirestoreServiceProtocol {
         try await collection(Collections.lessons)
             .document(id)
             .delete()
+    }
+    
+    func adjustLessonsBalance(studentId: String, delta: Int) async throws {
+        try await collection(Collections.users)
+            .document(studentId)
+            .updateData([
+                "lessonsBalance": FieldValue.increment(Int64(delta))
+            ])
     }
     
     // MARK: - Students
@@ -173,37 +183,39 @@ final class FirestoreService: FirestoreServiceProtocol {
             .setData(from: homework)
     }
     
-    // MARK: - Payments
-    func savePayment(_ payment: PaymentRequest) async throws {
-        let id = payment.id ?? collection(Collections.payments)
+    // MARK: - Schedule
+    func saveSchedule(_ schedule: Schedule) async throws -> Schedule {
+        let id = schedule.id ?? collection(Collections.schedules)
             .document().documentID
-        var payment = payment
-        payment.id = id
-        try collection(Collections.payments)
+        var schedule = schedule
+        schedule.id = id
+        try collection(Collections.schedules)
             .document(id)
-            .setData(from: payment)
+            .setData(from: schedule)
+        return schedule
     }
     
-    func fetchPayments(teacherId: String) async throws -> [PaymentRequest] {
-        let snapshot = try await collection(Collections.payments)
+    func fetchSchedules(teacherId: String) async throws -> [Schedule] {
+        let snapshot = try await collection(Collections.schedules)
             .whereField("teacherId", isEqualTo: teacherId)
-            .order(by: "createdAt", descending: true)
+            .whereField("isActive", isEqualTo: true)
             .getDocuments()
-        return try snapshot.decode(PaymentRequest.self)
+        return try snapshot.decode(Schedule.self)
     }
     
-    func fetchStudentPayments(studentId: String) async throws -> [PaymentRequest] {
-        let snapshot = try await collection(Collections.payments)
+    func fetchStudentSchedule(studentId: String) async throws -> Schedule? {
+        let snapshot = try await collection(Collections.schedules)
             .whereField("studentId", isEqualTo: studentId)
-            .order(by: "createdAt", descending: true)
+            .whereField("isActive", isEqualTo: true)
             .getDocuments()
-        return try snapshot.decode(PaymentRequest.self)
+        return try snapshot.documents.first.map {
+            try $0.data(as: Schedule.self)
+        }
     }
     
-    func updatePayment(_ payment: PaymentRequest) async throws {
-        guard let id = payment.id else { return }
-        try collection(Collections.payments)
+    func deleteSchedule(id: String) async throws {
+        try await collection(Collections.schedules)
             .document(id)
-            .setData(from: payment)
+            .delete()
     }
 }

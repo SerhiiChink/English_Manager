@@ -9,13 +9,11 @@ import UIKit
 
 final class TeacherTabBarController: UITabBarController {
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
+    private let authRouter: AuthRouterProtocol
     
     // MARK: - Init
-    init(
-        router: AuthRouterProtocol
-    ) {
-        self.router = router
+    init(authRouter: AuthRouterProtocol) {
+        self.authRouter = authRouter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -33,15 +31,13 @@ final class TeacherTabBarController: UITabBarController {
     
     // MARK: - Setup
     private func setupTabs() {
-        let profileVC = makeProfileTab()
-        let lessonsVC = makeLessonsTab()
-        let studentsVC = makeStudentsTab()
-        let homeworkVC = makeHomeworkTab()
-        let paymentsVC = makePaymentsTab()
-        setViewControllers(
-            [profileVC, lessonsVC, studentsVC, homeworkVC, paymentsVC],
-            animated: false
-        )
+        setViewControllers([
+            makeProfileTab(),
+            makeLessonsTab(),
+            makeStudentsTab(),
+            makeHomeworkTab(),
+            makePaymentsTab()
+        ], animated: false)
     }
     
     private func setupAppearance() {
@@ -52,8 +48,7 @@ final class TeacherTabBarController: UITabBarController {
     
     // MARK: - Tabs
     private func makeProfileTab() -> UIViewController {
-        let vc = TeacherProfileViewController(router: router)
-        let nav = UINavigationController(rootViewController: vc)
+        let nav = makeNav { TeacherProfileViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
             title: "Profile",
             image: UIImage(systemName: "person.circle"),
@@ -63,8 +58,7 @@ final class TeacherTabBarController: UITabBarController {
     }
     
     private func makeLessonsTab() -> UIViewController {
-        let vc = TeacherLessonsViewController(router: router)
-        let nav = UINavigationController(rootViewController: vc)
+        let nav = makeNav { TeacherLessonsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
             title: "Lessons",
             image: UIImage(systemName: "calendar"),
@@ -74,8 +68,7 @@ final class TeacherTabBarController: UITabBarController {
     }
     
     private func makeStudentsTab() -> UIViewController {
-        let vc = StudentsViewController(router: router)
-        let nav = UINavigationController(rootViewController: vc)
+        let nav = makeNav { StudentsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
             title: "Students",
             image: UIImage(systemName: "person.2"),
@@ -85,8 +78,7 @@ final class TeacherTabBarController: UITabBarController {
     }
     
     private func makeHomeworkTab() -> UIViewController {
-        let vc = TeacherHomeworkViewController(router: router)
-        let nav = UINavigationController(rootViewController: vc)
+        let nav = makeNav { TeacherHomeworkViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
             title: "Homework",
             image: UIImage(systemName: "doc.text"),
@@ -96,14 +88,23 @@ final class TeacherTabBarController: UITabBarController {
     }
     
     private func makePaymentsTab() -> UIViewController {
-        let vc = TeacherPaymentsViewController(router: router)
-        let nav = UINavigationController(rootViewController: vc)
+        let nav = makeNav { TeacherPaymentsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
             title: "Payment",
             image: UIImage(systemName: "creditcard"),
             selectedImage: UIImage(systemName: "creditcard.fill")
         )
         return nav
-        
+    }
+    
+    // MARK: - Helper
+    private func makeNav(_ build: (TeacherRouter) -> UIViewController
+    ) -> UINavigationController {
+        let nav = UINavigationController()
+        let router = TeacherRouter(navigationController: nav,
+                                   authRouter: authRouter)
+        let vc = build(router)
+        nav.viewControllers = [vc]
+        return nav
     }
 }

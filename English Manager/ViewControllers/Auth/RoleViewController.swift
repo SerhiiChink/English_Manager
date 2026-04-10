@@ -15,7 +15,7 @@ final class RoleViewController: UIViewController {
     private let studentButton = UIButton(type: .system)
     
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
+    private let router: AuthRouterProtocol
     private var viewModel: RoleViewModelProtocol
     
     // MARK: - Init
@@ -103,7 +103,7 @@ final class RoleViewController: UIViewController {
     private func updateRole(_ role: UserRole) {
         UserDefaults.standard.set(role.rawValue, forKey: UDKeys.userRole)
         viewModel.updateUserRole(role)
-        router?.showMainScreen(role: role)
+        router.showMainScreen(role: role)
     }
 }
 

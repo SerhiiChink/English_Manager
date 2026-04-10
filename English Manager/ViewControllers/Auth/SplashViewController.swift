@@ -14,7 +14,7 @@ final class SplashViewController: UIViewController {
     private let indicator = UIActivityIndicatorView(style: .medium)
     
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
+    private let router: AuthRouterProtocol
     private let authService: AuthServiceProtocol
     
     // MARK: - Init
@@ -76,12 +76,12 @@ final class SplashViewController: UIViewController {
                 if let roleString = UserDefaults.standard.string(
                     forKey: UDKeys.userRole
                 ), let role = UserRole(rawValue: roleString) {
-                    self.router?.showMainScreen(role: role)
+                    self.router.showMainScreen(role: role)
                 } else {
-                    self.router?.showRole()
+                    self.router.showRole()
                 }
             } else {
-                self.router?.showLogin()
+                self.router.showLogin()
             }
         }
     }

@@ -86,9 +86,9 @@ final class StudentsViewModel: StudentsViewModelProtocol {
                     return
                 }
                 if !name.isEmpty {
-                    try await firestoreService.updateUserName(
-                        userId: student.id,
-                        name: name
+                    try await firestoreService.updateTeacherAlias(
+                        studentId: student.id,
+                        alias: name
                     )
                 }
                 try await firestoreService.updateTeacher(

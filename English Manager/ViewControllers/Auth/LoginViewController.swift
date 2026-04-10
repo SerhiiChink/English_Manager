@@ -25,7 +25,7 @@ final class LoginViewController: UIViewController {
     private let googleButton = UIButton(type: .system)
     
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
+    private let router: AuthRouterProtocol
     private var viewModel: LoginViewModelProtocol
     private var isLogin: Bool = true
     
@@ -239,7 +239,7 @@ final class LoginViewController: UIViewController {
     // MARK: - Binding
     private func bindViewModel() {
         viewModel.onSuccess = { [weak self] in
-            self?.router?.showRole()
+            self?.router.showRole()
         }
         viewModel.onError = { [weak self] message in
             self?.showError(message)

@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		570861E02F891A0000FCCCAA /* TeacherPaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570861DF2F891A0000FCCCAA /* TeacherPaymentsViewModel.swift */; };
+		570861E22F8928D100FCCCAA /* LessonOccurrence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570861E12F8928D100FCCCAA /* LessonOccurrence.swift */; };
+		570861E42F898EEB00FCCCAA /* OccurrenceFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570861E32F898EEB00FCCCAA /* OccurrenceFirestoreService.swift */; };
+		570861E72F89941700FCCCAA /* LessonOccurrenceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570861E62F89941700FCCCAA /* LessonOccurrenceViewModel.swift */; };
+		57320ABC2F8172AD00D1A6E8 /* TeacherSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320ABB2F8172AD00D1A6E8 /* TeacherSettings.swift */; };
+		57320AC02F81735900D1A6E8 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320ABF2F81735900D1A6E8 /* Schedule.swift */; };
+		57320AC22F8173D800D1A6E8 /* PaymentFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320AC12F8173D800D1A6E8 /* PaymentFirestoreService.swift */; };
+		57320AC62F81900300D1A6E8 /* StudentScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320AC52F81900300D1A6E8 /* StudentScheduleView.swift */; };
+		57320ACC2F819DC800D1A6E8 /* StudentChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320ACB2F819DC800D1A6E8 /* StudentChip.swift */; };
+		57320AD02F82785A00D1A6E8 /* ScheduleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320ACF2F82785A00D1A6E8 /* ScheduleFormatter.swift */; };
+		57320AD32F82F05100D1A6E8 /* SchedulePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320AD22F82F05100D1A6E8 /* SchedulePickerViewController.swift */; };
+		57320AD52F82F3FC00D1A6E8 /* ScheduleDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320AD42F82F3FC00D1A6E8 /* ScheduleDraft.swift */; };
 		574B83DA2F6E05520042045B /* TeacherPaymentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83D52F6E05520042045B /* TeacherPaymentsViewController.swift */; };
 		574B83DB2F6E05520042045B /* StudentLessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83CD2F6E05520042045B /* StudentLessonsViewController.swift */; };
 		574B83DC2F6E05520042045B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83C42F6E05520042045B /* LoginViewController.swift */; };
@@ -47,6 +59,10 @@
 		575092492F5AEA95002132EF /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575092482F5AEA95002132EF /* ValidationResult.swift */; };
 		5750924B2F5AEEFF002132EF /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5750924A2F5AEEFF002132EF /* LoginViewModel.swift */; };
 		5750924F2F5B0A16002132EF /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5750924E2F5B0A16002132EF /* AuthRouter.swift */; };
+		5773F8A42F714F3B00D73305 /* TeacherHomeworkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773F8A32F714F3B00D73305 /* TeacherHomeworkViewModel.swift */; };
+		5773F8A62F715B4900D73305 /* StudentHomeworkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773F8A52F715B4900D73305 /* StudentHomeworkViewModel.swift */; };
+		5773F8A82F73E52900D73305 /* TeacherRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773F8A72F73E52900D73305 /* TeacherRouter.swift */; };
+		5773F8AA2F73E7A000D73305 /* StudentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773F8A92F73E7A000D73305 /* StudentRouter.swift */; };
 		5797B8F02F6AB6EA004416DF /* TeacherProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */; };
 		5797B8F42F6ABBBA004416DF /* StatItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8F32F6ABBBA004416DF /* StatItemView.swift */; };
 		5797B8F82F6C07D4004416DF /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8F72F6C07D4004416DF /* EditProfileViewModel.swift */; };
@@ -55,6 +71,7 @@
 		5797B8FE2F6D9D19004416DF /* ImagePickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8FD2F6D9D19004416DF /* ImagePickerService.swift */; };
 		5797B9012F6DF478004416DF /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5797B9002F6DF478004416DF /* Kingfisher */; };
 		5797B9052F6DF935004416DF /* UIScrollView+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B9042F6DF935004416DF /* UIScrollView+Refresh.swift */; };
+		579E59DE2F7BC94B0067AA22 /* TeacherHomeworkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579E59DD2F7BC94B0067AA22 /* TeacherHomeworkDetailViewController.swift */; };
 		57D9D11D2F602C3F0061605F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57D9D11C2F602C3F0061605F /* SnapKit */; };
 		57D9D1BA2F65727B0061605F /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1B92F65727B0061605F /* FirestoreService.swift */; };
 		57D9D1BC2F6574170061605F /* QuerySnapshot+Decode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1BB2F6574170061605F /* QuerySnapshot+Decode.swift */; };
@@ -67,6 +84,15 @@
 		57D9D1D32F66BFB90061605F /* RoleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1D22F66BFB90061605F /* RoleViewModel.swift */; };
 		57D9D1D62F685A220061605F /* StudentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1D52F685A220061605F /* StudentCell.swift */; };
 		57D9D1DA2F68BC670061605F /* StudentLessonsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1D92F68BC670061605F /* StudentLessonsViewModel.swift */; };
+		57EE38E72F792FCD00A3272A /* HomeworkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EE38E62F792FCD00A3272A /* HomeworkCell.swift */; };
+		57EE38E92F7A6EF600A3272A /* HomeworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EE38E82F7A6EF600A3272A /* HomeworkView.swift */; };
+		57EE38EB2F7A833200A3272A /* HomeworkFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EE38EA2F7A833200A3272A /* HomeworkFormatter.swift */; };
+		57F6C05B2F6EB5890041E8BE /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C05A2F6EB5890041E8BE /* ProfileView.swift */; };
+		57F6C05D2F6F171B0041E8BE /* StatsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C05C2F6F171B0041E8BE /* StatsCardView.swift */; };
+		57F6C05F2F6F33E60041E8BE /* StudentProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C05E2F6F33E60041E8BE /* StudentProfileViewController.swift */; };
+		57F6C0612F6F42A60041E8BE /* StudentProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C0602F6F42A60041E8BE /* StudentProfileViewModel.swift */; };
+		57F6C0632F6F45F60041E8BE /* UIViewController+ProfileAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C0622F6F45F60041E8BE /* UIViewController+ProfileAlerts.swift */; };
+		57F6C0682F71481E0041E8BE /* HomeworkFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C0672F71481E0041E8BE /* HomeworkFirestoreService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +113,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		570861DF2F891A0000FCCCAA /* TeacherPaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPaymentsViewModel.swift; sourceTree = "<group>"; };
+		570861E12F8928D100FCCCAA /* LessonOccurrence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonOccurrence.swift; sourceTree = "<group>"; };
+		570861E32F898EEB00FCCCAA /* OccurrenceFirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccurrenceFirestoreService.swift; sourceTree = "<group>"; };
+		570861E62F89941700FCCCAA /* LessonOccurrenceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonOccurrenceViewModel.swift; sourceTree = "<group>"; };
+		57320ABB2F8172AD00D1A6E8 /* TeacherSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherSettings.swift; sourceTree = "<group>"; };
+		57320ABF2F81735900D1A6E8 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		57320AC12F8173D800D1A6E8 /* PaymentFirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFirestoreService.swift; sourceTree = "<group>"; };
+		57320AC52F81900300D1A6E8 /* StudentScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentScheduleView.swift; sourceTree = "<group>"; };
+		57320ACB2F819DC800D1A6E8 /* StudentChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentChip.swift; sourceTree = "<group>"; };
+		57320ACF2F82785A00D1A6E8 /* ScheduleFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleFormatter.swift; sourceTree = "<group>"; };
+		57320AD22F82F05100D1A6E8 /* SchedulePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePickerViewController.swift; sourceTree = "<group>"; };
+		57320AD42F82F3FC00D1A6E8 /* ScheduleDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDraft.swift; sourceTree = "<group>"; };
 		574B83C32F6E05520042045B /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		574B83C42F6E05520042045B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		574B83C52F6E05520042045B /* RoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +165,10 @@
 		575092482F5AEA95002132EF /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		5750924A2F5AEEFF002132EF /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		5750924E2F5B0A16002132EF /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
+		5773F8A32F714F3B00D73305 /* TeacherHomeworkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherHomeworkViewModel.swift; sourceTree = "<group>"; };
+		5773F8A52F715B4900D73305 /* StudentHomeworkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentHomeworkViewModel.swift; sourceTree = "<group>"; };
+		5773F8A72F73E52900D73305 /* TeacherRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherRouter.swift; sourceTree = "<group>"; };
+		5773F8A92F73E7A000D73305 /* StudentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentRouter.swift; sourceTree = "<group>"; };
 		5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherProfileViewModel.swift; sourceTree = "<group>"; };
 		5797B8F32F6ABBBA004416DF /* StatItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatItemView.swift; sourceTree = "<group>"; };
 		5797B8F72F6C07D4004416DF /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
@@ -134,6 +176,7 @@
 		5797B8FB2F6D8F9A004416DF /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		5797B8FD2F6D9D19004416DF /* ImagePickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerService.swift; sourceTree = "<group>"; };
 		5797B9042F6DF935004416DF /* UIScrollView+Refresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Refresh.swift"; sourceTree = "<group>"; };
+		579E59DD2F7BC94B0067AA22 /* TeacherHomeworkDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherHomeworkDetailViewController.swift; sourceTree = "<group>"; };
 		57D9D1B92F65727B0061605F /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		57D9D1BB2F6574170061605F /* QuerySnapshot+Decode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuerySnapshot+Decode.swift"; sourceTree = "<group>"; };
 		57D9D1BF2F65826C0061605F /* TeacherLessonsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherLessonsViewModel.swift; sourceTree = "<group>"; };
@@ -145,6 +188,15 @@
 		57D9D1D22F66BFB90061605F /* RoleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleViewModel.swift; sourceTree = "<group>"; };
 		57D9D1D52F685A220061605F /* StudentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentCell.swift; sourceTree = "<group>"; };
 		57D9D1D92F68BC670061605F /* StudentLessonsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLessonsViewModel.swift; sourceTree = "<group>"; };
+		57EE38E62F792FCD00A3272A /* HomeworkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkCell.swift; sourceTree = "<group>"; };
+		57EE38E82F7A6EF600A3272A /* HomeworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkView.swift; sourceTree = "<group>"; };
+		57EE38EA2F7A833200A3272A /* HomeworkFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkFormatter.swift; sourceTree = "<group>"; };
+		57F6C05A2F6EB5890041E8BE /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		57F6C05C2F6F171B0041E8BE /* StatsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCardView.swift; sourceTree = "<group>"; };
+		57F6C05E2F6F33E60041E8BE /* StudentProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentProfileViewController.swift; sourceTree = "<group>"; };
+		57F6C0602F6F42A60041E8BE /* StudentProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentProfileViewModel.swift; sourceTree = "<group>"; };
+		57F6C0622F6F45F60041E8BE /* UIViewController+ProfileAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ProfileAlerts.swift"; sourceTree = "<group>"; };
+		57F6C0672F71481E0041E8BE /* HomeworkFirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkFirestoreService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +230,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		570861E52F89940A00FCCCAA /* Lesson */ = {
+			isa = PBXGroup;
+			children = (
+				57D9D1BF2F65826C0061605F /* TeacherLessonsViewModel.swift */,
+				570861E62F89941700FCCCAA /* LessonOccurrenceViewModel.swift */,
+			);
+			path = Lesson;
+			sourceTree = "<group>";
+		};
+		57320AD12F82F03B00D1A6E8 /* Lesson */ = {
+			isa = PBXGroup;
+			children = (
+				574B83D42F6E05520042045B /* TeacherLessonsViewController.swift */,
+				57320AD22F82F05100D1A6E8 /* SchedulePickerViewController.swift */,
+			);
+			path = Lesson;
+			sourceTree = "<group>";
+		};
 		574B83C72F6E05520042045B /* Auth */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				574B83CF2F6E05520042045B /* StudentTabBarController.swift */,
+				57F6C05E2F6F33E60041E8BE /* StudentProfileViewController.swift */,
 				574B83CD2F6E05520042045B /* StudentLessonsViewController.swift */,
 				574B83D12F6E05520042045B /* StudentHomeworkViewController.swift */,
 				574B83CE2F6E05520042045B /* StudentPaymentsViewController.swift */,
@@ -212,11 +283,11 @@
 		574B83D82F6E05520042045B /* Teacher */ = {
 			isa = PBXGroup;
 			children = (
+				57320AD12F82F03B00D1A6E8 /* Lesson */,
+				579E59DC2F7BC9400067AA22 /* Homework */,
 				574B83D72F6E05520042045B /* TeacherTabBarController.swift */,
 				574B83D62F6E05520042045B /* TeacherProfileViewController.swift */,
-				574B83D42F6E05520042045B /* TeacherLessonsViewController.swift */,
 				574B83D22F6E05520042045B /* StudentsViewController.swift */,
-				574B83D32F6E05520042045B /* TeacherHomeworkViewController.swift */,
 				574B83D52F6E05520042045B /* TeacherPaymentsViewController.swift */,
 			);
 			path = Teacher;
@@ -235,10 +306,10 @@
 		5750917D2F56F356002132EF = {
 			isa = PBXGroup;
 			children = (
+				575091C32F56F373002132EF /* English Manager */,
 				575091CC2F56F380002132EF /* English ManagerTests */,
 				575091D02F56F385002132EF /* English ManagerUITests */,
 				575091872F56F356002132EF /* Products */,
-				575091C32F56F373002132EF /* English Manager */,
 			);
 			sourceTree = "<group>";
 		};
@@ -255,8 +326,8 @@
 		575091C32F56F373002132EF /* English Manager */ = {
 			isa = PBXGroup;
 			children = (
+				57F6C0582F6EB55F0041E8BE /* Views */,
 				575091EC2F598E6E002132EF /* Navigation */,
-				575091EB2F598E45002132EF /* Components */,
 				575091E92F598DA7002132EF /* ViewModels */,
 				575091DB2F583F71002132EF /* Models */,
 				575091DA2F583F60002132EF /* Services */,
@@ -321,6 +392,8 @@
 			isa = PBXGroup;
 			children = (
 				57D9D1C62F65E3140061605F /* LessonFormatter.swift */,
+				57EE38EA2F7A833200A3272A /* HomeworkFormatter.swift */,
+				57320ACF2F82785A00D1A6E8 /* ScheduleFormatter.swift */,
 			);
 			path = Formatters;
 			sourceTree = "<group>";
@@ -333,6 +406,7 @@
 				57D9D1C82F65E5D30061605F /* UICollectionViewLayout+Layouts.swift */,
 				57D9D1CC2F65ED950061605F /* UIViewController+Alert.swift */,
 				5797B9042F6DF935004416DF /* UIScrollView+Refresh.swift */,
+				57F6C0622F6F45F60041E8BE /* UIViewController+ProfileAlerts.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -340,8 +414,9 @@
 		575091D92F583F56002132EF /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				57EE38E52F792FB300A3272A /* Homework */,
 				57D9D1D42F685A130061605F /* Student */,
-				57D9D1C12F658DB70061605F /* Teacher */,
+				57D9D1C12F658DB70061605F /* Lesson */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -349,6 +424,7 @@
 		575091DA2F583F60002132EF /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				57F6C0662F71480E0041E8BE /* Firestore */,
 				575091FF2F599B22002132EF /* AuthService.swift */,
 				575092462F5AEA38002132EF /* ValidationService.swift */,
 				57D9D1B92F65727B0061605F /* FirestoreService.swift */,
@@ -367,6 +443,11 @@
 				575091FB2F599842002132EF /* PaymentRequest.swift */,
 				575091FD2F5998E5002132EF /* Vocabulary.swift */,
 				575092482F5AEA95002132EF /* ValidationResult.swift */,
+				57320ABB2F8172AD00D1A6E8 /* TeacherSettings.swift */,
+				57320ABF2F81735900D1A6E8 /* Schedule.swift */,
+				57320ACB2F819DC800D1A6E8 /* StudentChip.swift */,
+				57320AD42F82F3FC00D1A6E8 /* ScheduleDraft.swift */,
+				570861E12F8928D100FCCCAA /* LessonOccurrence.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -394,6 +475,8 @@
 			isa = PBXGroup;
 			children = (
 				5750924E2F5B0A16002132EF /* AuthRouter.swift */,
+				5773F8A72F73E52900D73305 /* TeacherRouter.swift */,
+				5773F8A92F73E7A000D73305 /* StudentRouter.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -411,9 +494,11 @@
 		575091EE2F598E94002132EF /* Teacher */ = {
 			isa = PBXGroup;
 			children = (
-				57D9D1BF2F65826C0061605F /* TeacherLessonsViewModel.swift */,
+				570861E52F89940A00FCCCAA /* Lesson */,
 				57D9D1D02F66B8490061605F /* StudentsViewModel.swift */,
 				5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */,
+				5773F8A32F714F3B00D73305 /* TeacherHomeworkViewModel.swift */,
+				570861DF2F891A0000FCCCAA /* TeacherPaymentsViewModel.swift */,
 			);
 			path = Teacher;
 			sourceTree = "<group>";
@@ -422,16 +507,27 @@
 			isa = PBXGroup;
 			children = (
 				57D9D1D92F68BC670061605F /* StudentLessonsViewModel.swift */,
+				57F6C0602F6F42A60041E8BE /* StudentProfileViewModel.swift */,
+				5773F8A52F715B4900D73305 /* StudentHomeworkViewModel.swift */,
 			);
 			path = Student;
 			sourceTree = "<group>";
 		};
-		57D9D1C12F658DB70061605F /* Teacher */ = {
+		579E59DC2F7BC9400067AA22 /* Homework */ = {
+			isa = PBXGroup;
+			children = (
+				579E59DD2F7BC94B0067AA22 /* TeacherHomeworkDetailViewController.swift */,
+				574B83D32F6E05520042045B /* TeacherHomeworkViewController.swift */,
+			);
+			path = Homework;
+			sourceTree = "<group>";
+		};
+		57D9D1C12F658DB70061605F /* Lesson */ = {
 			isa = PBXGroup;
 			children = (
 				57D9D1C42F658DCE0061605F /* LessonCell.swift */,
 			);
-			path = Teacher;
+			path = Lesson;
 			sourceTree = "<group>";
 		};
 		57D9D1D42F685A130061605F /* Student */ = {
@@ -440,6 +536,44 @@
 				57D9D1D52F685A220061605F /* StudentCell.swift */,
 			);
 			path = Student;
+			sourceTree = "<group>";
+		};
+		57EE38E52F792FB300A3272A /* Homework */ = {
+			isa = PBXGroup;
+			children = (
+				57EE38E62F792FCD00A3272A /* HomeworkCell.swift */,
+			);
+			path = Homework;
+			sourceTree = "<group>";
+		};
+		57F6C0582F6EB55F0041E8BE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				57F6C0592F6EB5700041E8BE /* Profile */,
+				575091EB2F598E45002132EF /* Components */,
+				57F6C05C2F6F171B0041E8BE /* StatsCardView.swift */,
+				57320AC52F81900300D1A6E8 /* StudentScheduleView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		57F6C0592F6EB5700041E8BE /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				57F6C05A2F6EB5890041E8BE /* ProfileView.swift */,
+				57EE38E82F7A6EF600A3272A /* HomeworkView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		57F6C0662F71480E0041E8BE /* Firestore */ = {
+			isa = PBXGroup;
+			children = (
+				57F6C0672F71481E0041E8BE /* HomeworkFirestoreService.swift */,
+				57320AC12F8173D800D1A6E8 /* PaymentFirestoreService.swift */,
+				570861E32F898EEB00FCCCAA /* OccurrenceFirestoreService.swift */,
+			);
+			path = Firestore;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -592,38 +726,59 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57EE38E92F7A6EF600A3272A /* HomeworkView.swift in Sources */,
+				57320AC62F81900300D1A6E8 /* StudentScheduleView.swift in Sources */,
 				574B83DA2F6E05520042045B /* TeacherPaymentsViewController.swift in Sources */,
 				574B83DB2F6E05520042045B /* StudentLessonsViewController.swift in Sources */,
+				57F6C05D2F6F171B0041E8BE /* StatsCardView.swift in Sources */,
 				574B83DC2F6E05520042045B /* LoginViewController.swift in Sources */,
 				574B83DD2F6E05520042045B /* TeacherLessonsViewController.swift in Sources */,
+				5773F8A42F714F3B00D73305 /* TeacherHomeworkViewModel.swift in Sources */,
 				574B83DE2F6E05520042045B /* RoleViewController.swift in Sources */,
 				574B83DF2F6E05520042045B /* TeacherProfileViewController.swift in Sources */,
 				574B83E02F6E05520042045B /* StudentLessonDetailViewController.swift in Sources */,
 				574B83E12F6E05520042045B /* StudentsViewController.swift in Sources */,
+				57320ABC2F8172AD00D1A6E8 /* TeacherSettings.swift in Sources */,
+				57320AC02F81735900D1A6E8 /* Schedule.swift in Sources */,
 				574B83E22F6E05520042045B /* SplashViewController.swift in Sources */,
 				574B83E32F6E05520042045B /* TeacherHomeworkViewController.swift in Sources */,
 				574B83E42F6E05520042045B /* EditProfileViewController.swift in Sources */,
 				574B83E52F6E05520042045B /* StudentTabBarController.swift in Sources */,
 				574B83E62F6E05520042045B /* StudentHomeworkViewController.swift in Sources */,
+				570861E72F89941700FCCCAA /* LessonOccurrenceViewModel.swift in Sources */,
 				574B83E72F6E05520042045B /* TeacherTabBarController.swift in Sources */,
 				574B83E82F6E05520042045B /* StudentPaymentsViewController.swift in Sources */,
+				57EE38EB2F7A833200A3272A /* HomeworkFormatter.swift in Sources */,
 				57D9D1D32F66BFB90061605F /* RoleViewModel.swift in Sources */,
 				575091F42F599127002132EF /* Constants.swift in Sources */,
 				57D9D1D62F685A220061605F /* StudentCell.swift in Sources */,
+				57320AD52F82F3FC00D1A6E8 /* ScheduleDraft.swift in Sources */,
+				57320ACC2F819DC800D1A6E8 /* StudentChip.swift in Sources */,
+				57F6C0612F6F42A60041E8BE /* StudentProfileViewModel.swift in Sources */,
+				5773F8A62F715B4900D73305 /* StudentHomeworkViewModel.swift in Sources */,
+				57320AC22F8173D800D1A6E8 /* PaymentFirestoreService.swift in Sources */,
 				5797B8F42F6ABBBA004416DF /* StatItemView.swift in Sources */,
 				575092492F5AEA95002132EF /* ValidationResult.swift in Sources */,
+				57320AD32F82F05100D1A6E8 /* SchedulePickerViewController.swift in Sources */,
 				575091FE2F5998E5002132EF /* Vocabulary.swift in Sources */,
+				570861E22F8928D100FCCCAA /* LessonOccurrence.swift in Sources */,
 				575092472F5AEA38002132EF /* ValidationService.swift in Sources */,
 				57D9D1DA2F68BC670061605F /* StudentLessonsViewModel.swift in Sources */,
 				5797B8F02F6AB6EA004416DF /* TeacherProfileViewModel.swift in Sources */,
 				57D9D1BA2F65727B0061605F /* FirestoreService.swift in Sources */,
+				57F6C05B2F6EB5890041E8BE /* ProfileView.swift in Sources */,
 				5797B9052F6DF935004416DF /* UIScrollView+Refresh.swift in Sources */,
+				57320AD02F82785A00D1A6E8 /* ScheduleFormatter.swift in Sources */,
+				57EE38E72F792FCD00A3272A /* HomeworkCell.swift in Sources */,
 				57D9D1C52F658DCE0061605F /* LessonCell.swift in Sources */,
 				575091C42F56F373002132EF /* AppDelegate.swift in Sources */,
+				570861E02F891A0000FCCCAA /* TeacherPaymentsViewModel.swift in Sources */,
 				57D9D1CD2F65ED950061605F /* UIViewController+Alert.swift in Sources */,
 				575091F62F599306002132EF /* User.swift in Sources */,
 				5750924F2F5B0A16002132EF /* AuthRouter.swift in Sources */,
 				5797B8FC2F6D8F9A004416DF /* StorageService.swift in Sources */,
+				57F6C0632F6F45F60041E8BE /* UIViewController+ProfileAlerts.swift in Sources */,
+				57F6C05F2F6F33E60041E8BE /* StudentProfileViewController.swift in Sources */,
 				5750924B2F5AEEFF002132EF /* LoginViewModel.swift in Sources */,
 				57D9D1C02F65826C0061605F /* TeacherLessonsViewModel.swift in Sources */,
 				575091FC2F599842002132EF /* PaymentRequest.swift in Sources */,
@@ -631,10 +786,15 @@
 				57D9D1D12F66B8490061605F /* StudentsViewModel.swift in Sources */,
 				575091DD2F584136002132EF /* UIColor+App.swift in Sources */,
 				5797B8F82F6C07D4004416DF /* EditProfileViewModel.swift in Sources */,
+				579E59DE2F7BC94B0067AA22 /* TeacherHomeworkDetailViewController.swift in Sources */,
 				575091C52F56F373002132EF /* SceneDelegate.swift in Sources */,
+				57F6C0682F71481E0041E8BE /* HomeworkFirestoreService.swift in Sources */,
 				57D9D1C72F65E3140061605F /* LessonFormatter.swift in Sources */,
+				5773F8AA2F73E7A000D73305 /* StudentRouter.swift in Sources */,
+				570861E42F898EEB00FCCCAA /* OccurrenceFirestoreService.swift in Sources */,
 				5797B8FE2F6D9D19004416DF /* ImagePickerService.swift in Sources */,
 				57D9D1BC2F6574170061605F /* QuerySnapshot+Decode.swift in Sources */,
+				5773F8A82F73E52900D73305 /* TeacherRouter.swift in Sources */,
 				5797B8FA2F6D734D004416DF /* AvatarView.swift in Sources */,
 				575091FA2F5995C9002132EF /* Homework.swift in Sources */,
 				575091F82F59940C002132EF /* Lesson.swift in Sources */,

@@ -15,5 +15,6 @@ extension UIColor {
     static let appAccent: UIColor = .systemBlue
     static let appGreen: UIColor = .systemGreen
     static let appRed: UIColor = .systemRed
-    static let appGold: UIColor = .systemOrange
+    static let appGold: UIColor = .systemYellow
+    static let appOrange: UIColor = .systemOrange
 }

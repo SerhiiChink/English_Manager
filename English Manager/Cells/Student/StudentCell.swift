@@ -13,8 +13,7 @@ final class StudentCell: UICollectionViewCell {
     
     // MARK: - UI
     private let containerView = UIView()
-    private let avatarView = UIView()
-    private let avatarLabel = UILabel()
+    private let avatarView = AvatarView()
     private let nameLabel = UILabel()
     private let emailLabel = UILabel()
     
@@ -47,20 +46,12 @@ final class StudentCell: UICollectionViewCell {
     }
     
     private func setupAvatarView() {
-        avatarView.backgroundColor = .appAccent
-        avatarView.layer.cornerRadius = 24
+        avatarView.showBadge(false)
         containerView.addSubview(avatarView)
         avatarView.snp.makeConstraints {
             $0.left.equalToSuperview().offset(16)
             $0.centerY.equalToSuperview()
             $0.width.height.equalTo(48)
-        }
-        avatarLabel.font = .systemFont(ofSize: 18, weight: .semibold)
-        avatarLabel.textColor = .white
-        avatarLabel.textAlignment = .center
-        avatarView.addSubview(avatarLabel)
-        avatarLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
         }
     }
     
@@ -89,13 +80,16 @@ final class StudentCell: UICollectionViewCell {
     
     // MARK: - Configure
     func configure(with student: User) {
-        nameLabel.text = student.name.isEmpty
+        let displayName = student.teacherAlias ?? student.name
+        nameLabel.text = displayName.isEmpty
             ? student.email
-            : student.name
+            : displayName
         emailLabel.text = student.email
-        avatarLabel.text = (student.name.first ?? student.email.first)
-            .map {
-                String($0).uppercased()
-            }
+        avatarView.configure(name: student.name,
+                             surname: nil,
+                             email: student.email)
+        if let photoURL = student.photoURL {
+            avatarView.loadImage(from: photoURL)
+        }
     }
 }

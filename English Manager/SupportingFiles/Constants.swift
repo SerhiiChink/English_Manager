@@ -14,6 +14,9 @@ enum Collections {
     static let homeworks = "homeworks"
     static let payments = "payments"
     static let vocabulary = "vocabulary"
+    static let schedules = "schedules"
+    static let teacherSettings = "teacherSettings"
+    static let lessonOccurrences = "lessonOccurrences"
 }
     
     // MARK: - Layout

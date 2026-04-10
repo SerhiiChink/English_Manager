@@ -45,4 +45,23 @@ extension UICollectionViewLayout {
                                       trailing: 16)
         return UICollectionViewCompositionalLayout(section: section)
     }
+    
+    static func homeworkLayout() -> UICollectionViewCompositionalLayout {
+        let item = NSCollectionLayoutItem(
+            layoutSize: .init(widthDimension: .fractionalWidth(1.0),
+                              heightDimension: .estimated(100))
+        )
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: .init(widthDimension: .fractionalWidth(1.0),
+                              heightDimension: .estimated(100)),
+            subitems: [item]
+        )
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 12
+        section.contentInsets = .init(top: 16,
+                                      leading: 16,
+                                      bottom: 16,
+                                      trailing: 16)
+        return UICollectionViewCompositionalLayout(section: section)
+    }
 }

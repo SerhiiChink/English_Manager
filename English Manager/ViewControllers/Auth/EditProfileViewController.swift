@@ -17,15 +17,10 @@ final class EditProfileViewController: UIViewController {
     private let activityIndicator = UIActivityIndicatorView()
     
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
     private var viewModel: EditProfileViewModelProtocol
     
     // MARK: - Init
-    init(
-        user: User,
-        router: AuthRouterProtocol?
-    ) {
-        self.router = router
+    init(user: User) {
         self.viewModel = EditProfileViewModel(user: user)
         super.init(nibName: nil, bundle: nil)
     }

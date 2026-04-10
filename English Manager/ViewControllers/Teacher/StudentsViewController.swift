@@ -22,12 +22,12 @@ final class StudentsViewController: UIViewController {
     private let emptyLabel = UILabel()
     
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
+    private let router: TeacherRouterProtocol
     private var viewModel: StudentsViewModelProtocol
     
     // MARK: - Init
     init(
-        router: AuthRouterProtocol?,
+        router: TeacherRouterProtocol,
         viewModel: StudentsViewModelProtocol = StudentsViewModel()
     ) {
         self.router = router

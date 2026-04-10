@@ -16,6 +16,7 @@ struct Lesson: Codable {
     var id: String?
     let studentId: String
     let teacherId: String
+    var occurrenceId: String?
     var studentName: String
     var date: Date
     var topic: String

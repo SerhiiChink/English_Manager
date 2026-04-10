@@ -10,6 +10,7 @@ import SnapKit
 
 final class TeacherLessonsViewController: UIViewController {
     // MARK: - UI
+    private let scheduleView = StudentScheduleView()
     private let collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero,
                                   collectionViewLayout: .lessonLayout())
@@ -18,17 +19,17 @@ final class TeacherLessonsViewController: UIViewController {
                     forCellWithReuseIdentifier: LessonCell.reuseId)
         return cv
     }()
-//    private let activityIndicator =  UIActivityIndicatorView(style: .medium)
     private let emptyLabel = UILabel()
     
     // MARK: - Properties
-    private weak var router: AuthRouterProtocol?
+    private let router: TeacherRouterProtocol
     private var viewModel: TeacherLessonsViewModelProtocol
     private let formatter: LessonFormatterProtocol = LessonFormatter()
+    private let scheduleFormatter: ScheduleFormatterProtocol = ScheduleFormatter()
     
     // MARK: - Init
     init(
-        router: AuthRouterProtocol?,
+        router: TeacherRouterProtocol,
         viewModel: TeacherLessonsViewModelProtocol = TeacherLessonsViewModel()
     ) {
         self.router = router
@@ -58,9 +59,20 @@ final class TeacherLessonsViewController: UIViewController {
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = .appBackground
+        setupScheduleView()
         setupCollectionView()
-//        setupActivityIndicator()
         setupEmptyLabel()
+    }
+    
+    private func setupScheduleView() {
+        view.addSubview(scheduleView)
+        scheduleView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.left.right.equalToSuperview()
+        }
+        scheduleView.onStudentTapped = { [weak self] student in
+            self?.showScheduleOptions(for: student)
+        }
     }
     
     private func setupCollectionView() {
@@ -68,17 +80,10 @@ final class TeacherLessonsViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(scheduleView.snp.bottom)
+            $0.left.right.bottom.equalToSuperview()
         }
     }
-    
-//    private func setupActivityIndicator() {
-//        activityIndicator.hidesWhenStopped = true
-//        view.addSubview(activityIndicator)
-//        activityIndicator.snp.makeConstraints {
-//            $0.center.equalToSuperview()
-//        }
-//    }
     
     private func setupEmptyLabel() {
         emptyLabel.text = "No lessons yet"// localiz
@@ -111,18 +116,16 @@ final class TeacherLessonsViewController: UIViewController {
     // MARK: - Binding
     private func bindViewModel() {
         viewModel.onUpdate = { [weak self] in
-            self?.collectionView.endRefreshing()
-            self?.reloadData()
+            guard let self else { return }
+            self.collectionView.endRefreshing()
+            self.reloadData()
+            self.scheduleView.configure(student: self.viewModel.students,
+                                        schedule: self.viewModel.schedules)
         }
         viewModel.onError = { [weak self] message in
             self?.collectionView.endRefreshing()
             self?.showAlert(title: "Error", message: message)
         }
-//        viewModel.onLoading = { [weak self] isLoading in
-//            isLoading
-//            ? self?.activityIndicator.startAnimating()
-//            : self?.activityIndicator.stopAnimating()
-//        }
     }
     
     // MARK: - Actions
@@ -196,8 +199,8 @@ extension TeacherLessonsViewController: UICollectionViewDataSource {
     }
 }
 
-    // MARK: - UICollectionViewDelegateFlowLayout
-extension TeacherLessonsViewController: UICollectionViewDelegateFlowLayout {
+    // MARK: - UICollectionViewDelegate
+extension TeacherLessonsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         contextMenuConfigurationForItemAt indexPath: IndexPath,
                         point: CGPoint) -> UIContextMenuConfiguration? {
@@ -395,5 +398,49 @@ extension TeacherLessonsViewController {
             self?.viewModel.updateLesson(updatedLesson)
         })
         present(alert, animated: true)
+    }
+}
+
+extension TeacherLessonsViewController {
+    private func showScheduleOptions(for student: User) {
+        let schedules = viewModel.schedules(for: student.id)
+        let message = schedules.isEmpty
+            ? "No schedule yet"
+            : schedules.map { scheduleFormatter.formatted($0) }.joined(separator: "\n")
+        let alert = UIAlertController(
+            title: student.displayName,
+            message: message,
+            preferredStyle: .actionSheet
+        )
+        alert.addAction(UIAlertAction(title: "Add schedule",
+                                      style: .default) { [weak self] _ in
+            self?.showAddScheduleAlert(for: student)
+        })
+        schedules.forEach { schedule in
+            let formatterTime = scheduleFormatter.formatted(schedule)
+            alert.addAction(UIAlertAction(
+                title: "Remove \(formatterTime)",
+                style: .destructive) { [weak self] _ in
+                    self?.viewModel.deleteSchedule(schedule)
+                }
+            )
+        }
+        alert.addAction(UIAlertAction(title: "Cancel",
+                                      style: .cancel))
+        present(alert, animated: true)
+    }
+        
+    private func showAddScheduleAlert(for student: User) {
+        router.showSchedulePicker(student: student) { [weak self] draft in
+            guard let self,
+                  let teacherId = viewModel.currentTeacherId else { return }
+            let schedule = Schedule(studentId: draft.studentId,
+                                    teacherId: teacherId,
+                                    weekday: draft.weekday,
+                                    time: draft.time,
+                                    isActive: true,
+                                    createdAt: Date())
+            viewModel.saveSchedule(schedule)
+        }
     }
 }
