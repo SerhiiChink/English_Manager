@@ -98,7 +98,7 @@ final class TeacherLessonsViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        title = "Lessons"
+        title = "lessons_capitalized".localized
         navigationController?.isNavigationBarHidden = false
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
@@ -145,9 +145,10 @@ final class TeacherLessonsViewController: UIViewController {
     private func createLesson(
         student: User,
         topic: String,
-        bookTitle: String,
+        description: String,
         pages: String,
-        urlText: String
+        urlText: String,
+        occurrence: LessonOccurrence?
     ) {
         guard let teacherId = viewModel.currentTeacherId else { return }
         let sourceLinks: [SourceLink] = urlText.isEmpty ? [] : [
@@ -156,18 +157,17 @@ final class TeacherLessonsViewController: UIViewController {
         let lesson = Lesson(
             studentId: student.id,
             teacherId: teacherId,
-            studentName: student.name.isEmpty
-                ? student.email
-                : student.name,
-            date: Date(),
+            occurrenceId: occurrence?.id,
+            studentName: student.displayName,
+            date: occurrence?.scheduledAt ?? Date(),
             topic: topic,
-            bookTitle: bookTitle,
+            bookTitle: description,
             pages: pages,
             attended: true,
             vocabulary: [],
             sourceLinks: sourceLinks
         )
-        viewModel.addLesson(lesson)
+        viewModel.addLesson(lesson, occurrence: occurrence)
     }
     
     private func reloadData() {
@@ -194,7 +194,16 @@ extension TeacherLessonsViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: LessonCell.reuseId,
             for: indexPath) as! LessonCell
-        cell.configure(with: viewModel.filteredLessons[indexPath.item])
+        let lesson = viewModel.filteredLessons[indexPath.item]
+        cell.configure(with: lesson)
+        cell.setMenuActions([
+            .edit { [weak self] in
+                self?.showEditLesson(lesson: lesson)
+            },
+            .delete { [weak self] in
+                self?.viewModel.deleteLesson(lesson: lesson)
+            }
+        ])
         return cell
     }
 }
@@ -202,26 +211,8 @@ extension TeacherLessonsViewController: UICollectionViewDataSource {
     // MARK: - UICollectionViewDelegate
 extension TeacherLessonsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
-                        contextMenuConfigurationForItemAt indexPath: IndexPath,
-                        point: CGPoint) -> UIContextMenuConfiguration? {
-        let lesson = viewModel.filteredLessons[indexPath.item]
-        return UIContextMenuConfiguration(
-            identifier: nil,
-            previewProvider: nil) { _ in
-                let edit = UIAction(
-                    title: "Edit",
-                    image: UIImage(systemName: "pencil")) { [weak self] _ in
-                        self?.showEditLesson(lesson: lesson)
-                    }
-                let delete = UIAction(
-                    title: "Delete",
-                    image: UIImage(systemName: "trash"),
-                    attributes: .destructive
-                ) { [weak self] _ in
-                    self?.viewModel.deleteLesson(lesson: lesson)
-                }
-                return UIMenu(children: [edit, delete])
-            }
+                        didSelectItemAt indexPath: IndexPath) {
+        
     }
 }
 
@@ -229,18 +220,49 @@ extension TeacherLessonsViewController: UICollectionViewDelegate {
 extension TeacherLessonsViewController {
     func showAddLessonAlert() {
         showStudentPickerAlert { [weak self] student in
-            self?.showLessonFormAlert(student: student)
+            guard let self else { return }
+            let schedules = viewModel.schedules(for: student.id)
+            if schedules.isEmpty {
+                showLessonFormAlert(student: student, occurrence: nil)
+            } else {
+                showOccurrencePickerAlert(student: student,
+                                          schedule: schedules)
+            }
         }
+    }
+    
+    private func showOccurrencePickerAlert(student: User,
+                                           schedule: [Schedule]) {
+        let alert = UIAlertController(title: student.displayName,
+                                      message: "select_schedule".localized,
+                                      preferredStyle: .actionSheet)
+        schedule.forEach { schedule in
+            let title = scheduleFormatter.formatted(schedule)
+            let occurrence = viewModel.nextOccurrence(for: schedule)
+            alert.addAction(UIAlertAction(
+                title: title,
+                style: .default
+            ) { [weak self] _ in
+                guard let self else { return }
+                self.showLessonFormAlert(student: student,
+                                          occurrence: occurrence)
+            })
+        }
+        alert.addAction(UIAlertAction(title: "skip".localized,
+                                      style: .cancel) { [weak self] _ in
+            self?.showLessonFormAlert(student: student, occurrence: nil)
+        })
+        present(alert, animated: true)
     }
     
     private func showStudentPickerAlert(onSelect: @escaping (User) -> Void) {
         let students = viewModel.students
         guard !students.isEmpty else {
-            showAlert(title: "NoStudents",
-                      message: "Add students first in Students tab")
+            showAlert(title: "no_students".localized,
+                      message: "add_students_first".localized)
             return
         }
-        let alert = UIAlertController(title: "Select student",
+        let alert = UIAlertController(title: "select_student".localized,
                                       message: nil,
                                       preferredStyle: .actionSheet)
         students.forEach { student in
@@ -252,51 +274,50 @@ extension TeacherLessonsViewController {
                 onSelect(student)
             })
         }
-        alert.addAction(UIAlertAction(title: "Cancel",
+        alert.addAction(UIAlertAction(title: "cancel".localized,
                                       style: .cancel))
         present(alert, animated: true)
     }
     
-    func showLessonFormAlert(student: User) {
+    func showLessonFormAlert(student: User, occurrence: LessonOccurrence?) {
         let alert = UIAlertController(
-            title: "New Lesson",
-            message: student.name.isEmpty ? student.email : student.name,
+            title: "new_lesson".localized,
+            message: student.displayName,
             preferredStyle: .alert
         )
-        alert.addTextField { $0.placeholder = "Topic" }
-        alert.addTextField { $0.placeholder = "Book title" }
-        alert.addTextField { $0.placeholder = "Pages" }
-        alert.addTextField { $0.placeholder = "Source URl (optional)" }
+        alert.addTextField { $0.placeholder = "topic".localized }
+        alert.addTextField { $0.placeholder = "description".localized }
+        alert.addTextField { $0.placeholder = "pages".localized }
+        alert.addTextField { $0.placeholder = "source_url_optional".localized }
+        alert.addAction(UIAlertAction(title: "cancel".localized,
+                                      style: .cancel))
         alert.addAction(UIAlertAction(
-            title: "Cancel",
-            style: .cancel
-        ))
-        alert.addAction(UIAlertAction(
-            title: "Add",
+            title: "add".localized,
             style: .default) { [weak self] _ in
                 guard let self,
                       let topic = alert.textFields?[0].text,
-                      let bookTitle = alert.textFields?[1].text,
+                      let description = alert.textFields?[1].text,
                       let pages = alert.textFields?[2].text,
-                      let urlText = alert.textFields?[3].text,
-                      !topic.isEmpty else { return }
+                      let urlText = alert.textFields?[3].text else { return }
                 if !urlText.isEmpty,
                    let duplicate = self.viewModel.checkDuplicateLink(urlText) {
-                    self.showDuplicateLinkAlert(
+                    showDuplicateLinkAlert(
                         url: urlText,
                         duplicate: duplicate,
                         student: student,
                         topic: topic,
-                        bookTitle: bookTitle,
-                        pages: pages
+                        description: description,
+                        pages: pages,
+                        occurrence: occurrence
                     )
                     return
                 }
-                self.createLesson(student: student,
-                                  topic: topic,
-                                  bookTitle: bookTitle,
-                                  pages: pages,
-                                  urlText: urlText)
+                createLesson(student: student,
+                             topic: topic,
+                             description: description,
+                             pages: pages,
+                             urlText: urlText,
+                             occurrence: occurrence)
             }
         )
         present(alert, animated: true)
@@ -307,25 +328,29 @@ extension TeacherLessonsViewController {
         duplicate: Lesson,
         student: User,
         topic: String,
-        bookTitle: String,
-        pages: String
+        description: String,
+        pages: String,
+        occurrence: LessonOccurrence?
     ) {
         let dateString = formatter.lessonDateString(for: duplicate)
         let alert = UIAlertController(
-            title: "Link already used",
-            message: "This source was used in lesson with \(duplicate.studentName) on \(dateString). Add anyway?",
+            title: "link_already_used".localized,
+            message: String(format: "duplicate_source_warning".localized,
+                            duplicate.studentName,
+                            dateString),
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Cancel",
+        alert.addAction(UIAlertAction(title: "cancel".localized,
                                       style: .cancel))
-        alert.addAction(UIAlertAction(title: "Add anyway",
+        alert.addAction(UIAlertAction(title: "add_anyway".localized,
                                       style: .default) { [weak self] _ in
             self?.createLesson(
                 student: student,
                 topic: topic,
-                bookTitle: bookTitle,
+                description: description,
                 pages: pages,
-                urlText: url
+                urlText: url,
+                occurrence: occurrence
             )
         })
         present(alert, animated: true)
@@ -358,29 +383,29 @@ extension TeacherLessonsViewController {
     
     func showEditLesson(lesson: Lesson) {
         let alert = UIAlertController(
-            title: "Edit lesson",
+            title: "edit_lesson".localized,
             message: lesson.studentName,
             preferredStyle: .alert
         )
         alert.addTextField {
-            $0.placeholder = "Topic"
+            $0.placeholder = "topic".localized
             $0.text = lesson.topic
         }
         alert.addTextField {
-            $0.placeholder = "Book title"
+            $0.placeholder = "description".localized
             $0.text = lesson.bookTitle
         }
         alert.addTextField {
-            $0.placeholder = "Pages"
+            $0.placeholder = "pages".localized
             $0.text = lesson.pages
         }
         alert.addTextField {
-            $0.placeholder = "Source URL"
+            $0.placeholder = "source_URL".localized
             $0.text = lesson.sourceLinks.first?.url ?? ""
         }
-        alert.addAction(UIAlertAction(title: "Cancel",
+        alert.addAction(UIAlertAction(title: "cancel".localized,
                                       style: .cancel))
-        alert.addAction(UIAlertAction(title: "Save",
+        alert.addAction(UIAlertAction(title: "save".localized,
                                       style: .default) { [weak self] _ in
             guard let topic = alert.textFields?[0].text,
                   let bookTitle = alert.textFields?[1].text,
@@ -404,43 +429,27 @@ extension TeacherLessonsViewController {
 extension TeacherLessonsViewController {
     private func showScheduleOptions(for student: User) {
         let schedules = viewModel.schedules(for: student.id)
-        let message = schedules.isEmpty
-            ? "No schedule yet"
-            : schedules.map { scheduleFormatter.formatted($0) }.joined(separator: "\n")
-        let alert = UIAlertController(
-            title: student.displayName,
-            message: message,
-            preferredStyle: .actionSheet
+        router.showScheduleDetail(
+            student: student,
+            schedules: schedules,
+            onAdd: { [weak self] draft in 
+               guard let self,
+                     let teacherId = viewModel.currentTeacherId else { return }
+                let schedule = Schedule(studentId: draft.studentId,
+                                        teacherId: teacherId,
+                                        weekday: draft.weekday,
+                                        time: draft.time,
+                                        isActive: true,
+                                        createdAt: Date())
+                viewModel.saveSchedule(schedule)
+            },
+            onDelete: { [weak self] schedule in
+                self?.viewModel.deleteSchedule(schedule)
+            },
+            onToggleAutoDebit: { [weak self] isEnabled in
+                self?.viewModel.updateAutoDebit(for: student,
+                                                isEnabled: isEnabled)
+            }
         )
-        alert.addAction(UIAlertAction(title: "Add schedule",
-                                      style: .default) { [weak self] _ in
-            self?.showAddScheduleAlert(for: student)
-        })
-        schedules.forEach { schedule in
-            let formatterTime = scheduleFormatter.formatted(schedule)
-            alert.addAction(UIAlertAction(
-                title: "Remove \(formatterTime)",
-                style: .destructive) { [weak self] _ in
-                    self?.viewModel.deleteSchedule(schedule)
-                }
-            )
-        }
-        alert.addAction(UIAlertAction(title: "Cancel",
-                                      style: .cancel))
-        present(alert, animated: true)
-    }
-        
-    private func showAddScheduleAlert(for student: User) {
-        router.showSchedulePicker(student: student) { [weak self] draft in
-            guard let self,
-                  let teacherId = viewModel.currentTeacherId else { return }
-            let schedule = Schedule(studentId: draft.studentId,
-                                    teacherId: teacherId,
-                                    weekday: draft.weekday,
-                                    time: draft.time,
-                                    isActive: true,
-                                    createdAt: Date())
-            viewModel.saveSchedule(schedule)
-        }
     }
 }

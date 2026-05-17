@@ -5,17 +5,20 @@
 //  Created by Sergej Klepikov on 21.03.2026.
 //
 
-import UIKit
-import SnapKit
+import Foundation
 
 protocol StudentProfileViewModelProtocol: AnyObject {
     var onUpdate: (() -> Void)? { get set }
     var onError: ((String) -> Void)? { get set }
     var onLoading: ((Bool) -> Void)? { get set }
+    var onAccountDeleted: (() -> Void)? { get set }
     var user: User? { get }
+    var statItems: [StatItem] { get }
     func fetchProfile()
+    func refresh()
     func signOut()
     func changePassword(_ password: String)
+    func deleteAccount(email: String, password: String)
 }
 
 final class StudentProfileViewModel: StudentProfileViewModelProtocol {
@@ -23,9 +26,20 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
     var onUpdate: (() -> Void)?
     var onError: ((String) -> Void)?
     var onLoading: ((Bool) -> Void)?
+    var onAccountDeleted: (() -> Void)?
     
     // MARK: - Data
     private(set) var user: User?
+    private var lessonsCount: Int = 0
+    private var homeworkCount: Int = 0
+    var statItems: [StatItem] {
+        [
+            StatItem(title: "lessons_capitalized".localized,
+                     value: "\(lessonsCount)"),
+            StatItem(title: "homework".localized,
+                     value: "\(homeworkCount)")
+        ]
+    }
     
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
@@ -42,6 +56,14 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
     
     // MARK: - Fetch
     func fetchProfile() {
+        performFetch(forceRefresh: false)
+    }
+
+    func refresh() {
+        performFetch(forceRefresh: true)
+    }
+    
+    private func performFetch(forceRefresh: Bool) {
         guard !isFetching else { return }
         guard let userId = authService.currentUserId else {
             onError?("User not found")
@@ -51,8 +73,11 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
         onLoading?(true)
         Task {
             do {
-                let fetchedUser = try await firestoreService
-                    .fetchUser(id: userId)
+                let fetchedUser = try await UserCache.shared.getUser(
+                    id: userId,
+                    service: firestoreService,
+                    forceRefresh: forceRefresh
+                )
                 await MainActor.run { [weak self] in
                     self?.user = fetchedUser
                     self?.isFetching = false
@@ -89,6 +114,28 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
                 await MainActor.run { [weak self] in
                     self?.onLoading?(false)
                     self?.onUpdate?()
+                }
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.onLoading?(false)
+                    self?.onError?(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Delete Account
+    func deleteAccount(email: String, password: String) {
+        onLoading?(true)
+        Task {
+            do {
+                try await authService.deleteAccount(email: email,
+                                                    password: password)
+                UserDefaults.standard.removeObject(forKey: UDKeys.userRole)
+                UserDefaults.standard.removeObject(forKey: UDKeys.userId)
+                await MainActor.run { [weak self] in
+                    self?.onLoading?(false)
+                    self?.onAccountDeleted?()
                 }
             } catch {
                 await MainActor.run { [weak self] in

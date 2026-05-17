@@ -20,6 +20,7 @@ final class HomeworkCell: UICollectionViewCell {
     private let statusBadge = UIView()
     private let statusLabel = UILabel()
     private let studentNameLabel = UILabel()
+    private let menuButton = CellMenuButton()
     
     // MARK: - Properties
     private let formatter: HomeworkFormatterProtocol = HomeworkFormatter()
@@ -38,12 +39,7 @@ final class HomeworkCell: UICollectionViewCell {
     // MARK: - Setup
     private func setupUI() {
         contentView.addSubview(containerView)
-        containerView.backgroundColor = .appSurface
-        containerView.layer.cornerRadius = Layout.cornerRadius
-        containerView.layer.shadowColor = UIColor.black.cgColor
-        containerView.layer.shadowOpacity = 0.08
-        containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        containerView.layer.shadowRadius = 8
+        containerView.styleAsCard()
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(4)
         }
@@ -53,6 +49,7 @@ final class HomeworkCell: UICollectionViewCell {
         setupTitleLabel()
         setupDescriptionLabel()
         setupFeedbackLabel()
+        setupMenuButton()
     }
     
     private func setupStatusBadge() {
@@ -133,6 +130,15 @@ final class HomeworkCell: UICollectionViewCell {
         }
     }
     
+    private func setupMenuButton() {
+        containerView.addSubview(menuButton)
+        menuButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(8)
+            $0.right.equalToSuperview().inset(4)
+            $0.width.height.equalTo(36)
+        }
+    }
+    
     // MARK: - Configure
     func configure(with homework: Homework, showStudent: Bool = false) {
         dateLabel.text = formatter.createdDateString(homework)
@@ -161,5 +167,13 @@ final class HomeworkCell: UICollectionViewCell {
             statusBadge.backgroundColor = .appTextSecondary
             statusLabel.text = homework.grade.map { "Grade: \($0)/10" } ?? "Seen"
         }
+    }
+    
+    func setMenuActions(_ actions: [CellMenuAction]) {
+        menuButton.configure(actions: actions)
+    }
+    
+    func hideMenu() {
+        menuButton.isHidden = true
     }
 }

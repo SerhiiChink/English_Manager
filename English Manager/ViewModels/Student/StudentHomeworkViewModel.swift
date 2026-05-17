@@ -13,6 +13,7 @@ protocol StudentHomeworkViewModelProtocol: AnyObject {
     var onLoading: ((Bool) -> Void)? { get set }
     var homeworks: [Homework] { get }
     func fetchHomeworks()
+    func refresh()
     func addHomework(title: String,
                      description: String,
                      link: String)
@@ -53,34 +54,11 @@ final class StudentHomeworkViewModel: StudentHomeworkViewModelProtocol {
     
     // MARK: - Fetch
     func fetchHomeworks() {
-        guard !isFetching else { return }
-        guard let studentId = authService.currentUserId else {
-            onError?("User not found")
-            return
-        }
-        isFetching = true
-        onLoading?(true)
-        Task {
-            do {
-                async let homeworks = homeworkService
-                    .fetchStudentHomework(studentId: studentId)
-                async let user = firestoreService.fetchUser(id: studentId)
-                let (fetchedHomeworks, fetchedUser) = try await (homeworks, user)
-                await MainActor.run { [weak self] in
-                    self?.homeworks = fetchedHomeworks
-                    self?.currentUser = fetchedUser
-                    self?.isFetching = false
-                    self?.onLoading?(false)
-                    self?.onUpdate?()
-                }
-            } catch {
-                await MainActor.run { [weak self] in
-                    self?.isFetching = false
-                    self?.onLoading?(false)
-                    self?.onError?(error.localizedDescription)
-                }
-            }
-        }
+        performFetch(forceRefresh: true)
+    }
+    
+    func refresh() {
+        performFetch(forceRefresh: true)
     }
     
     // MARK: - Add
@@ -186,6 +164,42 @@ final class StudentHomeworkViewModel: StudentHomeworkViewModelProtocol {
                         self?.homeworks[index] = updated
                     }
                     self?.onUpdate?()
+                }
+            }
+        }
+    }
+    
+    // MARK: - Helper
+    private func performFetch(forceRefresh: Bool)  {
+        guard !isFetching else { return }
+        guard let studentId = authService.currentUserId else {
+            onError?("User not found")
+            return
+        }
+        isFetching = true
+        onLoading?(true)
+        Task {
+            do {
+                async let homeworks = homeworkService
+                    .fetchStudentHomework(studentId: studentId)
+                let user = try await UserCache.shared.getUser(
+                    id: studentId,
+                    service: firestoreService,
+                    forceRefresh: forceRefresh
+                )
+                let fetchedHomeworks = try await homeworks
+                await MainActor.run { [weak self] in
+                    self?.homeworks = fetchedHomeworks
+                    self?.currentUser = user
+                    self?.isFetching = false
+                    self?.onLoading?(false)
+                    self?.onUpdate?()
+                }
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.isFetching = false
+                    self?.onLoading?(false)
+                    self?.onError?(error.localizedDescription)
                 }
             }
         }

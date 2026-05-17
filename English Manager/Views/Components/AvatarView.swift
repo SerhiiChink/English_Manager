@@ -43,7 +43,7 @@ final class AvatarView: UIView {
     }
     
     private func setupImageView() {
-        imageView.backgroundColor = .appAccent
+        imageView.backgroundColor = .Brand.accent
         imageView.layer.cornerRadius = 40
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
@@ -64,7 +64,7 @@ final class AvatarView: UIView {
     }
     
     private func setupBadgeView() {
-        badgeView.backgroundColor = .appAccent
+        badgeView.backgroundColor = .Brand.primary
         badgeView.layer.cornerRadius = 10
         badgeView.layer.borderWidth = 2
         badgeView.layer.borderColor = UIColor.appBackground.cgColor

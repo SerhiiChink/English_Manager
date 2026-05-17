@@ -16,6 +16,7 @@ final class StudentCell: UICollectionViewCell {
     private let avatarView = AvatarView()
     private let nameLabel = UILabel()
     private let emailLabel = UILabel()
+    private let menuButton = CellMenuButton()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -31,18 +32,14 @@ final class StudentCell: UICollectionViewCell {
     // MARK: - Setup
     private func setupUI() {
         contentView.addSubview(containerView)
-        containerView.backgroundColor = .appBackground
-        containerView.layer.cornerRadius = Layout.cornerRadius
-        containerView.layer.shadowColor = UIColor.black.cgColor
-        containerView.layer.shadowOpacity = 0.08
-        containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        containerView.layer.shadowRadius = 8
+        containerView.styleAsCard()
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(4)
         }
         setupAvatarView()
         setupNameLabel()
         setupEmailLabel()
+        setupMenuButton()
     }
     
     private func setupAvatarView() {
@@ -78,6 +75,15 @@ final class StudentCell: UICollectionViewCell {
         }
     }
     
+    private func setupMenuButton() {
+        containerView.addSubview(menuButton)
+        menuButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(8)
+            $0.right.equalToSuperview().inset(4)
+            $0.width.height.equalTo(36)
+        }
+    }
+    
     // MARK: - Configure
     func configure(with student: User) {
         let displayName = student.teacherAlias ?? student.name
@@ -91,5 +97,9 @@ final class StudentCell: UICollectionViewCell {
         if let photoURL = student.photoURL {
             avatarView.loadImage(from: photoURL)
         }
+    }
+    
+    func setMenuActions(_ actions: [CellMenuAction]) {
+        menuButton.configure(actions: actions)
     }
 }

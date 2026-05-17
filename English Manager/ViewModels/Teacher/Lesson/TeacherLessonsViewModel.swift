@@ -13,10 +13,12 @@ protocol TeacherLessonsViewModelProtocol: AnyObject {
     var onLoading: ((Bool) -> Void)? { get set }
     var students: [User] { get }
     var schedules: [Schedule] { get }
+    var occurrences: [LessonOccurrence] { get }
     var filteredLessons: [Lesson] { get }
     var allSourceLink: [SourceLink] { get }
     func fetchLessons()
-    func addLesson(_ lesson: Lesson)
+    func addLesson(_ lesson: Lesson, occurrence: LessonOccurrence?)
+    func nextOccurrence(for schesule: Schedule) -> LessonOccurrence?
     func deleteLesson(lesson: Lesson)
     func saveSchedule(_ schedule: Schedule)
     func deleteSchedule(_ schedule: Schedule)
@@ -26,6 +28,7 @@ protocol TeacherLessonsViewModelProtocol: AnyObject {
     func checkDuplicateLink(_ url: String) -> Lesson?
     var currentTeacherId: String? { get }
     func updateLesson(_ lesson: Lesson)
+    func updateAutoDebit(for student: User, isEnabled: Bool)
 }
 
 final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
@@ -38,6 +41,7 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
     private var allLessons: [Lesson] = []
     private(set) var students: [User] = []
     private(set) var schedules: [Schedule] = []
+    private(set) var occurrences: [LessonOccurrence] = []
     private var selectedDate: Date?
     private var selectedStudentId: String?
     private var isFetching = false
@@ -68,14 +72,17 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
     private let authService: AuthServiceProtocol
+    private let occurrenceService: OccurrenceFirestoreServiceProtocol
     
     // MARK: - Init
     init(
         firestoreService: FirestoreServiceProtocol = FirestoreService(),
-        authService: AuthServiceProtocol = AuthService()
+        authService: AuthServiceProtocol = AuthService(),
+        occurrenceService: OccurrenceFirestoreServiceProtocol = OccurrenceFirestoreService()
     ) {
         self.firestoreService = firestoreService
         self.authService = authService
+        self.occurrenceService = occurrenceService
     }
     
     // MARK: - Fetch
@@ -97,10 +104,26 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
                      fetchedSchedules) = try await (lessons,
                                                     students,
                                                     schedules)
+                let fetchedOccurrences = try await withThrowingTaskGroup(
+                    of: [LessonOccurrence].self
+                ) { group in
+                    fetchedStudents.forEach { student in
+                        group.addTask { [self] in
+                            (try? await occurrenceService.fetchOccurrences(
+                                studentId: student.id,
+                                teacherId: teacherId
+                            )) ?? []
+                        }
+                    }
+                    var all: [LessonOccurrence] = []
+                    for try await result in group { all += result }
+                    return all
+                }
                 await MainActor.run { [weak self] in
                     self?.allLessons = fetchedLessons
                     self?.students = fetchedStudents
                     self?.schedules = fetchedSchedules
+                    self?.occurrences = fetchedOccurrences
                     self?.isFetching = false
                     self?.onLoading?(false)
                     self?.onUpdate?()
@@ -116,11 +139,18 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
     }
     
     // MARK: - Add Lessons
-    func addLesson(_ lesson: Lesson) {
+    func addLesson(_ lesson: Lesson, occurrence: LessonOccurrence?) {
         onLoading?(true)
         Task {
             do {
                 let savedLesson = try await firestoreService.saveLesson(lesson)
+                if let occurrenceId = occurrence?.id,
+                   let lessonId = savedLesson.id {
+                    try? await occurrenceService
+                        .linkLesson(occurrenceId: occurrenceId,
+                                    lessonId: lessonId)
+                }
+
                 await MainActor.run { [weak self] in
                     self?.allLessons.insert(savedLesson, at: 0)
                     self?.isFetching = false
@@ -160,6 +190,31 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
         }
     }
     
+    func updateAutoDebit(for student: User, isEnabled: Bool) {
+        Task {
+            do {
+                try await firestoreService
+                    .updateAutoDebit(studentId: student.id,
+                                     isEnabled: isEnabled)
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
+                    if let index = students.firstIndex(
+                        where: { $0.id == student.id }
+                    ) {
+                        var updated = students[index]
+                        updated.isAutoDebitEnabled = isEnabled
+                        students[index] = updated
+                    }
+                    onUpdate?()
+                }
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.onError?(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
     // MARK: - Delete Lessons
     func deleteLesson(lesson: Lesson) {
         guard let id = lesson.id else { return }
@@ -184,6 +239,14 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
     // MARK: - Schedule Helpers
     func schedules(for studentId: String) -> [Schedule] {
         schedules.filter { $0.studentId == studentId }
+    }
+    
+    func nextOccurrence(for schedule: Schedule) -> LessonOccurrence? {
+        guard let scheduleId = schedule.id else { return nil }
+        return occurrences
+            .filter { $0.scheduleId == scheduleId && $0.status == .scheduled }
+            .sorted { $0.scheduledAt < $1.scheduledAt }
+            .first
     }
     
     // MARK: - Save Schedule

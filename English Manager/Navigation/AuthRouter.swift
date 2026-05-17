@@ -9,22 +9,28 @@ import UIKit
 
 protocol AuthRouterProtocol: AnyObject {
     func showLogin()
+    func showSplash()
     func showRole()
     func showMainScreen(role: UserRole)
+    func showRoleConfirmation(role: UserRole)
+    func showAnimatedSplash(role: UserRole)
 }
 
 final class AuthRouter: AuthRouterProtocol {
     // MARK: - Properties
     private let navigationController: UINavigationController
     private let authService: AuthServiceProtocol
+    private let firestoreService: FirestoreServiceProtocol
     
     // MARK: - Init
     init(
         navigationController: UINavigationController,
-        authService: AuthServiceProtocol = AuthService()
+        authService: AuthServiceProtocol = AuthService(),
+        firestoreService: FirestoreServiceProtocol = FirestoreService()
     ) {
         self.navigationController = navigationController
         self.authService = authService
+        self.firestoreService = firestoreService
     }
     
     func start() {
@@ -35,6 +41,13 @@ final class AuthRouter: AuthRouterProtocol {
     func showLogin() {
         let vc = LoginViewController(router: self)
         navigationController.setViewControllers([vc], animated: true)
+    }
+    
+    func showSplash() {
+        let viewModel = SplashViewModel(authService: authService,
+                                        firestoreService: firestoreService)
+        let vc = SplashViewController(router: self, viewModel: viewModel)
+        navigationController.setViewControllers([vc], animated: false)
     }
 
     func showRole() {
@@ -53,10 +66,17 @@ final class AuthRouter: AuthRouterProtocol {
         }
     }
     
-    // MARK: - Helper
-    private func showSplash() {
-        let vc = SplashViewController(router: self,
-                                      authService: authService)
-        navigationController.setViewControllers([vc], animated: false)
+    func showRoleConfirmation(role: UserRole) {
+        let viewModel = RoleConfirmViewModel(role: role)
+        let vc = RoleConfirmViewController(router: self,
+                                           viewModel: viewModel)
+        navigationController.pushViewController(vc, animated: true)
+    }
+    
+    func showAnimatedSplash(role: UserRole) {
+        let viewModel = AnimatedSplashViewModel(role: role)
+        let vc = AnimatedSplashViewController(router: self,
+                                      viewModel: viewModel)
+        navigationController.setViewControllers([vc], animated: true)
     }
 }

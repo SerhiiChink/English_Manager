@@ -18,7 +18,6 @@ final class StudentsViewController: UIViewController {
                     forCellWithReuseIdentifier: StudentCell.reuseId)
         return cv
     }()
-//    private let activityIndicator =  UIActivityIndicatorView(style: .medium)
     private let emptyLabel = UILabel()
     
     // MARK: - Properties
@@ -58,7 +57,6 @@ final class StudentsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .appBackground
         setupCollectionView()
-//        setupActivityIndicator()
         setupEmptyLabel()
     }
     
@@ -71,16 +69,8 @@ final class StudentsViewController: UIViewController {
         }
     }
     
-//    private func setupActivityIndicator() {
-//        activityIndicator.hidesWhenStopped = true
-//        view.addSubview(activityIndicator)
-//        activityIndicator.snp.makeConstraints {
-//            $0.center.equalToSuperview()
-//        }
-//    }
-    
     private func setupEmptyLabel() {
-        emptyLabel.text = "No students yet"
+        emptyLabel.text = "no_students_yet".localized
         emptyLabel.textColor = .appTextSecondary
         emptyLabel.font = .systemFont(ofSize: 16)
         emptyLabel.textAlignment = .center
@@ -92,7 +82,7 @@ final class StudentsViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        title = "Students"
+        title = "students".localized
         navigationController?.isNavigationBarHidden = false
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
@@ -110,11 +100,6 @@ final class StudentsViewController: UIViewController {
             self?.collectionView.endRefreshing()
             self?.showAlert(title: "Error", message: message)
         }
-//        viewModel.onLoading = { [weak self] isLoading in
-//            isLoading
-//            ? self?.activityIndicator.startAnimating()
-//            : self?.activityIndicator.stopAnimating()
-//        }
     }
     
     // MARK: - Actions
@@ -128,7 +113,6 @@ final class StudentsViewController: UIViewController {
     
     // MARK: - Private
     private func reloadData() {
-//        activityIndicator.stopAnimating()
         let isEmpty = viewModel.students.isEmpty
         emptyLabel.isHidden = !isEmpty
         collectionView.isHidden = isEmpty
@@ -152,7 +136,13 @@ extension StudentsViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: StudentCell.reuseId,
             for: indexPath) as! StudentCell
-        cell.configure(with: viewModel.students[indexPath.item])
+        let student = viewModel.students[indexPath.item]
+        cell.configure(with: student)
+        cell.setMenuActions([
+            .remove { [weak self] in
+                self?.viewModel.removeStudent(student)
+            }
+        ])
         return cell
     }
 }
@@ -160,20 +150,8 @@ extension StudentsViewController: UICollectionViewDataSource {
     // MARK: - UICollectionViewDelegate
 extension StudentsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
-                        contextMenuConfigurationForItemAt indexPath: IndexPath,
-                        point: CGPoint) -> UIContextMenuConfiguration? {
-        let student = viewModel.students[indexPath.item]
-        return UIContextMenuConfiguration(
-            identifier: nil,
-            previewProvider: nil) { _ in
-                let delete = UIAction(
-                    title: "Delete",
-                    image: UIImage(systemName: "trash"),
-                    attributes: .destructive) { [weak self] _ in
-                        self?.viewModel.removeStudent(student)
-                }
-                return UIMenu(children: [delete])
-        }
+                        didSelectItemAt indexPath: IndexPath) {
+        
     }
 }
 
@@ -181,24 +159,24 @@ extension StudentsViewController: UICollectionViewDelegate {
 extension StudentsViewController {
     private func showAddStudentAlert() {
         let alert = UIAlertController(
-            title: "Add Student",
+            title: "add_student".localized,
             message: nil,
             preferredStyle: .alert
         )
         alert.addTextField {
-            $0.placeholder = "Email"
+            $0.placeholder = "email".localized
             $0.keyboardType = .emailAddress
             $0.autocapitalizationType = .none
         }
         alert .addTextField {
-            $0.placeholder = "Name(optional)"
+            $0.placeholder = "name(optional)".localized
         }
         alert.addAction(UIAlertAction(
-            title: "Cancel",
+            title: "cancel".localized,
             style: .cancel)
         )
         alert.addAction(UIAlertAction(
-            title: "Add",
+            title: "add".localized,
             style: .default) { [weak self] _ in
                 guard let email = alert.textFields?[0].text,
                       !email.isEmpty else { return }

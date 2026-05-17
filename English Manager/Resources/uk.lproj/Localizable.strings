@@ -1,0 +1,156 @@
+//
+//  Localizable.strings
+//  English Manager
+//
+//  Created by Sergej Klepikov on 11.04.2026.
+//
+
+// MARK: - Auth & Roles
+"enter" = "Вхід";
+"login" = "Логін";
+"sign_out" = "Вийти";
+"sign_up" = "Реєстрація";
+"email" = "Електронна пошта";
+"password" = "Пароль";
+"confirm_password" = "Підтвердити пароль";
+"forgot_password" = "Забули пароль?";
+"or" = "або";
+"password_are_not_the_same" = "Паролі не збігаються";
+"choose_your_role" = "Виберіть свою роль";
+"teacher" = "Вчитель";
+"student" = "Студент";
+"english_manager" = "English Manager";
+"teacher_role_description" = "Керуйте студентами, розкладом, домашніми завданнями та оплатами.";
+"student_role_description" = "Відстежуйте уроки, домашні завдання, оплати та свій прогрес у навчанні.";
+"confirm_role_title" = "Підтвердити роль";
+"confirm_role_yes" = "Так, продовжити";
+"confirm_role_change" = "Змінити роль";
+"back_to_login" = "Назад до входу";
+"account_exists_login" = "Акаунт вже існує. Увійдіть у систему.";
+"get_started" = "Розпочати";
+"sign_up_with_apple" = "Зареєструватися через Apple";
+"sign_up_with_google" = "Зареєструватися через Google";
+
+// MARK: - Navigation & Tabs
+"profile" = "Профіль";
+"students" = "Студенти";
+"lessons_capitalized" = "Уроки";
+"homework" = "Завдання";
+"payment" = "Оплата";
+"lessons" = "уроки";
+"learning_system" = "LEARNING SYSTEM";
+
+// MARK: - Profile & Settings
+"first_name" = "Ім'я";
+"last_name" = "Прізвище";
+"edit_profile" = "Редагувати профіль";
+"payment_settings" = "Налаштування оплати";
+"lesson_price_(UAH)" = "Ціна уроку (UAH)";
+"min_lessons_to_pay" = "Мін. кількість уроків для оплати";
+"auto_debit" = "Автосписання";
+"auto_debit_description" = "Уроки будуть автоматично списуватись з вашого балансу після кожного заняття.";
+"change_password" = "Змінити пароль";
+"delete_account" = "Видалити акаунт";
+"delete_account_warning" = "Всі ваші дані будуть видалені безповоротно";
+"account" = "Акаунт";
+"session" = "Сесія";
+"no_name" = "Без імені";
+
+// MARK: - Student Management
+"no_students_yet" = "Ще немає студентів";
+"add_student" = "Додати студента";
+"no_students" = "Немає студентів";
+"add_students_first" = "Спочатку додайте студентів у вкладці Студенти";
+"select_student" = "Оберіть студента";
+"remove_student" = "Вилучити студента";
+"name(optional)" = "Ім'я (необов'язково)";
+
+// MARK: - Lesson Details
+"new_lesson" = "Новий урок";
+"edit_lesson" = "Редагувати урок";
+"lesson_detail" = "Деталі уроку";
+"topic" = "Тема";
+"description" = "Опис";
+"pages" = "Сторінки";
+"materials" = "Матеріали";
+"no_materials" = "Немає матеріалів";
+"source_url_optional" = "Посилання на джерело (необов’язково)";
+"source_URL" = "Посилання на джерело";
+
+// MARK: - Statuses
+"pending" = "В очікуванні";
+"confirmed" = "Підтверджено";
+"rejected" = "Відхилено";
+"scheduled" = "Запланований";
+"completed" = "Завершений";
+"cancelled" = "Скасований";
+
+// MARK: - Schedule
+"schedule" = "Розклад";
+"add_schedule" = "+ Додати розклад";
+"no_schedule_yet" = "Поки що немає розкладу";
+"select_schedule" = "Виберіть розклад";
+"delete_schedule" = "Видалити розклад";
+"auto_debit" = "Auto-Pay";
+"no_schedule_yet" = "Графік занять відсутній";
+
+// MARK: - Payments & Balance
+"date" = "Дата";
+"price" = "Ціна";
+"balance" = "Баланс";
+"not_paid" = "Не оплачено";
+"lesson_price" = "Ціна уроку";
+"minimum_lessons" = "Мінімум уроків";
+"payment_history" = "Історія оплат";
+"pay_for_lessons" = "Оплата за уроки";
+"payments" = "Оплати";
+"no_payments_yet" = "Ще немає оплат";
+"no_history_yet" = "Поки що немає історії";
+"amount" = "Сума";
+"total_received" = "Всього отримано:";
+"minimum_payment" = "Мінімальний платіж становить";
+"confirm_payment" = "Підтвердити оплату";
+"confirm_payment?" = "Підтвердити оплату?";
+"edit_payment" = "Змінити платіж";
+"reject_payment?" = "Відхилити платіж?";
+"number_of_lessons" = "Кількість уроків";
+"auto_pay_on" = "Auto-Pay On";
+"auto_pay_off" = "Auto-Pay Off";
+"auto_debit_description" = "Автоматично списує урок з балансу після кожного заняття за розкладом.";
+"last_payment" = "Остання оплата";
+"lessons_paid" = "Оплачено уроків";
+"review_payment" = "Перевірити оплату";
+"adjust_balance" = "Змінити баланс";
+"adjust_balance_warning" = "Це змінить баланс уроків студента.";
+"adjust" = "Змінити";
+"balance_adjusted" = "Баланс змінено";
+"history_cleared" = "Історію очищено";
+"verify_payment" = "Перевірити оплату";
+"low_balance" = "Низький баланс";
+"paid" = "Оплачено";
+"balance_updated" = "Баланс оновлено";
+"total_paid" = "Всього cплачено";
+"auto_debit_suggestion" = "Увімкніть автосписання, щоб уроки списувалися автоматично після кожного заняття.";
+
+// MARK: - Actions & Alerts
+"add" = "Додати";
+"error" = "Помилка";
+"save" = "Зберегти";
+"edit" = "Редагувати";
+"send" = "Надіслати";
+"cancel" = "Скасувати";
+"confirm" = "Підтвердити";
+"reject" = "Відхилити";
+"reject" = "Відхилити";
+"delete" = "Видалити";
+"clear" = "Очистити";
+"skip" = "Пропустити";
+"this_action_cannot_be_undone" = "Цю дію неможливо скасувати";
+"link_already_used" = "Посилання вже використано";
+"duplicate_source_warning" = "Це джерело вже використовувалось на уроці з %1$@ (%2$@). Все одно додати?";
+"add_anyway" = "Все одно додати";
+"payment_not_configured_error" = "Вчитель ще не налаштував платежі";
+"invalid_amount" = "Недійсна сума";
+"clear_history" = "Очистити історію";
+"clear_history_message" = "Ви впевнені, що хочете очистити історію оплат?";
+"you_added_to_lessons" = "Вас додано до занять";

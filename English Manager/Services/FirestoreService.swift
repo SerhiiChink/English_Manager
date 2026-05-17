@@ -16,6 +16,7 @@ protocol FirestoreServiceProtocol {
     func fetchStudentLessons(studentId: String) async throws -> [Lesson]
     func deleteLesson(id: String) async throws
     func adjustLessonsBalance(studentId: String, delta: Int) async throws
+    func setLessonsBalance(studentId: String, balance: Int) async throws
     func fetchStudents(teacherId: String) async throws -> [User]
     func saveHomework(_ homework: Homework) async throws
     func fetchHomeworks(teacherId: String) async throws -> [Homework]
@@ -23,7 +24,8 @@ protocol FirestoreServiceProtocol {
     func updateHomework(_ homework: Homework) async throws
     func saveSchedule(_ schedule: Schedule) async throws -> Schedule
     func fetchSchedules(teacherId: String) async throws -> [Schedule]
-    func fetchStudentSchedule(studentId: String) async throws -> Schedule?
+    func fetchStudentSchedule(studentId: String) async throws -> [Schedule]
+    func updateAutoDebit(studentId: String, isEnabled: Bool) async throws
     func deleteSchedule(id: String) async throws
     func findUserByEmail(_ email: String) async throws -> User?
     func updateTeacher(studentId: String,
@@ -122,8 +124,14 @@ final class FirestoreService: FirestoreServiceProtocol {
         try await collection(Collections.users)
             .document(studentId)
             .updateData([
-                "lessonsBalance": FieldValue.increment(Int64(delta))
+                "lessonsBalance": FieldValue.increment(Int64(delta)),
             ])
+    }
+    
+    func setLessonsBalance(studentId: String, balance: Int) async throws {
+        try await collection(Collections.users)
+            .document(studentId)
+            .updateData(["lessonsBalance": balance])
     }
     
     // MARK: - Students
@@ -138,7 +146,13 @@ final class FirestoreService: FirestoreServiceProtocol {
     func removeStudent(studentId: String) async throws {
         try await collection(Collections.users)
             .document(studentId)
-            .updateData(["teacherId": FieldValue.delete()])
+            .updateData([
+                "teacherId": FieldValue.delete(),
+                "teacherAlias": FieldValue.delete(),
+                "isAutoDebitEnabled": FieldValue.delete(),
+                "lessonsBalance": FieldValue.delete(),
+                "totalLessonsPaid": FieldValue.delete()
+            ])
     }
     
     // MARK: - Teacher
@@ -203,14 +217,18 @@ final class FirestoreService: FirestoreServiceProtocol {
         return try snapshot.decode(Schedule.self)
     }
     
-    func fetchStudentSchedule(studentId: String) async throws -> Schedule? {
+    func fetchStudentSchedule(studentId: String) async throws -> [Schedule] {
         let snapshot = try await collection(Collections.schedules)
             .whereField("studentId", isEqualTo: studentId)
             .whereField("isActive", isEqualTo: true)
             .getDocuments()
-        return try snapshot.documents.first.map {
-            try $0.data(as: Schedule.self)
-        }
+        return try snapshot.decode(Schedule.self)
+    }
+    
+    func updateAutoDebit(studentId: String, isEnabled: Bool) async throws {
+        try await collection(Collections.users)
+            .document(studentId)
+            .updateData(["isAutoDebitEnabled": isEnabled])
     }
     
     func deleteSchedule(id: String) async throws {

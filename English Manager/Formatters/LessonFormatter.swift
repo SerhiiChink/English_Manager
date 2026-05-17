@@ -10,6 +10,7 @@ import Foundation
 protocol LessonFormatterProtocol {
     func lessonDateString(for lesson: Lesson) -> String
     func detailDateString(for lesson: Lesson) -> String
+    func scheduledText(for lesson: Lesson) -> String
 }
 
 final class LessonFormatter: LessonFormatterProtocol {
@@ -31,5 +32,9 @@ final class LessonFormatter: LessonFormatterProtocol {
     
     func detailDateString(for lesson: Lesson) -> String {
         LessonFormatter.longFormatter.string(from: lesson.date)
+    }
+    
+    func scheduledText(for lesson: Lesson) -> String {
+        "\("scheduled".localized) · \(LessonFormatter.shortFormatter.string(from: lesson.date))"
     }
 }

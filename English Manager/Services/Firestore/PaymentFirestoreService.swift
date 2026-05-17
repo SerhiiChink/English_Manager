@@ -12,8 +12,12 @@ protocol PaymentFirestoreServiceProtocol {
     func savePayment(_ payment: PaymentRequest) async throws
     func fetchPayments(teacherId: String) async throws -> [PaymentRequest]
     func fetchStudentPayments(studentId: String) async throws -> [PaymentRequest]
+    func fetchPaymentsForStudent(studentId: String,
+                                 teacherId: String) async throws -> [PaymentRequest]
     func updatePayment(_ payment: PaymentRequest) async throws
     func confirmPaymant(_ paymant: PaymentRequest) async throws
+    func deletePayment(id: String) async throws
+    func hidePayments(ids: [String], forTeacher: Bool) async throws
     func saveSettings(_ settigns: TeacherSettings) async throws
     func fetchSettings(teacherId: String)  async throws -> TeacherSettings?
 }
@@ -52,8 +56,20 @@ final class PaymentFirestoreService: PaymentFirestoreServiceProtocol {
             .order(by: "createdAt", descending: true)
             .getDocuments()
         return try snapshot.decode(PaymentRequest.self)
+            .filter { $0.hiddenForStudent != true }
     }
     
+    func fetchPaymentsForStudent(studentId: String,
+                                 teacherId: String) async throws -> [PaymentRequest] {
+        let snapshot = try await collection(Collections.payments)
+            .whereField("studentId", isEqualTo: studentId)
+            .whereField("teacherId", isEqualTo: teacherId)
+            .order(by: "createdAt", descending: true)
+            .getDocuments()
+        return try snapshot.decode(PaymentRequest.self)
+            .filter { $0.hiddenForTeacher != true }
+    }
+ 
     func updatePayment(_ payment: PaymentRequest) async throws {
         guard let id = payment.id else { return }
         try collection(Collections.payments)
@@ -85,6 +101,22 @@ final class PaymentFirestoreService: PaymentFirestoreServiceProtocol {
         try await batch.commit()
     }
     
+    func deletePayment(id: String) async throws {
+        try await collection(Collections.payments)
+            .document(id).delete()
+    }
+    
+    func hidePayments(ids: [String], forTeacher: Bool) async throws {
+        let batch = db.batch()
+        let field = forTeacher ? "hiddenForTeacher" : "hiddenForStudent"
+        ids.forEach { id in
+            let reference = collection(Collections.payments)
+                .document(id)
+            batch.updateData([field: true], forDocument: reference)
+        }
+        try await batch.commit()
+    }
+    
     // MARK: - Settings
     func saveSettings(_ settigns: TeacherSettings) async throws {
         try collection(Collections.teacherSettings)
@@ -96,6 +128,7 @@ final class PaymentFirestoreService: PaymentFirestoreServiceProtocol {
         let doc = try await collection(Collections.teacherSettings)
             .document(teacherId)
             .getDocument()
-        return try doc.data(as: TeacherSettings.self)
+        guard doc.exists else { return nil }
+        return try? doc.data(as: TeacherSettings.self)
     }
 }

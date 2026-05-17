@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct Vocabulary: Codable {
-    var id: String?
+    @DocumentID var id: String?
     let lessonId: String
     let studentId: String
     let word: String

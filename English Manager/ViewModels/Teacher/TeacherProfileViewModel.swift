@@ -11,12 +11,14 @@ protocol TeacherProfileViewModelProtocol: AnyObject {
     var onUpdate: (() -> Void)? { get set }
     var onError: ((String) -> Void)? { get set }
     var onLoading: ((Bool) -> Void)? { get set }
+    var onAccountDeleted: (() -> Void)? { get set }
     var user: User? { get }
-    var studentsCount: Int { get }
-    var lessonsCount: Int { get }
+    var statItems: [StatItem] { get }
     func fetchProfile()
+    func refresh()
     func signOut()
     func changePassword(_ password: String)
+    func deleteAccount(email: String, password: String)
 }
 
 final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
@@ -24,11 +26,20 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
     var onUpdate: (() -> Void)?
     var onError: ((String) -> Void)?
     var onLoading: ((Bool) -> Void)?
+    var onAccountDeleted: (() -> Void)?
     
     // MARK: - Data
     private(set) var user: User?
-    private(set) var studentsCount: Int = 0
-    private(set) var lessonsCount: Int = 0
+    private var studentsCount: Int = 0
+    private var lessonsCount: Int = 0
+    var statItems: [StatItem] {
+        [
+            StatItem(title: "students".localized,
+                     value: "\(studentsCount)"),
+            StatItem(title: "lessons_capitalized".localized,
+                     value: "\(lessonsCount)"),
+        ]
+    }
     
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
@@ -46,6 +57,14 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
     
     // MARK: - Fetch
     func fetchProfile() {
+        performFetch(forceRefresh: false)
+    }
+
+    func refresh() {
+        performFetch(forceRefresh: true)
+    }
+    
+    private func performFetch(forceRefresh: Bool) {
         guard !isFetching else { return }
         guard let userId = authService.currentUserId else {
             onError?("User not found")
@@ -55,8 +74,11 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
         onLoading?(true)
         Task {
             do {
-                let fetchedUser = try await firestoreService
-                    .fetchUser(id: userId)
+                let fetchedUser = try await UserCache.shared.getUser(
+                    id: userId,
+                    service: firestoreService,
+                    forceRefresh: forceRefresh
+                )
                 async let students = firestoreService
                     .fetchStudents(teacherId: userId)
                 async let lessons = firestoreService
@@ -72,7 +94,6 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
                     self?.onUpdate?()
                 }
             } catch {
-                print("fetchProfile error: \(error)")
                 await MainActor.run { [weak self] in
                     self?.isFetching = false
                     self?.onLoading?(false)
@@ -102,6 +123,28 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
                 await MainActor.run { [weak self] in
                     self?.onLoading?(false)
                     self?.onUpdate?()
+                }
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.onLoading?(false)
+                    self?.onError?(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Delete Account
+    func deleteAccount(email: String, password: String) {
+        onLoading?(true)
+        Task {
+            do {
+                try await authService.deleteAccount(email: email,
+                                                    password: password)
+                UserDefaults.standard.removeObject(forKey: UDKeys.userRole)
+                UserDefaults.standard.removeObject(forKey: UDKeys.userId)
+                await MainActor.run { [weak self] in
+                    self?.onLoading?(false)
+                    self?.onAccountDeleted?()
                 }
             } catch {
                 await MainActor.run { [weak self] in

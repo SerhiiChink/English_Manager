@@ -37,19 +37,20 @@ final class StudentTabBarController: UITabBarController {
             makeHomeworkTab(),
             makePaymentsTab()
         ], animated: false)
+        selectedIndex = 1
     }
     
     private func setupAppearance() {
         tabBar.backgroundColor = .appBackground
-        tabBar.tintColor = .appAccent
-        tabBar.unselectedItemTintColor = .appTextSecondary
+        tabBar.tintColor = .Brand.primary
+        tabBar.unselectedItemTintColor = .Brand.secondary
     }
     
     // MARK: - Tabs
     private func makeProfileTab() -> UINavigationController {
         let nav = makeNav { StudentProfileViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
-            title: "Profile",
+            title: "profile".localized,
             image: UIImage(systemName: "person.circle"),
             selectedImage: UIImage(systemName: "person.circle.fill")
         )
@@ -59,7 +60,7 @@ final class StudentTabBarController: UITabBarController {
     private func makeStudentLessonsTabs() -> UINavigationController {
         let nav = makeNav { StudentLessonsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
-            title: "Lessons",
+            title: "lessons_capitalized".localized,
             image: UIImage(systemName: "calendar"),
             selectedImage: UIImage(systemName: "calendar.fill")
         )
@@ -69,7 +70,7 @@ final class StudentTabBarController: UITabBarController {
     private func makeHomeworkTab() -> UIViewController {
         let nav = makeNav { StudentHomeworkViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
-            title: "Homework",
+            title: "homework".localized,
             image: UIImage(systemName: "doc.text"),
             selectedImage: UIImage(systemName: "doc.text.fill")
         )
@@ -79,7 +80,7 @@ final class StudentTabBarController: UITabBarController {
     private func makePaymentsTab() -> UIViewController {
         let nav = makeNav { StudentPaymentsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
-            title: "Payment",
+            title: "payment".localized,
             image: UIImage(systemName: "creditcard"),
             selectedImage: UIImage(systemName: "creditcard.fill")
         )

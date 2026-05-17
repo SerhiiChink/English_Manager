@@ -42,7 +42,7 @@ final class TeacherProfileViewController: UIViewController {
         setupNavigationBar()
         setupCallbacks()
         bindViewModel()
-        contentView.setAdditionalView(statsCard)
+        contentView.build(statsView: statsCard)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,8 +52,7 @@ final class TeacherProfileViewController: UIViewController {
     
     // MARK: - SetupUI
     private func setupNavigationBar() {
-        navigationItem.title = "Profile"
-        navigationController?.isNavigationBarHidden = false
+        setupProfileNavigationBar()
     }
     
     // MARK: - Callbacks
@@ -74,7 +73,13 @@ final class TeacherProfileViewController: UIViewController {
             }
         }
         contentView.onRefresh = { [weak self] in
-            self?.viewModel.fetchProfile()
+            self?.viewModel.refresh()
+        }
+        contentView.onDeleteAccount = { [weak self] in
+            self?.showDeleteAccountAlert { email, password in
+                self?.viewModel.deleteAccount(email: email,
+                                              password: password)
+            }
         }
     }
     
@@ -86,12 +91,14 @@ final class TeacherProfileViewController: UIViewController {
             if let user = viewModel.user {
                 contentView.configure(user: user)
             }
-            statsCard.configure(students: viewModel.studentsCount,
-                                lessons: viewModel.lessonsCount)
+            statsCard.configure(items: viewModel.statItems)
         }
         viewModel.onError = { [weak self] message in
             self?.contentView.endRefreshing()
             self?.showAlert(title: "Error", message: message)
+        }
+        viewModel.onAccountDeleted = { [weak self] in
+            self?.router.showLogin()
         }
     }
 }

@@ -76,12 +76,7 @@ final class TeacherHomeworkDetailViewController: UIViewController {
     
     // MARK: - Homework Card
     private func setupHomeworkCard() {
-        homeworkCard.backgroundColor = .appSurface
-        homeworkCard.layer.cornerRadius = Layout.cornerRadius
-        homeworkCard.layer.shadowColor = UIColor.black.cgColor
-        homeworkCard.layer.shadowOpacity = 0.08
-        homeworkCard.layer.shadowOffset = CGSize(width: 0, height: 2)
-        homeworkCard.layer.shadowRadius = 8
+        homeworkCard.styleAsCard()
         contentView.addSubview(homeworkCard)
         homeworkCard.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
@@ -181,12 +176,7 @@ final class TeacherHomeworkDetailViewController: UIViewController {
     
     // MARK: - Review Card
     private func setupReviewCard() {
-        reviewCard.backgroundColor = .appSurface
-        reviewCard.layer.cornerRadius = Layout.cornerRadius
-        reviewCard.layer.shadowColor = UIColor.black.cgColor
-        reviewCard.layer.shadowOpacity = 0.08
-        reviewCard.layer.shadowOffset = CGSize(width: 0, height: 2)
-        reviewCard.layer.shadowRadius = 8
+        reviewCard.styleAsCard()
         contentView.addSubview(reviewCard)
         reviewCard.snp.makeConstraints {
             $0.top.equalTo(homeworkCard.snp.bottom).offset(16)

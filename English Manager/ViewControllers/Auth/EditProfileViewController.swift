@@ -14,6 +14,7 @@ final class EditProfileViewController: UIViewController {
     private let imagePicker = ImagePickerService()
     private let nameField = UITextField()
     private let surnameField = UITextField()
+    private let saveButton = UIButton(type: .system)
     private let activityIndicator = UIActivityIndicatorView()
     
     // MARK: - Properties
@@ -46,6 +47,7 @@ final class EditProfileViewController: UIViewController {
         setupNameField()
         setupSurNameField()
         setupActivityIndicator()
+        setupSaveButton()
     }
     
     private func setupAvatarView() {
@@ -63,12 +65,11 @@ final class EditProfileViewController: UIViewController {
             self?.avatarView.setImage(image)
             self?.viewModel.uploadAvatar(image)
         }
+        avatarView.showBadge(true)
     }
     
     private func setupNameField() {
-        nameField.placeholder = "First name"
-        nameField.borderStyle = .roundedRect
-        nameField.autocorrectionType = .no
+        styleTextField(nameField, placeholder: "first_name".localized)
         view.addSubview(nameField)
         nameField.snp.makeConstraints {
             $0.top.equalTo(avatarView.snp.bottom).offset(24)
@@ -78,12 +79,25 @@ final class EditProfileViewController: UIViewController {
     }
     
     private func setupSurNameField() {
-        surnameField.placeholder = "Last name"
-        surnameField.borderStyle = .roundedRect
-        surnameField.autocorrectionType = .no
+        styleTextField(surnameField, placeholder: "last_name".localized)
         view.addSubview(surnameField)
         surnameField.snp.makeConstraints {
             $0.top.equalTo(nameField.snp.bottom).offset(16)
+            $0.left.right.equalToSuperview().inset(Layout.padding)
+            $0.height.equalTo(Layout.buttonHeight)
+        }
+    }
+    
+    private func setupSaveButton() {
+        saveButton.setTitle("save".localized, for: .normal)
+        saveButton.setTitleColor(.white, for: .normal)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+        saveButton.backgroundColor = .Brand.primary
+        saveButton.layer.cornerRadius = Layout.cornerRadius
+        saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
+        view.addSubview(saveButton)
+        saveButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
             $0.left.right.equalToSuperview().inset(Layout.padding)
             $0.height.equalTo(Layout.buttonHeight)
         }
@@ -98,13 +112,7 @@ final class EditProfileViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        title = "Edit profile"
-        navigationItem.rightBarButtonItem = .init(
-            title: "Save",
-            style: .done,
-            target: self,
-            action: #selector(saveTapped)
-        )
+        title = "edit_profile".localized
     }
     
     // MARK: - Binding
@@ -132,6 +140,22 @@ final class EditProfileViewController: UIViewController {
         if let photoURL = viewModel.user.photoURL {
             avatarView.loadImage(from: photoURL)
         }
+    }
+    
+    private func styleTextField(_ field: UITextField,
+                                placeholder: String) {
+        field.placeholder = placeholder
+        field.borderStyle = .none
+        field.backgroundColor = .Brand.background
+        field.layer.cornerRadius = Layout.cornerRadius
+        field.layer.borderWidth = 1
+        field.layer.borderColor = UIColor.Brand.surface.cgColor
+        field.textColor = .appText
+        field.font = .systemFont(ofSize: 16)
+        field.autocorrectionType = .no
+        let padding = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
+        field.leftView = padding
+        field.leftViewMode = .always
     }
     
     // MARK: - Actions

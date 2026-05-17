@@ -11,6 +11,7 @@ import SnapKit
 final class StudentProfileViewController: UIViewController {
     // MARK: - UI
     private let contentView = ProfileView()
+    private let statsCard = StatsCardView()
     
     // MARK: - Properties
     private let router: StudentRouterProtocol
@@ -41,6 +42,7 @@ final class StudentProfileViewController: UIViewController {
         setupNavigationBar()
         setupCallbacks()
         bindViewModel()
+        contentView.build(statsView: statsCard)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,8 +52,7 @@ final class StudentProfileViewController: UIViewController {
     
     // MARK: - Setup
     private func setupNavigationBar() {
-        title = "Profile"
-        navigationController?.isNavigationBarHidden = false
+        setupProfileNavigationBar()
     }
     
     // MARK: - Callbacks
@@ -72,7 +73,13 @@ final class StudentProfileViewController: UIViewController {
             }
         }
         contentView.onRefresh = { [weak self] in
-            self?.viewModel.fetchProfile()
+            self?.viewModel.refresh()
+        }
+        contentView.onDeleteAccount = { [weak self] in
+            self?.showDeleteAccountAlert { email, password in
+                self?.viewModel.deleteAccount(email: email,
+                                              password: password)
+            }
         }
     }
     
@@ -84,10 +91,14 @@ final class StudentProfileViewController: UIViewController {
             if let user = viewModel.user {
                 contentView.configure(user: user)
             }
+            statsCard.configure(items: viewModel.statItems)
         }
         viewModel.onError = { [weak self] message in
             self?.contentView.endRefreshing()
             self?.showAlert(title: "Error", message: message)
+        }
+        viewModel.onAccountDeleted = { [weak self] in
+            self?.router.showLogin()
         }
     }
 }

@@ -32,4 +32,5 @@ enum Layout {
 enum UDKeys {
     static let userRole = "userRole"
     static let userId = "userId"
+    static let studentBalance = "studentBalance"
 }

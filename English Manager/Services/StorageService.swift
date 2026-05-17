@@ -28,8 +28,10 @@ final class StorageService: StorageServiceProtocol {
                 userInfo: [NSLocalizedDescriptionKey: "Failed to convert image"]
             )
         }
-        let ref = storage.child("avatars").child("\(userId).jpg")
-        try? await ref.delete()
+        let ref = storage
+            .child("avatars")
+            .child(userId)
+            .child("avatar.jpg")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
         _ = try await ref.putDataAsync(imageData, metadata: metadata)

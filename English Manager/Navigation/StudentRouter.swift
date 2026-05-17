@@ -9,7 +9,8 @@ import UIKit
 
 protocol StudentRouterProtocol: AnyObject {
     func showEditProfile(user: User)
-    func showLessonDetail(_ lesson: Lesson)
+    func showLessonDetail(_ lesson: Lesson,
+                          teacherName: String?)
 //    func showHomeworkDetail(_ homework: Homework)
     func showLogin()
 }
@@ -34,8 +35,10 @@ final class StudentRouter: StudentRouterProtocol {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func showLessonDetail(_ lesson: Lesson) {
-        let vc = StudentLessonDetailViewController(lesson: lesson)
+    func showLessonDetail(_ lesson: Lesson,
+                          teacherName: String?) {
+        let vc = StudentLessonDetailViewController(lesson: lesson,
+                                                   teacherName: teacherName)
         navigationController?.pushViewController(vc, animated: true)
     }
     

@@ -38,19 +38,20 @@ final class TeacherTabBarController: UITabBarController {
             makeHomeworkTab(),
             makePaymentsTab()
         ], animated: false)
+        selectedIndex = 1
     }
     
     private func setupAppearance() {
         tabBar.backgroundColor = .appBackground
-        tabBar.tintColor = .appAccent
-        tabBar.unselectedItemTintColor = .appTextSecondary
+        tabBar.tintColor = .Brand.primary
+        tabBar.unselectedItemTintColor = .Brand.secondary
     }
     
     // MARK: - Tabs
     private func makeProfileTab() -> UIViewController {
         let nav = makeNav { TeacherProfileViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
-            title: "Profile",
+            title: "profile".localized,
             image: UIImage(systemName: "person.circle"),
             selectedImage: UIImage(systemName: "person.circle.fill")
         )
@@ -60,7 +61,7 @@ final class TeacherTabBarController: UITabBarController {
     private func makeLessonsTab() -> UIViewController {
         let nav = makeNav { TeacherLessonsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
-            title: "Lessons",
+            title: "lessons_capitalized".localized,
             image: UIImage(systemName: "calendar"),
             selectedImage: UIImage(systemName: "calendar.fill")
         )
@@ -70,7 +71,7 @@ final class TeacherTabBarController: UITabBarController {
     private func makeStudentsTab() -> UIViewController {
         let nav = makeNav { StudentsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
-            title: "Students",
+            title: "students".localized,
             image: UIImage(systemName: "person.2"),
             selectedImage: UIImage(systemName: "person.2.fill")
         )
@@ -80,7 +81,7 @@ final class TeacherTabBarController: UITabBarController {
     private func makeHomeworkTab() -> UIViewController {
         let nav = makeNav { TeacherHomeworkViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
-            title: "Homework",
+            title: "homework".localized,
             image: UIImage(systemName: "doc.text"),
             selectedImage: UIImage(systemName: "doc.text.fill")
         )
@@ -90,7 +91,7 @@ final class TeacherTabBarController: UITabBarController {
     private func makePaymentsTab() -> UIViewController {
         let nav = makeNav { TeacherPaymentsViewController(router: $0) }
         nav.tabBarItem = UITabBarItem(
-            title: "Payment",
+            title: "payment".localized,
             image: UIImage(systemName: "creditcard"),
             selectedImage: UIImage(systemName: "creditcard.fill")
         )

@@ -86,7 +86,7 @@ final class StudentHomeworkViewController: UIViewController {
     // MARK: - Private
     private func refreshContoller() {
         contentView.onRefresh = { [weak self] in
-            self?.viewModel.fetchHomeworks()
+            self?.viewModel.refresh()
         }
     }
 }
@@ -103,54 +103,32 @@ extension StudentHomeworkViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: HomeworkCell.reuseId,
             for: indexPath) as! HomeworkCell
-        cell.configure(with: viewModel.homeworks[indexPath.item])
+        let homework = viewModel.homeworks[indexPath.item]
+        cell.configure(with: homework)
+        cell.setMenuActions([
+            .edit { [weak self] in
+                self?.showEditHomeworkAlert(
+                    homework: homework,
+                    onSave: { title, description, link in
+                        self?.viewModel.updateHomework(
+                            homework,
+                            title: title,
+                            description: description,
+                            link: link)
+                })
+            },
+            .delete { [weak self] in
+                self?.viewModel.deleteHomework(homework)
+            }
+        ])
         return cell
     }
 }
 
 // MARK: - UICollectionViewDelegate
 extension StudentHomeworkViewController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView,
-//                        didSelectItemAt indexPath: IndexPath) {
-//        let homework = viewModel.homeworks[indexPath.item]
-//        router.showHomeworkDetail(homework)
-//    }
-    
     func collectionView(_ collectionView: UICollectionView,
-                        contextMenuConfigurationForItemAt indexPath: IndexPath,
-                        point: CGPoint) -> UIContextMenuConfiguration? {
-        let homework = viewModel.homeworks[indexPath.item]
-//        guard homework.status == .pending else { return nil }
-        return UIContextMenuConfiguration(
-            identifier: nil,
-            previewProvider: nil) { _ in
-                var actions: [UIMenuElement] = []
-                if homework.status == .pending {
-                    let edit = UIAction(
-                        title: "Edit",
-                        image: UIImage(systemName: "pencil")
-                    ) { [weak self] _ in
-                        self?.showEditHomeworkAlert(
-                            homework: homework) { title, description, link in
-                                self?.viewModel.updateHomework(
-                                    homework,
-                                    title: title,
-                                    description: description,
-                                    link: link
-                                )
-                            }
-                    }
-                    actions.append(edit)
-                }
-                let delete = UIAction(
-                    title: "Delete",
-                    image: UIImage(systemName: "trash"),
-                    attributes: .destructive) { [weak self] _ in
-                        self?.viewModel.deleteHomework(homework)
-                    }
-                actions.append(delete)
-                return UIMenu(children: actions)
-            }
+                        didSelectItemAt indexPath: IndexPath) {
     }
 }
 

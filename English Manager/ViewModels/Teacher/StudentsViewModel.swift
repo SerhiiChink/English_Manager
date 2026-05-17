@@ -113,6 +113,7 @@ final class StudentsViewModel: StudentsViewModelProtocol {
         Task {
             do {
                 try await firestoreService.removeStudent(studentId: student.id)
+                UserCache.shared.invalidate(userId: student.id)
                 await MainActor.run { [weak self] in
                     self?.students.removeAll { $0.id == student.id }
                     self?.onUpdate?()

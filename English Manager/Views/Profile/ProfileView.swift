@@ -19,15 +19,14 @@ final class ProfileView: UIView {
     private let editButton = UIButton(type: .system)
     private let changePasswordButton = UIButton(type: .system)
     private let signOutButton = UIButton(type: .system)
+    private let deleteAccountButton = UIButton(type: .system)
     
     // MARK: - Callbacks
     var onEdit: (() -> Void)?
     var onChangePassword: (() -> Void)?
     var onSignOut: (() -> Void)?
     var onRefresh: (() -> Void)?
-    
-    // MARK: - Additional view
-    private var additionalView: UIView?
+    var onDeleteAccount: (() -> Void)?
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -46,16 +45,13 @@ final class ProfileView: UIView {
         setupScrollView()
         setupProfileCard()
         setupButtons()
-        setupButtonsStack(below: profileCard)
     }
     
     private func setupScrollView() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         scrollView.addRefreshControl(target: self, action: #selector(refreshTapped))
-        scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        scrollView.snp.makeConstraints { $0.edges.equalToSuperview() }
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
@@ -63,35 +59,55 @@ final class ProfileView: UIView {
     }
     
     private func setupProfileCard() {
-        profileCard.backgroundColor = .appSurface
-        profileCard.layer.cornerRadius = Layout.cornerRadius
-        profileCard.layer.shadowColor = UIColor.black.cgColor
-        profileCard.layer.shadowOpacity = 0.08
-        profileCard.layer.shadowOffset = CGSize(width: 0, height: 2)
-        profileCard.layer.shadowRadius = 8
+        profileCard.styleAsCard(.bordered)
         contentView.addSubview(profileCard)
         profileCard.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
             $0.left.right.equalToSuperview().inset(Layout.padding)
         }
-        setupAvatarImageView()
-        setupFullNameLabel()
-        setupEmailLabel()
+        avatarImageView.showBadge(false)
+        profileCard.addSubview(avatarImageView)
+        avatarImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(28)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(80)
+        }
+        fullNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        fullNameLabel.textColor = .appText
+        fullNameLabel.textAlignment = .center
+        profileCard.addSubview(fullNameLabel)
+        fullNameLabel.snp.makeConstraints {
+            $0.top.equalTo(avatarImageView.snp.bottom).offset(12)
+            $0.left.right.equalToSuperview().inset(16)
+        }
+        emailLabel.font = .systemFont(ofSize: 13)
+        emailLabel.textColor = .appTextSecondary
+        emailLabel.textAlignment = .center
+        profileCard.addSubview(emailLabel)
+        emailLabel.snp.makeConstraints {
+            $0.top.equalTo(fullNameLabel.snp.bottom).offset(4)
+            $0.left.right.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(24)
+        }
     }
     
     private func setupButtons() {
         setupActionButton(editButton,
-                          title: "Edit Profile",
+                          title: "edit_profile".localized,
                           icon: "pencil",
-                          color: .appAccent)
+                          isDestructive: false)
         setupActionButton(changePasswordButton,
-                          title: "Change Password",
+                          title: "change_password".localized,
                           icon: "lock",
-                          color: .appAccent)
+                          isDestructive: false)
         setupActionButton(signOutButton,
-                          title: "Sign Out",
+                          title: "sign_out".localized,
                           icon: "rectangle.portrait.and.arrow.right",
-                          color: .appRed)
+                          isDestructive: true)
+        setupActionButton(deleteAccountButton,
+                          title: "delete_account".localized,
+                          icon: "trash",
+                          isDestructive: true)
         editButton.addTarget(self,
                              action: #selector(editTapped),
                              for: .touchUpInside)
@@ -101,14 +117,84 @@ final class ProfileView: UIView {
         signOutButton.addTarget(self,
                                 action: #selector(signOutTapped),
                                 for: .touchUpInside)
+        deleteAccountButton.addTarget(self,
+                                      action: #selector(deleteAccountTapped),
+                                      for: .touchUpInside)
     }
     
-    private func setupButtonsStack(below anchor: UIView) {
-        let stack = UIStackView(arrangedSubviews: [
-            editButton,
-            changePasswordButton,
-            signOutButton
-        ])
+    private func setupActionButton(_ button: UIButton,
+                                   title: String,
+                                   icon: String,
+                                   isDestructive: Bool) {
+        let tint: UIColor = isDestructive ? .appRed : .appAccent
+        var cfg = UIButton.Configuration.plain()
+        cfg.image = UIImage(systemName: icon)
+        cfg.imagePadding = 12
+        cfg.baseForegroundColor = tint
+        cfg.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+        var attr = AttributeContainer()
+        attr.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        cfg.attributedTitle = AttributedString(title, attributes: attr)
+        button.configuration = cfg
+        button.contentHorizontalAlignment = .leading
+        button.snp.makeConstraints { $0.height.equalTo(Layout.buttonHeight) }
+    }
+    
+    private func groupCard(label text: String,
+                           buttons: [UIButton]) -> UIView {
+        let wrapper = UIView()
+        let sectionLabel = UILabel()
+        sectionLabel.text = text.uppercased()
+        sectionLabel.font = .systemFont(ofSize: 12, weight: .semibold)
+        sectionLabel.textColor = .appTextSecondary
+        wrapper.addSubview(sectionLabel)
+        sectionLabel.snp.makeConstraints {
+            $0.top.left.right.equalToSuperview()
+        }
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 0
+        buttons.enumerated().forEach { index, btn in
+            if index > 0 {
+                let sep = DividerView(color: .Brand.surface)
+                stack.addArrangedSubview(sep)
+                sep.snp.makeConstraints {
+                    $0.left.right.equalToSuperview().inset(16)
+                }
+            }
+            stack.addArrangedSubview(btn)
+        }
+        let card = UIView()
+        card.styleAsCard(.bordered)
+        card.clipsToBounds = true
+        card.addSubview(stack)
+        stack.snp.makeConstraints { $0.edges.equalToSuperview() }
+        wrapper.addSubview(card)
+        card.snp.makeConstraints {
+            $0.top.equalTo(sectionLabel.snp.bottom).offset(6)
+            $0.left.right.bottom.equalToSuperview()
+        }
+        return wrapper
+    }
+    
+    // MARK: - Public
+    func build(statsView: UIView) {
+        contentView.addSubview(statsView)
+        statsView.snp.makeConstraints {
+            $0.top.equalTo(profileCard.snp.bottom).offset(12)
+            $0.left.right.equalToSuperview().inset(Layout.padding)
+        }
+        buildBottomStack(below: statsView)
+    }
+    
+    private func buildBottomStack(below anchor: UIView) {
+        let accountCard = groupCard(label: "account".localized,
+                                    buttons: [editButton,
+                                              changePasswordButton])
+        let sessionCard = groupCard(label: "session".localized,
+                                    buttons: [signOutButton,
+                                              deleteAccountButton])
+        let stack = UIStackView(arrangedSubviews: [accountCard, sessionCard])
         stack.axis = .vertical
         stack.spacing = 12
         contentView.addSubview(stack)
@@ -119,66 +205,6 @@ final class ProfileView: UIView {
         }
     }
     
-    // MARK: - Setup Action Button
-    private func setupActionButton(_ button: UIButton,
-                                   title: String,
-                                   icon: String,
-                                   color: UIColor) {
-        button.backgroundColor = .appSurface
-        button.layer.cornerRadius = Layout.cornerRadius
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowOpacity = 0.05
-        button.layer.shadowOffset = CGSize(width: 0, height: 2)
-        button.layer.shadowRadius = 4
-        var configure = UIButton.Configuration.plain()
-        configure.title = title
-        configure.image = UIImage(systemName: icon)
-        configure.baseForegroundColor = color
-        configure.imagePadding = 8
-        configure.contentInsets = NSDirectionalEdgeInsets(
-            top: 0, leading: 16, bottom: 0, trailing: 0
-        )
-        button.configuration = configure
-        button.snp.makeConstraints {
-            $0.height.equalTo(Layout.buttonHeight)
-        }
-    }
-    
-    // MARK: - Setup Profile Card
-    private func setupAvatarImageView() {
-        profileCard.addSubview(avatarImageView)
-        avatarImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(24)
-            $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(80)
-        }
-        avatarImageView.showBadge(false)
-    }
-    
-    private func setupFullNameLabel() {
-        fullNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
-        fullNameLabel.textColor = .appText
-        fullNameLabel.textAlignment = .center
-        profileCard.addSubview(fullNameLabel)
-        fullNameLabel.snp.makeConstraints {
-            $0.top.equalTo(avatarImageView.snp.bottom).offset(12)
-            $0.left.right.equalToSuperview().inset(16)
-        }
-    }
-    
-    private func setupEmailLabel() {
-        emailLabel.font = .systemFont(ofSize: 14)
-        emailLabel.textColor = .appTextSecondary
-        emailLabel.textAlignment = .center
-        profileCard.addSubview(emailLabel)
-        emailLabel.snp.makeConstraints {
-            $0.top.equalTo(fullNameLabel.snp.bottom).offset(4)
-            $0.left.right.equalToSuperview().inset(16)
-            $0.bottom.equalToSuperview().offset(-24)
-        }
-    }
-    
-    // MARK: - Configure
     func configure(user: User) {
         avatarImageView.configure(name: user.name,
                                   surname: user.surname,
@@ -187,21 +213,11 @@ final class ProfileView: UIView {
             avatarImageView.loadImage(from: photoURL)
         }
         fullNameLabel.text = user.fullName.isEmpty
-            ? "No Name"
+            ? "no_name".localized
             : user.fullName
         emailLabel.text = user.email
     }
     
-    func setAdditionalView(_ view: UIView) {
-        additionalView = view
-        contentView.addSubview(view)
-        view.snp.makeConstraints {
-            $0.top.equalTo(profileCard.snp.bottom).offset(16)
-            $0.left.right.equalToSuperview().inset(Layout.padding)
-        }
-        setupButtonsStack(below: view)
-    }
-
     func endRefreshing() {
         scrollView.endRefreshing()
     }
@@ -211,4 +227,5 @@ final class ProfileView: UIView {
     @objc private func changePasswordTapped() { onChangePassword?() }
     @objc private func signOutTapped() { onSignOut?() }
     @objc private func refreshTapped() { onRefresh?() }
+    @objc private func deleteAccountTapped() { onDeleteAccount?() }
 }

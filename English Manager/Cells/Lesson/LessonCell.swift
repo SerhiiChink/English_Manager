@@ -17,6 +17,7 @@ final class LessonCell: UICollectionViewCell {
     private let studentNameLabel = UILabel()
     private let topicLabel = UILabel()
     private let bookLabel = UILabel()
+    private let menuButton = CellMenuButton()
     
     // MARK: - Properties
     private let formatter: LessonFormatterProtocol = LessonFormatter()
@@ -35,12 +36,7 @@ final class LessonCell: UICollectionViewCell {
     // MARK: - Setup
     private func setupUI() {
         contentView.addSubview(containerView)
-        containerView.backgroundColor = .appSurface
-        containerView.layer.cornerRadius = Layout.cornerRadius
-        containerView.layer.shadowColor = UIColor.black.cgColor
-        containerView.layer.shadowOpacity = 0.08
-        containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        containerView.layer.shadowRadius = 8
+        containerView.styleAsCard()
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(4)
         }
@@ -48,6 +44,7 @@ final class LessonCell: UICollectionViewCell {
         setupStudentNameLabel()
         setupTopicLabel()
         setupBookLabel()
+        setupMenuButton()
     }
     
     private func setupDateLabel() {
@@ -96,11 +93,28 @@ final class LessonCell: UICollectionViewCell {
         }
     }
     
+    private func setupMenuButton() {
+        containerView.addSubview(menuButton)
+        menuButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(8)
+            $0.right.equalToSuperview().inset(4)
+            $0.width.height.equalTo(36)
+        }
+    }
+    
     // MARK: - Configure
     func configure(with lesson: Lesson) {
         dateLabel.text = formatter.lessonDateString(for: lesson)
         studentNameLabel.text = lesson.studentName
         topicLabel.text = lesson.topic
         bookLabel.text = lesson.bookTitle
+    }
+    
+    func setMenuActions(_ actions: [CellMenuAction]) {
+        menuButton.configure(actions: actions)
+    }
+    
+    func hideMenu() {
+        menuButton.isHidden = true
     }
 }

@@ -10,20 +10,19 @@ import SnapKit
 
 final class RoleViewController: UIViewController {
     // MARK: - UI
+    private let iconImageView = UIImageView()
     private let titleLabel = UILabel()
     private let teacherButton = UIButton(type: .system)
     private let studentButton = UIButton(type: .system)
+    private let backButton = UIButton(type: .system)
     
     // MARK: - Properties
     private let router: AuthRouterProtocol
-    private var viewModel: RoleViewModelProtocol
     
     // MARK: - Init
     init(
-        viewModel: RoleViewModelProtocol = RoleViewModel(),
         router: AuthRouterProtocol
     ) {
-        self.viewModel = viewModel
         self.router = router
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,29 +40,46 @@ final class RoleViewController: UIViewController {
     
     // MARK: - Setup
     private func setupUI() {
-        view.backgroundColor = .appBackground
+        view.backgroundColor = .Splash.background
+        setupIconImageView()
         setupTitleLabel()
         setupTeacherButton()
         setupStudentButton()
+        setupBackButton()
+    }
+    
+    private func setupIconImageView() {
+        let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .light)
+        iconImageView.image = UIImage(systemName: "person.2.fill",
+                                      withConfiguration: config)
+        iconImageView.tintColor = .Splash.title
+        iconImageView.contentMode = .scaleAspectFit
+        view.addSubview(iconImageView)
+        iconImageView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(60)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(64)
+        }
     }
     
     private func setupTitleLabel() {
-        titleLabel.text = "Choose your role" /// localization
-        titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
-        titleLabel.textColor = .appText
+        titleLabel.text = "choose_your_role".localized
+        titleLabel.font = .systemFont(
+            ofSize: SplashTextConfig.titleFontSize,
+            weight: .semibold
+        )
+        titleLabel.textColor = .Splash.title
         titleLabel.textAlignment = .center
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
+            $0.top.equalTo(iconImageView.snp.bottom).offset(16)
+            $0.left.right.equalToSuperview().inset(Layout.padding)
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(80)
         }
     }
     
     private func setupTeacherButton() {
-        teacherButton.setTitle("Teacher", for: .normal)
-        teacherButton.setTitleColor(.white, for: .normal)
-        teacherButton.backgroundColor = .appAccent
-        teacherButton.layer.cornerRadius = Layout.cornerRadius
+        styleRoleButton(teacherButton, title: "teacher".localized)
         teacherButton.addTarget(self,
                                 action: #selector(teacherButtonTapped),
                                 for: .touchUpInside)
@@ -76,10 +92,7 @@ final class RoleViewController: UIViewController {
     }
     
     private func setupStudentButton() {
-        studentButton.setTitle("Student", for: .normal)
-        studentButton.setTitleColor(.appAccent, for: .normal)
-        studentButton.backgroundColor = .appSurface
-        studentButton.layer.cornerRadius = Layout.cornerRadius
+        styleRoleButton(studentButton, title: "student".localized)
         studentButton.addTarget(self,
                                 action: #selector(studentButtonTapped),
                                 for: .touchUpInside)
@@ -91,19 +104,48 @@ final class RoleViewController: UIViewController {
         }
     }
     
+    private func setupBackButton() {
+        backButton.setTitle("back_to_login".localized, for: .normal)
+        backButton.setTitleColor(.Splash.subtitle, for: .normal)
+        backButton.titleLabel?.font = .systemFont(ofSize: 14)
+        backButton.addTarget(self,
+                             action: #selector(backTapped),
+                             for: .touchUpInside)
+        view.addSubview(backButton)
+        backButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.centerX.equalToSuperview()
+        }
+    }
+    
+    // MARK: - Private
+    private func styleRoleButton(_ button: UIButton,
+                                   title: String) {
+        var config = UIButton.Configuration.plain()
+        config.title = title
+        config.imagePadding = 8
+        config.baseForegroundColor = .Splash.title
+        config.attributedTitle = AttributedString(title, attributes: .init([
+            .font: UIFont.systemFont(ofSize: 16, weight: .medium),
+        ]))
+        button.configuration = config
+        button.backgroundColor = UIColor.Splash.loaderTrack.withAlphaComponent(0.5)
+        button.layer.cornerRadius = Layout.cornerRadius
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.Splash.loaderFill.withAlphaComponent(0.3).cgColor
+    }
+    
     // MARK: - Actions
     @objc private func teacherButtonTapped() {
-        updateRole(.teacher)
+        router.showRoleConfirmation(role: .teacher)
     }
     
     @objc private func studentButtonTapped() {
-        updateRole(.student)
+        router.showRoleConfirmation(role: .student)
     }
     
-    private func updateRole(_ role: UserRole) {
-        UserDefaults.standard.set(role.rawValue, forKey: UDKeys.userRole)
-        viewModel.updateUserRole(role)
-        router.showMainScreen(role: role)
+    @objc private func backTapped() {
+        router.showLogin()
     }
 }
 

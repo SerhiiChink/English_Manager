@@ -64,4 +64,21 @@ extension UICollectionViewLayout {
                                       trailing: 16)
         return UICollectionViewCompositionalLayout(section: section)
     }
+    
+    static func paymentLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(110)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize,
+                                                     subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 8,
+                                                        leading: 16,
+                                                        bottom: 8,
+                                                        trailing: 16)
+        section.interGroupSpacing = 8
+        return UICollectionViewCompositionalLayout(section: section)
+    }
 }

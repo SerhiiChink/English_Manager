@@ -11,8 +11,10 @@ import SnapKit
 final class LoginViewController: UIViewController {
     // MARK: - UI
     private let logoLabel = UILabel()
-    private let segmentedControl = UISegmentedControl(items: ["Enter",
-                                                              "Sign Up"])
+    private let segmentedControl = UISegmentedControl(
+        items: ["enter".localized,
+                "sign_up".localized]
+    )
     private let emailField = UITextField()
     private let passwordField = UITextField()
     private let confirmPasswordField = UITextField()
@@ -49,10 +51,10 @@ final class LoginViewController: UIViewController {
         setupUI()
         bindViewModel()
     }
-    
+
     // MARK: - setupUI
     private func setupUI() {
-        view.backgroundColor = .appBackground
+        view.backgroundColor = .Splash.background
         setupTapGesture()
         setupLogoLabel()
         setupSegmentedControl()
@@ -63,9 +65,9 @@ final class LoginViewController: UIViewController {
         setupForgotPasswordButton()
         setupErrorLabel()
         setupActivityIndicator()
-        setupDrivider()
-        setupAppleButton()
         setupGoogleButton()
+        setupAppleButton()
+        setupDrivider()
     }
     
     private func setupTapGesture() {
@@ -75,9 +77,10 @@ final class LoginViewController: UIViewController {
     }
     
     private func setupLogoLabel() {
-        logoLabel.text = "English Manager"/// localization
-        logoLabel.font = .systemFont(ofSize: 32, weight: .bold)
-        logoLabel.textColor = .appText
+        logoLabel.text = "english_manager".localized
+        logoLabel.font = .systemFont(ofSize: SplashTextConfig.titleFontSize,
+                                     weight: .semibold)
+        logoLabel.textColor = .Splash.title
         logoLabel.textAlignment = .center
         view.addSubview(logoLabel)
         logoLabel.snp.makeConstraints {
@@ -88,6 +91,16 @@ final class LoginViewController: UIViewController {
     
     private func setupSegmentedControl() {
         segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.backgroundColor = UIColor.Splash.loaderTrack
+        segmentedControl.selectedSegmentTintColor = UIColor.Splash.title
+        segmentedControl.setTitleTextAttributes(
+            [.foregroundColor: UIColor.Splash.subtitle],
+            for: .normal
+        )
+        segmentedControl.setTitleTextAttributes(
+            [.foregroundColor: UIColor.white],
+            for: .selected
+        )
         segmentedControl.addTarget(self,
                                    action: #selector(segmentedControlChanged),
                                    for: .valueChanged)
@@ -99,11 +112,10 @@ final class LoginViewController: UIViewController {
     }
     
     private func setupEmailField() {
-        emailField.placeholder = "Email" /// lokalization
+        styleTextField(emailField, placeholder: "email".localized)
         emailField.keyboardType = .emailAddress
         emailField.autocapitalizationType = .none
         emailField.autocorrectionType = .no
-        emailField.borderStyle = .roundedRect
         view.addSubview(emailField)
         emailField.snp.makeConstraints {
             $0.top.equalTo(segmentedControl.snp.bottom).offset(24)
@@ -113,21 +125,21 @@ final class LoginViewController: UIViewController {
     }
     
     private func setupPasswordField() {
-        passwordField.placeholder = "Password"/// lokalization
+        styleTextField(passwordField, placeholder: "password".localized)
         passwordField.isSecureTextEntry = true
-        passwordField.borderStyle = .roundedRect
         view.addSubview(passwordField)
         passwordField.snp.makeConstraints {
-            $0.top.equalTo(emailField.snp.bottom).offset(16)
+            $0.top.equalTo(emailField.snp.bottom).offset(12)
             $0.left.right.equalToSuperview().inset(Layout.padding)
             $0.height.equalTo(Layout.buttonHeight)
+
         }
     }
     
     private func setupConfirmPasswordField() {
-        confirmPasswordField.placeholder = "Confirm password"//localiz
+        styleTextField(confirmPasswordField,
+                       placeholder: "confirm_password".localized)
         confirmPasswordField.isSecureTextEntry = true
-        confirmPasswordField.borderStyle = .roundedRect
         confirmPasswordField.isHidden = true
         view.addSubview(confirmPasswordField)
         confirmPasswordField.snp.makeConstraints {
@@ -138,9 +150,11 @@ final class LoginViewController: UIViewController {
     }
     
     private func setupLoginButton() {
-        loginButton.setTitle("Enter", for: .normal)/// lokalization
+        loginButton.setTitle("enter".localized, for: .normal)
         loginButton.setTitleColor(.white, for: .normal)
-        loginButton.backgroundColor = .appAccent
+        loginButton.titleLabel?.font = .systemFont(ofSize: 16,
+                                                   weight: .semibold)
+        loginButton.backgroundColor = .Splash.title
         loginButton.layer.cornerRadius = Layout.cornerRadius
         loginButton.addTarget(self,
                               action: #selector(loginTapped),
@@ -154,8 +168,9 @@ final class LoginViewController: UIViewController {
     }
     
     private func setupForgotPasswordButton() {
-        forgotPasswordButton.setTitle("Forgot password?", for: .normal)//localiz
-        forgotPasswordButton.setTitleColor(.appTextSecondary, for: .normal)
+        forgotPasswordButton.setTitle("forgot_password".localized,
+                                      for: .normal)
+        forgotPasswordButton.setTitleColor(.Splash.subtitle, for: .normal)
         forgotPasswordButton.titleLabel?.font = .systemFont(ofSize: 14)
         forgotPasswordButton.addTarget(self,
                                        action: #selector(forgotPasswordTapped),
@@ -163,15 +178,6 @@ final class LoginViewController: UIViewController {
         view.addSubview(forgotPasswordButton)
         forgotPasswordButton.snp.makeConstraints {
             $0.top.equalTo(loginButton.snp.bottom).offset(12)
-            $0.centerX.equalToSuperview()
-        }
-    }
-    
-    private func setupActivityIndicator() {
-        activityIndicator.hidesWhenStopped = true
-        view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints {
-            $0.top.equalTo(errorLabel.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
         }
     }
@@ -189,48 +195,54 @@ final class LoginViewController: UIViewController {
         }
     }
     
+    private func setupActivityIndicator() {
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .Splash.title
+        view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints {
+            $0.top.equalTo(errorLabel.snp.bottom).offset(8)
+            $0.centerX.equalToSuperview()
+        }
+    }
+    
     private func setupDrivider() {
-        dividerLabel.text = "or"// localiz
-        dividerLabel.textColor = .appTextSecondary
+        dividerLabel.text = "or".localized
+        dividerLabel.textColor = .Splash.subtitle
         dividerLabel.font = .systemFont(ofSize: 14)
         dividerLabel.textAlignment = .center
         view.addSubview(dividerLabel)
         dividerLabel.snp.makeConstraints {
-            $0.top.equalTo(activityIndicator.snp.bottom).offset(16)
+            $0.bottom.equalTo(appleButton.snp.top).offset(-16)
             $0.centerX.equalToSuperview()
         }
     }
     
     private func setupAppleButton() {
-        appleButton.setTitle("Continue with Apple", for: .normal)// localiz
-        appleButton.setTitleColor(.appText, for: .normal)
-        appleButton.setImage(UIImage(systemName: "applelogo"), for: .normal)
-        appleButton.tintColor = .appText
-        appleButton.backgroundColor = .appSurface
-        appleButton.layer.cornerRadius = Layout.cornerRadius
+        styleSocialButton(appleButton,
+                          title: "sign_up_with_apple".localized,
+                          icon: UIImage(systemName: "applelogo"))
         appleButton.addTarget(self,
                               action: #selector(appleTapped),
                               for: .touchUpInside)
         view.addSubview(appleButton)
         appleButton.snp.makeConstraints {
-            $0.top.equalTo(dividerLabel.snp.bottom).offset(16)
+            $0.bottom.equalTo(googleButton.snp.top).offset(-12)
             $0.left.right.equalToSuperview().inset(Layout.padding)
             $0.height.equalTo(Layout.buttonHeight)
+
         }
     }
     
     private func setupGoogleButton() {
-        googleButton.setTitle("Continue with Google", for: .normal)//localiz
-        googleButton.setTitleColor(.appText, for: .normal)
-        googleButton.backgroundColor = .appSurface
-        googleButton.tintColor = .appText
-        googleButton.layer.cornerRadius = Layout.cornerRadius
+        styleSocialButton(googleButton,
+                          title: "sign_up_with_google".localized,
+                          icon: nil)
         googleButton.addTarget(self,
                                action: #selector(googleTapped),
                                for: .touchUpInside)
         view.addSubview(googleButton)
         googleButton.snp.makeConstraints {
-            $0.top.equalTo(appleButton.snp.bottom).offset(12)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
             $0.left.right.equalToSuperview().inset(Layout.padding)
             $0.height.equalTo(Layout.buttonHeight)
         }
@@ -239,10 +251,13 @@ final class LoginViewController: UIViewController {
     // MARK: - Binding
     private func bindViewModel() {
         viewModel.onSuccess = { [weak self] in
-            self?.router.showRole()
+            self?.router.showSplash()
         }
         viewModel.onError = { [weak self] message in
-            self?.showError(message)
+            let userMessage = message.contains("already in use")
+                ? "account_exists_login".localized
+                : message
+            self?.showError(userMessage)
         }
         viewModel.onLoading = { [weak self] isLoading in
             isLoading
@@ -255,7 +270,7 @@ final class LoginViewController: UIViewController {
     private func updateUI() {
         confirmPasswordField.isHidden = isLogin
         forgotPasswordButton.isHidden = !isLogin
-        loginButton.setTitle(isLogin ? "Login" : "Sign Up",
+        loginButton.setTitle(isLogin ? "login".localized : "sign_up".localized,
                              for: .normal)
         errorLabel.isHidden = true
     }
@@ -263,6 +278,44 @@ final class LoginViewController: UIViewController {
     private func showError(_ message: String) {
         errorLabel.text = message
         errorLabel.isHidden = false
+    }
+    
+    private func styleTextField(_ field: UITextField,
+                                placeholder: String) {
+        field.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [.foregroundColor: UIColor.Splash.subtitle]
+        )
+        field.textColor = .Splash.title
+        field.font = .systemFont(ofSize: 16)
+        field.backgroundColor = UIColor.Splash.background.withAlphaComponent(0.6)
+        field.layer.cornerRadius = Layout.cornerRadius
+        field.layer.borderWidth = 1
+        field.layer.borderColor = UIColor.Splash.loaderTrack.cgColor
+        field.borderStyle = .none
+        let paddingView = UIView(
+            frame: CGRect(x: 0, y: 0, width: 16, height: 0)
+        )
+        field.leftView = paddingView
+        field.leftViewMode = .always
+    }
+    
+    private func styleSocialButton(_ button: UIButton,
+                                   title: String,
+                                   icon: UIImage?) {
+        var config = UIButton.Configuration.plain()
+        config.title = title
+        config.image = icon?.withTintColor(.Splash.title, renderingMode: .alwaysOriginal)
+        config.imagePadding = 8
+        config.baseForegroundColor = .Splash.title
+        config.attributedTitle = AttributedString(title, attributes: .init([
+            .font: UIFont.systemFont(ofSize: 16, weight: .medium),
+        ]))
+        button.configuration = config
+        button.backgroundColor = UIColor.Splash.loaderTrack.withAlphaComponent(0.5)
+        button.layer.cornerRadius = Layout.cornerRadius
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.Splash.loaderFill.withAlphaComponent(0.3).cgColor
     }
     
     // MARK: - Actions
@@ -282,7 +335,7 @@ final class LoginViewController: UIViewController {
                             password: passwordField.text ?? "")
         } else {
             guard passwordField.text == confirmPasswordField.text else {
-                showError("Password are not the same")
+                showError("password_are_not_the_same".localized)
                 return
             }
             viewModel.register(email: emailField.text ?? "",

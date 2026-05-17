@@ -33,11 +33,12 @@ final class StatItemView: UIView {
         addSubview(stack)
         stack.snp.makeConstraints {
             $0.center.equalToSuperview()
+            $0.left.right.equalToSuperview().inset(4)
         }
-        valueLabel.font = .systemFont(ofSize: 22, weight: .bold)
-        valueLabel.textColor = .appText
-        titleLabel.font = .systemFont(ofSize: 12)
-        titleLabel.textColor = .appTextSecondary
+        valueLabel.font = .systemFont(ofSize: 24, weight: .bold)
+        valueLabel.textColor = UIColor.Brand.primary
+        titleLabel.font = .systemFont(ofSize: 11)
+        titleLabel.textColor = UIColor.Brand.secondary
     }
     
     // MARK: - Configure

@@ -108,6 +108,7 @@ extension TeacherHomeworkViewController: UICollectionViewDataSource {
             for: indexPath) as! HomeworkCell
         cell.configure(with: viewModel.filteredHomeworks[indexPath.item],
                        showStudent: true)
+        cell.hideMenu()
         return cell
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseStorage
 
 protocol AuthServiceProtocol {
     var isLoggedIn: Bool { get }
@@ -16,6 +17,7 @@ protocol AuthServiceProtocol {
     func signOut() throws
     func resetPassword(email: String) async throws
     func changePassword(_ password: String) async throws
+    func deleteAccount(email: String, password: String) async throws
 }
 
 final class AuthService: AuthServiceProtocol {
@@ -52,5 +54,19 @@ final class AuthService: AuthServiceProtocol {
     // MARK: - Change Password
     func changePassword(_ password: String) async throws {
         try await Auth.auth().currentUser?.updatePassword(to: password)
+    }
+    
+    // MARK: - Delete Account
+    func deleteAccount(email: String, password: String) async throws {
+        guard let user = Auth.auth().currentUser else { return }
+        let credential = EmailAuthProvider.credential(withEmail: email,
+                                                      password: password)
+        try await user.reauthenticate(with: credential)
+        let avatarRef = Storage.storage().reference()
+            .child("avatars")
+            .child(user.uid)
+            .child("avatar.jpg")
+        try? await avatarRef.delete()
+        try await user .delete()
     }
 }

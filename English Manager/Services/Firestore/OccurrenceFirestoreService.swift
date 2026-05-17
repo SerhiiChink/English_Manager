@@ -5,13 +5,15 @@
 //  Created by Sergej Klepikov on 10.04.2026.
 //
 
-import UIKit
+import Foundation
 import FirebaseFirestore
 
 protocol OccurrenceFirestoreServiceProtocol {
     func saveOccurrence(_ occurrence: LessonOccurrence) async throws -> LessonOccurrence
-    func fetchOccurrences(studentId: String) async throws -> [LessonOccurrence]
+    func fetchOccurrences(studentId: String,
+                          teacherId: String) async throws -> [LessonOccurrence]
     func cancelOccurrence(id: String, by cancelledBy: CancelledBy) async throws
+    func linkLesson(occurrenceId: String, lessonId: String) async throws
     func fetchTodayOccurrences(studentId: String) async throws -> [LessonOccurrence]
 }
 
@@ -36,9 +38,11 @@ final class OccurrenceFirestoreService: OccurrenceFirestoreServiceProtocol {
         return occurrence
     }
     
-    func fetchOccurrences(studentId: String) async throws -> [LessonOccurrence] {
+    func fetchOccurrences(studentId: String,
+                          teacherId: String) async throws -> [LessonOccurrence] {
         let snapshot = try await collection(Collections.lessonOccurrences)
             .whereField("studentId", isEqualTo: studentId)
+            .whereField("teacherId", isEqualTo: teacherId)
             .order(by: "scheduledAt", descending: true)
             .getDocuments()
         return try snapshot.decode(LessonOccurrence.self)
@@ -54,6 +58,12 @@ final class OccurrenceFirestoreService: OccurrenceFirestoreServiceProtocol {
             ])
     }
     
+    func linkLesson(occurrenceId: String, lessonId: String) async throws {
+        try await collection(Collections.lessonOccurrences)
+            .document(occurrenceId)
+            .updateData(["lessonId": lessonId])
+    }
+    
     func fetchTodayOccurrences(studentId: String) async throws -> [LessonOccurrence] {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: Date())
@@ -62,8 +72,8 @@ final class OccurrenceFirestoreService: OccurrenceFirestoreServiceProtocol {
                                      to: startOfDay)!
         let snapshot = try await collection(Collections.lessonOccurrences)
             .whereField("studentId", isEqualTo: studentId)
-            .whereField("scheduleAt", isGreaterThan: startOfDay)
-            .whereField("scheduleAt", isLessThan: endOfDay)
+            .whereField("scheduledAt", isGreaterThan: startOfDay)
+            .whereField("scheduledAt", isLessThan: endOfDay)
             .getDocuments()
         return try snapshot.decode(LessonOccurrence.self)
     }
