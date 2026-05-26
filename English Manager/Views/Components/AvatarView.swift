@@ -64,7 +64,7 @@ final class AvatarView: UIView {
     }
     
     private func setupBadgeView() {
-        badgeView.backgroundColor = .Brand.primary
+        badgeView.backgroundColor = .appAccent
         badgeView.layer.cornerRadius = 10
         badgeView.layer.borderWidth = 2
         badgeView.layer.borderColor = UIColor.appBackground.cgColor

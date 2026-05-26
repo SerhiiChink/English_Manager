@@ -18,6 +18,7 @@ protocol TeacherHomeworkViewModelProtocol: AnyObject {
                         grade: Int,
                         feedback: String)
     func filterByStudent(_ studentName: String?)
+    func cellModel(for homework: Homework) -> HomeworkCellModel
 }
 
 final class TeacherHomeworkViewModel: TeacherHomeworkViewModelProtocol {
@@ -43,6 +44,7 @@ final class TeacherHomeworkViewModel: TeacherHomeworkViewModelProtocol {
     // MARK: - Properties
     private let homeworkService: HomeworkFirestoreServiceProtocol
     private let authService: AuthServiceProtocol
+    private let formatter: HomeworkFormatterProtocol = HomeworkFormatter()
     
     // MARK: - Init
     init(
@@ -116,5 +118,10 @@ final class TeacherHomeworkViewModel: TeacherHomeworkViewModelProtocol {
     func filterByStudent(_ studentName: String?) {
         selectedStudentName = studentName
         onUpdate?()
+    }
+    
+    // MARK: - Cell Model
+    func cellModel(for homework: Homework) -> HomeworkCellModel {
+        formatter.cellModel(for: homework, showStudent: true)
     }
 }

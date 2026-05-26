@@ -78,8 +78,16 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
                     service: firestoreService,
                     forceRefresh: forceRefresh
                 )
+                async let lessons = firestoreService
+                    .fetchStudentLessons(studentId: userId)
+                async let homeworks = firestoreService
+                    .fetchStudentHomeworks(studentId: userId)
+                let (fetchedLessons,
+                     fetchedHomeworks) = try await (lessons, homeworks)
                 await MainActor.run { [weak self] in
                     self?.user = fetchedUser
+                    self?.lessonsCount = fetchedLessons.count
+                    self?.homeworkCount = fetchedHomeworks.count
                     self?.isFetching = false
                     self?.onLoading?(false)
                     self?.onUpdate?()

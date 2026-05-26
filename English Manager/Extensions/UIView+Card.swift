@@ -19,21 +19,19 @@ extension UIView {
         switch style {
         case .default:
             backgroundColor = .appSurface
-            layer.shadowColor = UIColor.black.cgColor
-            layer.shadowOpacity = 0.08
-            layer.shadowOffset = CGSize(width: 0, height: 2)
-            layer.shadowRadius = 8
+            layer.shadowColor = UIColor.Brand.shadow.cgColor
+            layer.shadowOpacity = 0.12
+            layer.shadowOffset = CGSize(width: 0, height: 3)
+            layer.shadowRadius = 10
             layer.borderWidth = 0
         case .bordered:
-            backgroundColor = .Brand.background
-            layer.shadowColor = UIColor.black.cgColor
-            layer.shadowOpacity = 0.08
+            backgroundColor = .appSurface
+            layer.shadowColor = UIColor.Brand.shadow.cgColor
+            layer.shadowOpacity = 0.10
             layer.shadowOffset = CGSize(width: 0, height: 2)
             layer.shadowRadius = 8
-            layer.borderWidth = 1
-            layer.borderColor = UIColor.Brand.surface.cgColor
         case .splash:
-            backgroundColor = UIColor.Splash.loaderTrack.withAlphaComponent(0.5)
+            backgroundColor = UIColor.appSurface.withAlphaComponent(0.8)
             layer.borderWidth = 1
             layer.borderColor = UIColor.Splash.loaderFill.withAlphaComponent(0.3).cgColor
             layer.shadowOpacity = 0

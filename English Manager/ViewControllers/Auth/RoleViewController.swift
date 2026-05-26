@@ -40,7 +40,7 @@ final class RoleViewController: UIViewController {
     
     // MARK: - Setup
     private func setupUI() {
-        view.backgroundColor = .Splash.background
+        view.backgroundColor = .appBackground
         setupIconImageView()
         setupTitleLabel()
         setupTeacherButton()
@@ -106,7 +106,7 @@ final class RoleViewController: UIViewController {
     
     private func setupBackButton() {
         backButton.setTitle("back_to_login".localized, for: .normal)
-        backButton.setTitleColor(.Splash.subtitle, for: .normal)
+        backButton.setTitleColor(.appTextSecondary, for: .normal)
         backButton.titleLabel?.font = .systemFont(ofSize: 14)
         backButton.addTarget(self,
                              action: #selector(backTapped),
@@ -129,10 +129,8 @@ final class RoleViewController: UIViewController {
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
         ]))
         button.configuration = config
-        button.backgroundColor = UIColor.Splash.loaderTrack.withAlphaComponent(0.5)
+        button.backgroundColor = UIColor.appSurface.withAlphaComponent(0.8)
         button.layer.cornerRadius = Layout.cornerRadius
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.Splash.loaderFill.withAlphaComponent(0.3).cgColor
     }
     
     // MARK: - Actions

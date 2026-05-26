@@ -19,6 +19,7 @@ final class EditProfileViewController: UIViewController {
     
     // MARK: - Properties
     private var viewModel: EditProfileViewModelProtocol
+    private var pendingAvatarImage: UIImage?
     
     // MARK: - Init
     init(user: User) {
@@ -63,7 +64,7 @@ final class EditProfileViewController: UIViewController {
         }
         imagePicker.onImagePicked = { [weak self] image in
             self?.avatarView.setImage(image)
-            self?.viewModel.uploadAvatar(image)
+            self?.pendingAvatarImage = image
         }
         avatarView.showBadge(true)
     }
@@ -92,7 +93,7 @@ final class EditProfileViewController: UIViewController {
         saveButton.setTitle("save".localized, for: .normal)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        saveButton.backgroundColor = .Brand.primary
+        saveButton.backgroundColor = .Brand.surfaceFill
         saveButton.layer.cornerRadius = Layout.cornerRadius
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
         view.addSubview(saveButton)
@@ -146,10 +147,8 @@ final class EditProfileViewController: UIViewController {
                                 placeholder: String) {
         field.placeholder = placeholder
         field.borderStyle = .none
-        field.backgroundColor = .Brand.background
+        field.backgroundColor = .appSurface
         field.layer.cornerRadius = Layout.cornerRadius
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.Brand.surface.cgColor
         field.textColor = .appText
         field.font = .systemFont(ofSize: 16)
         field.autocorrectionType = .no
@@ -160,8 +159,12 @@ final class EditProfileViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func saveTapped() {
+        if let image = pendingAvatarImage {
+            viewModel.uploadAvatar(image)
+        }
         viewModel.save(
             name: nameField.text ?? "",
-            surname: surnameField.text ?? "")
+            surname: surnameField.text ?? ""
+        )
     }
 }

@@ -68,7 +68,7 @@ final class StudentCell: UICollectionViewCell {
         emailLabel.textColor = .appTextSecondary
         containerView.addSubview(emailLabel)
         emailLabel.snp.makeConstraints {
-            $0.top.equalTo(nameLabel.snp.bottom).offset(4)
+            $0.top.equalTo(nameLabel.snp.bottom).offset(5)
             $0.left.equalTo(avatarView.snp.right).offset(12)
             $0.right.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(16)

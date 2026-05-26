@@ -54,7 +54,7 @@ final class PaymentCell: UICollectionViewCell {
     }
     
     private func setupNameLabel() {
-        nameLabel.font = .systemFont(ofSize: 15, weight: .semibold)
+        nameLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         nameLabel.textColor = .appText
         nameLabel.numberOfLines = 1
         containerView.addSubview(nameLabel)
@@ -70,7 +70,7 @@ final class PaymentCell: UICollectionViewCell {
         balanceLabel.textColor = .appText
         containerView.addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints {
-            $0.top.equalTo(nameLabel.snp.bottom).offset(3)
+            $0.top.equalTo(nameLabel.snp.bottom).offset(5)
             $0.left.equalTo(avatarView.snp.right).offset(10)
             $0.right.equalToSuperview().inset(16)
         }
@@ -78,12 +78,12 @@ final class PaymentCell: UICollectionViewCell {
     
     private func setupPendingDot() {
         pendingDot.layer.cornerRadius = 3
-        pendingDot.backgroundColor = .appGold
+        pendingDot.backgroundColor = .appRed
         pendingDot.isHidden = true
         containerView.addSubview(pendingDot)
         pendingDot.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
-            $0.right.equalToSuperview().inset(10)
+            $0.top.equalToSuperview().offset(12)
+            $0.right.equalToSuperview().inset(14)
             $0.width.height.equalTo(6)
         }
     }
@@ -94,7 +94,7 @@ final class PaymentCell: UICollectionViewCell {
         accentBar.snp.makeConstraints {
             $0.top.equalTo(avatarView.snp.bottom).offset(12)
             $0.left.right.equalToSuperview().inset(16)
-            $0.height.equalTo(4)
+            $0.height.equalTo(2)
             $0.bottom.equalToSuperview().offset(-16)
         }
     }

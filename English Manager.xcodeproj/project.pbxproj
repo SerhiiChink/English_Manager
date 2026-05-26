@@ -72,6 +72,13 @@
 		5779E65C2F98C80C007B7FBA /* UIView+Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5779E65B2F98C80C007B7FBA /* UIView+Card.swift */; };
 		5779E65F2F98D0D7007B7FBA /* OccurrenceStatusMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5779E65E2F98D0D7007B7FBA /* OccurrenceStatusMapper.swift */; };
 		5779E6622F995136007B7FBA /* UserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5779E6612F995136007B7FBA /* UserCache.swift */; };
+		577D57AA2FC0FB5400E54BD1 /* SharedDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57A92FC0FB5400E54BD1 /* SharedDateFormatter.swift */; };
+		577D57AD2FC0FD8600E54BD1 /* HomeworkStatusMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57AC2FC0FD8600E54BD1 /* HomeworkStatusMapper.swift */; };
+		577D57AF2FC0FD8D00E54BD1 /* HomeworkStatusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57AE2FC0FD8D00E54BD1 /* HomeworkStatusStyle.swift */; };
+		577D57B12FC1AEAE00E54BD1 /* ScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57B02FC1AEAE00E54BD1 /* ScheduleHeaderView.swift */; };
+		577D57B52FC2279500E54BD1 /* HomeworkCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57B42FC2279500E54BD1 /* HomeworkCellModel.swift */; };
+		577D57B72FC2F14C00E54BD1 /* AccentBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57B62FC2F14C00E54BD1 /* AccentBar.swift */; };
+		577D57BA2FC4EF6B00E54BD1 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57B92FC4EF6B00E54BD1 /* EmptyStateView.swift */; };
 		5797B8F02F6AB6EA004416DF /* TeacherProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */; };
 		5797B8F42F6ABBBA004416DF /* StatItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8F32F6ABBBA004416DF /* StatItemView.swift */; };
 		5797B8F82F6C07D4004416DF /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8F72F6C07D4004416DF /* EditProfileViewModel.swift */; };
@@ -221,6 +228,13 @@
 		5779E65B2F98C80C007B7FBA /* UIView+Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Card.swift"; sourceTree = "<group>"; };
 		5779E65E2F98D0D7007B7FBA /* OccurrenceStatusMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccurrenceStatusMapper.swift; sourceTree = "<group>"; };
 		5779E6612F995136007B7FBA /* UserCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCache.swift; sourceTree = "<group>"; };
+		577D57A92FC0FB5400E54BD1 /* SharedDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDateFormatter.swift; sourceTree = "<group>"; };
+		577D57AC2FC0FD8600E54BD1 /* HomeworkStatusMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkStatusMapper.swift; sourceTree = "<group>"; };
+		577D57AE2FC0FD8D00E54BD1 /* HomeworkStatusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkStatusStyle.swift; sourceTree = "<group>"; };
+		577D57B02FC1AEAE00E54BD1 /* ScheduleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleHeaderView.swift; sourceTree = "<group>"; };
+		577D57B42FC2279500E54BD1 /* HomeworkCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkCellModel.swift; sourceTree = "<group>"; };
+		577D57B62FC2F14C00E54BD1 /* AccentBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentBar.swift; sourceTree = "<group>"; };
+		577D57B92FC4EF6B00E54BD1 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherProfileViewModel.swift; sourceTree = "<group>"; };
 		5797B8F32F6ABBBA004416DF /* StatItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatItemView.swift; sourceTree = "<group>"; };
 		5797B8F72F6C07D4004416DF /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
@@ -493,6 +507,7 @@
 				57EE38EA2F7A833200A3272A /* HomeworkFormatter.swift */,
 				57320ACF2F82785A00D1A6E8 /* ScheduleFormatter.swift */,
 				5779E5DE2F8BF86A007B7FBA /* PaymentFormatter.swift */,
+				577D57A92FC0FB5400E54BD1 /* SharedDateFormatter.swift */,
 			);
 			path = Formatters;
 			sourceTree = "<group>";
@@ -569,6 +584,7 @@
 				5797B8F92F6D734D004416DF /* AvatarView.swift */,
 				57F02CE92FA89C5B0089DA31 /* DividerView.swift */,
 				57F02CEF2FAB48A40089DA31 /* ToastView.swift */,
+				577D57B62FC2F14C00E54BD1 /* AccentBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -649,6 +665,7 @@
 		5779E65D2F98D0C4007B7FBA /* Mappers */ = {
 			isa = PBXGroup;
 			children = (
+				577D57AB2FC0FD7A00E54BD1 /* HomeworkMapper */,
 				5779E65E2F98D0D7007B7FBA /* OccurrenceStatusMapper.swift */,
 				57F02CE12FA351140089DA31 /* BalanceLevelMapper.swift */,
 				57F02CED2FA9EE2F0089DA31 /* PaymentStatusMapper.swift */,
@@ -666,6 +683,23 @@
 			path = Cache;
 			sourceTree = "<group>";
 		};
+		577D57AB2FC0FD7A00E54BD1 /* HomeworkMapper */ = {
+			isa = PBXGroup;
+			children = (
+				577D57AC2FC0FD8600E54BD1 /* HomeworkStatusMapper.swift */,
+				577D57AE2FC0FD8D00E54BD1 /* HomeworkStatusStyle.swift */,
+			);
+			path = HomeworkMapper;
+			sourceTree = "<group>";
+		};
+		577D57B82FC4EF5F00E54BD1 /* EmptyState */ = {
+			isa = PBXGroup;
+			children = (
+				577D57B92FC4EF6B00E54BD1 /* EmptyStateView.swift */,
+			);
+			path = EmptyState;
+			sourceTree = "<group>";
+		};
 		57999B8F2FB8AF4300564AD5 /* StatusCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -678,8 +712,8 @@
 		579E59DC2F7BC9400067AA22 /* Homework */ = {
 			isa = PBXGroup;
 			children = (
-				579E59DD2F7BC94B0067AA22 /* TeacherHomeworkDetailViewController.swift */,
 				574B83D32F6E05520042045B /* TeacherHomeworkViewController.swift */,
+				579E59DD2F7BC94B0067AA22 /* TeacherHomeworkDetailViewController.swift */,
 			);
 			path = Homework;
 			sourceTree = "<group>";
@@ -753,6 +787,7 @@
 				57BA703D2F8A91A90025389F /* PaymentCellModel.swift */,
 				57320ACB2F819DC800D1A6E8 /* StudentChip.swift */,
 				57320AD42F82F3FC00D1A6E8 /* ScheduleDraft.swift */,
+				577D57B42FC2279500E54BD1 /* HomeworkCellModel.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -772,6 +807,7 @@
 			children = (
 				57320AC52F81900300D1A6E8 /* StudentScheduleView.swift */,
 				57BA703F2F8AD29F0025389F /* StudentScheduleBannerView.swift */,
+				577D57B02FC1AEAE00E54BD1 /* ScheduleHeaderView.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -823,6 +859,7 @@
 		57F6C0582F6EB55F0041E8BE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				577D57B82FC4EF5F00E54BD1 /* EmptyState */,
 				57999B8F2FB8AF4300564AD5 /* StatusCard */,
 				57F02D0F2FB5C24C0089DA31 /* Splash */,
 				57F02D042FAF9DBF0089DA31 /* Payment */,
@@ -1055,6 +1092,7 @@
 				57320ABC2F8172AD00D1A6E8 /* TeacherSettings.swift in Sources */,
 				57320AC02F81735900D1A6E8 /* Schedule.swift in Sources */,
 				574B83E22F6E05520042045B /* SplashViewController.swift in Sources */,
+				577D57B12FC1AEAE00E54BD1 /* ScheduleHeaderView.swift in Sources */,
 				57BA70402F8AD29F0025389F /* StudentScheduleBannerView.swift in Sources */,
 				57F02CFF2FAC95E40089DA31 /* UIViewController+Sheet.swift in Sources */,
 				574B83E32F6E05520042045B /* TeacherHomeworkViewController.swift in Sources */,
@@ -1062,7 +1100,9 @@
 				574B83E52F6E05520042045B /* StudentTabBarController.swift in Sources */,
 				574B83E62F6E05520042045B /* StudentHomeworkViewController.swift in Sources */,
 				570861E72F89941700FCCCAA /* LessonOccurrenceViewModel.swift in Sources */,
+				577D57AF2FC0FD8D00E54BD1 /* HomeworkStatusStyle.swift in Sources */,
 				574B83E72F6E05520042045B /* TeacherTabBarController.swift in Sources */,
+				577D57B72FC2F14C00E54BD1 /* AccentBar.swift in Sources */,
 				574B83E82F6E05520042045B /* StudentPaymentsViewController.swift in Sources */,
 				57F02CF92FAB4E360089DA31 /* SlideAnimator.swift in Sources */,
 				57EE38EB2F7A833200A3272A /* HomeworkFormatter.swift in Sources */,
@@ -1071,6 +1111,8 @@
 				57D9D1D62F685A220061605F /* StudentCell.swift in Sources */,
 				5779E6012F94D118007B7FBA /* CellMenuAction.swift in Sources */,
 				57F02CF02FAB48A40089DA31 /* ToastView.swift in Sources */,
+				577D57AD2FC0FD8600E54BD1 /* HomeworkStatusMapper.swift in Sources */,
+				577D57BA2FC4EF6B00E54BD1 /* EmptyStateView.swift in Sources */,
 				5779E5DF2F8BF86A007B7FBA /* PaymentFormatter.swift in Sources */,
 				57BA70532F8AECDE0025389F /* StudentPaymentsViewModel.swift in Sources */,
 				57320AD52F82F3FC00D1A6E8 /* ScheduleDraft.swift in Sources */,
@@ -1088,6 +1130,7 @@
 				57F02CE22FA351140089DA31 /* BalanceLevelMapper.swift in Sources */,
 				5779E5FF2F94CE08007B7FBA /* CellMenuButton.swift in Sources */,
 				570861E22F8928D100FCCCAA /* LessonOccurrence.swift in Sources */,
+				577D57AA2FC0FB5400E54BD1 /* SharedDateFormatter.swift in Sources */,
 				575092472F5AEA38002132EF /* ValidationService.swift in Sources */,
 				57D9D1DA2F68BC670061605F /* StudentLessonsViewModel.swift in Sources */,
 				57F02D1A2FB79C4C0089DA31 /* AnimatedSplashViewModel.swift in Sources */,
@@ -1124,6 +1167,7 @@
 				57F02D062FAF9DD00089DA31 /* PaymentHistoryView.swift in Sources */,
 				575091DD2F584136002132EF /* UIColor+App.swift in Sources */,
 				57F02D0A2FB087FD0089DA31 /* SplashViewModel.swift in Sources */,
+				577D57B52FC2279500E54BD1 /* HomeworkCellModel.swift in Sources */,
 				5797B8F82F6C07D4004416DF /* EditProfileViewModel.swift in Sources */,
 				57F02D012FAE7C080089DA31 /* AccountStatusMapper.swift in Sources */,
 				579E59DE2F7BC94B0067AA22 /* TeacherHomeworkDetailViewController.swift in Sources */,

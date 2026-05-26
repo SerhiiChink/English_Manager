@@ -11,5 +11,7 @@ extension UIViewController {
     func setupProfileNavigationBar() {
         navigationItem.title = "profile".localized
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
     }
 }

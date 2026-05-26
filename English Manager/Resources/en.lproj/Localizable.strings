@@ -29,6 +29,8 @@
 "account_exists_login" = "Account already exists. Please sign in.";
 "sign_up_with_apple" = "Sign up with Apple";
 "sign_up_with_google" = "Sign up with Google";
+"name" = "Name";
+"are_you_sure" = "Are you sure?";
 
 // MARK: - Navigation & Tabs
 "profile" = "Profile";
@@ -39,6 +41,8 @@
 "lessons" = "lessons";
 "learning_system" = "LEARNING SYSTEM";
 "get_started" = "Get Started";
+"filter" = "Filter";
+"all_students" = "All Students";
 
 // MARK: - Profile & Settings
 "first_name" = "First name";
@@ -55,6 +59,8 @@
 "account" = "Account";
 "session" = "Session";
 "no_name" = "No Name";
+"new_password" = "New Password";
+"change" = "Change";
 
 // MARK: - Student Management
 "no_students_yet" = "No students yet";
@@ -64,6 +70,14 @@
 "select_student" = "Select student";
 "remove_student" = "Remove student";
 "name(optional)" = "Name (optional)";
+"add_first_student_hint" = "Enter the email of a student who is already registered in the app";
+"go_to_students_hint" = "Go to the Students section to add your first student";
+"student_lessons_hint" = "Your teacher hasn’t added any lessons yet";
+"student_homework_hint" = "Your teacher hasn’t added any homework yet";
+"no_lessons_yet" = "No lessons yet";
+"no_homework_yet" = "No homework yet";
+"homework_will_appear_here" = "Homework from students will appear here";
+"tap_student_to_add_schedule" = "Tap on a student card to add a schedule";
 
 // MARK: - Lesson Details
 "new_lesson" = "New Lesson";
@@ -76,6 +90,14 @@
 "no_materials" = "No materials";
 "source_url_optional" = "Source URL (optional)";
 "source_URL" = "Source URL";
+"all_students" = "All Students";
+
+// MARK: - Homework Detail
+"review_homework" = "Review Homework";
+"grade_range" = "Grade (1-10)";
+"feedback_optional" = "Feedback (optional)";
+"invalid_grade" = "Invalid grade";
+"enter_grade_range" = "Enter a number from 1 to 10";
 
 // MARK: - Statuses
 "pending" = "Pending";
@@ -84,10 +106,11 @@
 "scheduled" = "Scheduled";
 "completed" = "Completed";
 "cancelled" = "Cancelled";
+"grade" = "Grade:";
 
 // MARK: - Schedule
 "schedule" = "Schedule";
-"add_schedule" = "+ Add schedule";
+"add_schedule" = "Add schedule";
 "no_schedule_yet" = "No schedule yet";
 "select_schedule" = "Select schedule";
 "delete_schedule" = "Delete schedule";
@@ -102,7 +125,7 @@
 "lesson_price" = "Lesson price";
 "minimum_lessons" = "Minimum lessons";
 "payment_history" = "Payment History";
-"pay_for_lessons" = "Pay for lessons";
+"pay_for_lessons" = "Pay for Lessons";
 "payments" = "Payments";
 "no_payments_yet" = "No payments yet";
 "no_history_yet" = "No history yet";
@@ -131,6 +154,9 @@
 "balance_updated" = "Balance updated";
 "total_paid" = "Total paid";
 "auto_debit_suggestion" = "Enable auto debit to deduct lessons automatically after each class.";
+"how_to_pay" = "How to pay";
+"payment_instruction" = "Pay for lessons through your bank’s website or mobile app. Then return to the app and submit a payment request in this section — your teacher will receive a notification and confirm the payment.";
+"setup_payment_settings" = "Set up your payment settings: lesson price and the number of lessons required before payment";
 
 // MARK: - Actions & Alerts
 "add" = "Add";

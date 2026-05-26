@@ -30,4 +30,8 @@ enum OccurrenceStatusMapper {
         ? .init(text: formatter.scheduledText(for: lesson), color: .appGold)
         : .init(text: "completed".localized, color: .appGreen)
     }
+    
+    static func accentColor(for lesson: Lesson) -> UIColor {
+        lesson.date > Date() ? .appGold : .appGreen
+    }
 }

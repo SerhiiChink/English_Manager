@@ -12,7 +12,7 @@ protocol LoginViewModelProtocol {
     var onError: ((String) -> Void)? { get set }
     var onLoading: ((Bool) -> Void)? { get set }
     func login(email: String, password: String)
-    func register(email: String, password: String)
+    func register(email: String, password: String, name: String)
     func  resetPassword(email: String)
 }
 
@@ -51,8 +51,11 @@ final class LoginViewModel: LoginViewModelProtocol {
     }
     
     // MARK: - Register
-    func register(email: String, password: String) {
-        if case .failure(let message) = validator.validateLoginForm(email: email, password: password) {
+    func register(email: String, password: String, name: String) {
+        if case .failure(let message) = validator.validateLoginForm(
+            email: email,
+            password: password
+        ) {
             onError?(message)
             return
         }
@@ -60,9 +63,11 @@ final class LoginViewModel: LoginViewModelProtocol {
             try await self.authService.signUp(email: email,
                                               password: password)
             guard let userId = self.authService.currentUserId else { return }
+            let trimmed = name.trimmingCharacters(in: .whitespaces)
+            let parts = trimmed.components(separatedBy: " ")
             let user = User(id: userId,
-                            name: "",
-                            surname: "",
+                            name: parts.first ?? "",
+                            surname: parts.dropFirst().joined(separator: " "),
                             email: email,
                             role: nil)
             try await self.firestoreService.saveUser(user)

@@ -22,6 +22,7 @@ final class StudentPaymentsViewController: UIViewController {
     private let statusLabel = UILabel()
     private let historyView = PaymentHistoryView()
     private let payButton = UIButton(type: .custom)
+    private let infoButton = UIBarButtonItem()
     
     // MARK: - Properties
     private let router: StudentRouterProtocol
@@ -59,10 +60,10 @@ final class StudentPaymentsViewController: UIViewController {
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = .appBackground
-        setupPayButton()
         setupScrollView()
         setupBalanceCard()
         setupHistoryCard()
+        setupPayButton()
     }
     
     private func setupScrollView() {
@@ -71,9 +72,9 @@ final class StudentPaymentsViewController: UIViewController {
         scrollView.addRefreshControl(target: self,
                                      action: #selector(refreshTapped))
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalToSuperview()
             $0.left.right.equalToSuperview()
-            $0.bottom.equalTo(payButton.snp.top).offset(-8)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Layout.buttonHeight + 16)
         }
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -204,6 +205,13 @@ final class StudentPaymentsViewController: UIViewController {
     private func setupNavigationBar() {
         title = "payments".localized
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
+        infoButton.image = UIImage(systemName: "questionmark.circle")
+        infoButton.style = .plain
+        infoButton.target = self
+        infoButton.action = #selector(infoTapped)
+        navigationItem.rightBarButtonItem = infoButton
     }
     
     // MARK: - Binding
@@ -230,6 +238,11 @@ final class StudentPaymentsViewController: UIViewController {
     // MARK: - Actions
     @objc private func refreshTapped() {
         viewModel.refresh()
+    }
+    
+    @objc private func infoTapped() {
+        showAlert(title: "how_to_pay".localized,
+                  message: "payment_instruction".localized)
     }
     
     // MARK: - Configure

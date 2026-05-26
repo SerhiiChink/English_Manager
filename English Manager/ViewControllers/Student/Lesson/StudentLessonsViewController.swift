@@ -24,7 +24,11 @@ final class StudentLessonsViewController: UIViewController {
                     forCellWithReuseIdentifier: LessonCell.reuseId)
         return cv
     }()
-    private let emptyLabel = UILabel()
+    private let emptyStateView = EmptyStateView(
+        icon: "calendar.badge.clock",
+        title: "no_lessons_yet".localized,
+        subtitle: "student_lessons_hint".localized
+    )
     private var autoDebitButton: UIBarButtonItem?
     
     // MARK: - Properties
@@ -65,7 +69,7 @@ final class StudentLessonsViewController: UIViewController {
         view.backgroundColor = .appBackground
         setupScheduleBanner()
         setupCollectionView()
-        setupEmptyLabel()
+        setupEmptyState()
     }
     
     private func setupScheduleBanner() {
@@ -86,21 +90,19 @@ final class StudentLessonsViewController: UIViewController {
         }
     }
     
-    private func setupEmptyLabel() {
-        emptyLabel.text = "No lessons yet"
-        emptyLabel.textColor = .appTextSecondary
-        emptyLabel.font = .systemFont(ofSize: 16)
-        emptyLabel.textAlignment = .center
-        emptyLabel.isHidden = true
-        view.addSubview(emptyLabel)
-        emptyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+    private func setupEmptyState() {
+        view.addSubview(emptyStateView)
+        emptyStateView.isHidden = true
+        emptyStateView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
     private func setupNavigationBar() {
         navigationItem.title = "lessons_capitalized".localized
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         autoDebitButton = UIBarButtonItem(
             image: UIImage(systemName: "bolt.circle"),
             style: .plain,
@@ -143,7 +145,7 @@ final class StudentLessonsViewController: UIViewController {
     // MARK: - Private
     private func reloadData() {
         let isEmpty = viewModel.lessons.isEmpty
-        emptyLabel.isHidden = !isEmpty
+        emptyStateView.isHidden = !isEmpty
         collectionView.isHidden = isEmpty
         collectionView.reloadData()
     }
@@ -175,10 +177,11 @@ final class StudentLessonsViewController: UIViewController {
     }
     
     private func showAutoPayStatusAlert() {
-        showAlert(title: viewModel.isAutoDebitEnabled
-                    ? "auto_pay_on".localized
-                    : "auto_pay_off".localized,
-                  message: nil)
+        let status = viewModel.isAutoDebitEnabled
+            ? "auto_pay_on".localized
+            : "auto_pay_off".localized
+        showAlert(title: status,
+                  message: "auto_debit_description".localized)
     }
 }
 

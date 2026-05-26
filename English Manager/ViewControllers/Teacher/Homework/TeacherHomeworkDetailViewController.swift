@@ -14,14 +14,13 @@ final class TeacherHomeworkDetailViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let homeworkCard = UIView()
-    private let studentLabel = UILabel()
     private let dateLabel = UILabel()
     private let titleLabel = UILabel()
     private let descriptionTitleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let linkButton = UIButton(type: .system)
-    private let statusBadge = UIView()
-    private let statusLabel = UILabel()
+//    private let statusBadge = UIView()
+//    private let statusLabel = UILabel()
     private let reviewCard = UIView()
     private let feedbackTitleLabel = UILabel()
     private let feedbackLabel = UILabel()
@@ -56,7 +55,7 @@ final class TeacherHomeworkDetailViewController: UIViewController {
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = .appBackground
-        title = "Homework Detail"
+        title = homework.studentName
         setupScrollView()
         setupHomeworkCard()
         setupReviewCard()
@@ -82,48 +81,36 @@ final class TeacherHomeworkDetailViewController: UIViewController {
             $0.top.equalToSuperview().offset(16)
             $0.left.right.equalToSuperview().inset(Layout.padding)
         }
-        setupStatusBadge()
-        setupStudentLabel()
+//        setupStatusBadge()
         setupDateLabel()
         setupTitleLabel()
         setupDescriptionSection()
         setupLinkButton()
     }
     
-    private func setupStatusBadge() {
-        statusBadge.layer.cornerRadius = 8
-        homeworkCard.addSubview(statusBadge)
-        statusBadge.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
-            $0.right.equalToSuperview().inset(16)
-            $0.height.equalTo(20)
-            $0.width.greaterThanOrEqualTo(60)
-        }
-        statusLabel.font = .systemFont(ofSize: 11, weight: .semibold)
-        statusLabel.textColor = .white
-        statusBadge.addSubview(statusLabel)
-        statusLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.left.right.equalToSuperview().inset(8)
-        }
-    }
-    
-    private func setupStudentLabel() {
-        studentLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        studentLabel.textColor = .appTextSecondary
-        homeworkCard.addSubview(studentLabel)
-        studentLabel.snp.makeConstraints {
-            $0.centerY.equalTo(statusBadge)
-            $0.left.equalToSuperview().inset(16)
-        }
-    }
+//    private func setupStatusBadge() {
+//        statusBadge.layer.cornerRadius = 8
+//        homeworkCard.addSubview(statusBadge)
+//        statusBadge.snp.makeConstraints {
+//            $0.top.equalToSuperview().offset(12)
+//            $0.right.equalToSuperview().inset(16)
+//            $0.height.equalTo(22)
+//        }
+//        statusLabel.font = .systemFont(ofSize: 11, weight: .semibold)
+//        statusLabel.textColor = .white
+//        statusBadge.addSubview(statusLabel)
+//        statusLabel.snp.makeConstraints {
+//            $0.top.bottom.equalToSuperview().inset(4)
+//            $0.left.right.equalToSuperview().inset(8)
+//        }
+//    }
     
     private func setupDateLabel() {
         dateLabel.font = .systemFont(ofSize: 13)
         dateLabel.textColor = .appTextSecondary
         homeworkCard.addSubview(dateLabel)
         dateLabel.snp.makeConstraints {
-            $0.top.equalTo(statusBadge.snp.bottom).offset(8)
+            $0.top.equalToSuperview().offset(16)
             $0.left.right.equalToSuperview().inset(16)
         }
     }
@@ -132,9 +119,10 @@ final class TeacherHomeworkDetailViewController: UIViewController {
         titleLabel.font = .systemFont(ofSize: 22, weight: .bold)
         titleLabel.textColor = .appText
         titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .center
         homeworkCard.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(8)
+            $0.top.equalTo(dateLabel.snp.bottom).offset(16)
             $0.left.right.equalToSuperview().inset(16)
         }
     }
@@ -159,8 +147,12 @@ final class TeacherHomeworkDetailViewController: UIViewController {
     }
     
     private func setupLinkButton() {
-        linkButton.setTitleColor(.appAccent, for: .normal)
-        linkButton.titleLabel?.font = .systemFont(ofSize: 15)
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "link")
+        config.imagePadding = 6
+        config.baseForegroundColor = .appBlue
+        config.contentInsets = .zero
+        linkButton.configuration = config
         linkButton.contentHorizontalAlignment = .left
         linkButton.addAction(UIAction { [weak self] _ in
             guard let url = self?.homework.sourceLink else { return }
@@ -190,13 +182,13 @@ final class TeacherHomeworkDetailViewController: UIViewController {
     private func setupFeedbackSection() {
         feedbackTitleLabel.text = "Teacher Feedback"
         feedbackTitleLabel.font = .systemFont(ofSize: 12, weight: .semibold)
-        feedbackTitleLabel.textColor = .appTextSecondary
+        feedbackTitleLabel.textColor = .appAccent
         reviewCard.addSubview(feedbackTitleLabel)
         feedbackTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
             $0.left.right.equalToSuperview().inset(16)
         }
-        gradeLabel.font = .systemFont(ofSize: 32, weight: .bold)
+        gradeLabel.font = .systemFont(ofSize: 38, weight: .bold)
         gradeLabel.textColor = .appAccent
         gradeLabel.textAlignment = .center
         reviewCard.addSubview(gradeLabel)
@@ -234,8 +226,8 @@ final class TeacherHomeworkDetailViewController: UIViewController {
     
     // MARK: - Configure
     private func configure() {
-        studentLabel.text = homework.studentName
-        dateLabel.text = formatter.createdDateString(homework)
+        title = homework.studentName
+        dateLabel.text = formatter.longDateString(homework)
         titleLabel.text = homework.title
         descriptionLabel.text = homework.description.isEmpty
             ? "No description"
@@ -243,22 +235,24 @@ final class TeacherHomeworkDetailViewController: UIViewController {
         if homework.sourceLink.isEmpty {
             linkButton.isHidden = true
         } else {
-            linkButton.setTitle("🔗 \(homework.sourceLink)", for: .normal)
+            var config = linkButton.configuration
+            config?.title = homework.sourceLink
+            linkButton.configuration = config
         }
+//        let style = HomeworkStatusMapper.style(for: homework)
+//        statusBadge.backgroundColor = style.badgeColor
+//        statusLabel.text = style.text
+        
         switch homework.status {
         case .pending:
-            statusBadge.backgroundColor = .appGold
-            statusLabel.text = "Pending"
             feedbackTitleLabel.isHidden = true
             feedbackLabel.isHidden = true
             gradeLabel.isHidden = true
             reviewButton.setTitle("Write Review", for: .normal)
         case .reviewed, .seen:
-            statusBadge.backgroundColor = homework.status == .reviewed
-                ? .appGreen
-                : .appTextSecondary
-            statusLabel.text = homework.grade.map { 
-                "Grade: \($0)/10" } ?? "Reviewed"
+            feedbackTitleLabel.isHidden = false
+            feedbackLabel.isHidden = false
+            gradeLabel.isHidden = false
             gradeLabel.text = homework.grade.map { "\($0)/10" }
             feedbackLabel.text = homework.teacherFeedback ?? "No feedback"
             reviewButton.setTitle("Edit Review", for: .normal)
@@ -267,28 +261,29 @@ final class TeacherHomeworkDetailViewController: UIViewController {
     
     // MARK: - Alert
     private func showReviewAlert() {
-        let alert = UIAlertController(title: "Review Homework",
+        let alert = UIAlertController(title: "review_homework".localized,
                                       message: nil,
                                       preferredStyle: .alert)
         alert.addTextField {
-            $0.placeholder = "Grade (1-10)"
+            $0.placeholder = "grade_range".localized
             $0.keyboardType = .numberPad
             $0.text = self.homework.grade.map { String($0) }
         }
         alert.addTextField {
-            $0.placeholder = "Feedback (optional)"
+            $0.placeholder = "feedback_optional".localized
             $0.text = self.homework.teacherFeedback
         }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "cancel".localized,
+                                      style: .cancel))
         alert.addAction(UIAlertAction(
-            title: "Save",
+            title: "save".localized,
             style: .default) { [weak self] _ in
                 guard let self,
                       let gradeText = alert.textFields?[0].text,
                       let grade = Int(gradeText),
                       (1...10).contains(grade) else {
-                    self?.showAlert(title: "Invalide grade",
-                                    message: "Enter a numder from 1 to 10")
+                    self?.showAlert(title: "invalid_grade".localized,
+                                    message: "enter_grade_range".localized)
                     return
                 }
                 let feedback = alert.textFields?[1].text ?? ""

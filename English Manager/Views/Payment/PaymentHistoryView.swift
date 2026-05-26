@@ -48,7 +48,8 @@ final class PaymentHistoryView: UIView {
             $0.centerX.equalToSuperview()
         }
         clearButton.setImage(UIImage(systemName: "trash"), for: .normal)
-        clearButton.tintColor = .appTextSecondary
+        clearButton.tintColor = .appRed
+        clearButton.alpha = 0.3
         clearButton.addAction(UIAction { [weak self] _ in
             self?.onClear?()
         }, for: .touchUpInside)
@@ -58,7 +59,7 @@ final class PaymentHistoryView: UIView {
             $0.right.equalToSuperview().inset(16)
         }
         totalLabel.font = .systemFont(ofSize: 13, weight: .semibold)
-        totalLabel.textColor = .appAccent
+        totalLabel.textColor = .appText
         addSubview(totalLabel)
         totalLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(32)

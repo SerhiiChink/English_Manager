@@ -13,17 +13,21 @@ final class HomeworkCell: UICollectionViewCell {
     
     // MARK: - UI
     private let containerView = UIView()
+    private let accentBar = AccentBar()
+    private let nameStack = UIStackView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let feedbackLabel = UILabel()
+    private let feedbackIcon = UIImageView()
     private let dateLabel = UILabel()
     private let statusBadge = UIView()
+    private let badgeIcon = UIImageView()
     private let statusLabel = UILabel()
     private let studentNameLabel = UILabel()
     private let menuButton = CellMenuButton()
     
     // MARK: - Properties
-    private let formatter: HomeworkFormatterProtocol = HomeworkFormatter()
+    
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -43,13 +47,22 @@ final class HomeworkCell: UICollectionViewCell {
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(4)
         }
+        setupAccentBar()
         setupStatusBadge()
         setupDateLabel()
-        setupStudentNameLabel()
-        setupTitleLabel()
+        setupNameStack()
         setupDescriptionLabel()
         setupFeedbackLabel()
         setupMenuButton()
+    }
+    
+    private func setupAccentBar() {
+        containerView.addSubview(accentBar)
+        accentBar.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(8)
+            $0.left.equalToSuperview().offset(8)
+            $0.width.equalTo(4)
+        }
     }
     
     private func setupStatusBadge() {
@@ -58,15 +71,24 @@ final class HomeworkCell: UICollectionViewCell {
         statusBadge.snp.makeConstraints {
             $0.top.equalToSuperview().offset(12)
             $0.right.equalToSuperview().inset(16)
-            $0.height.equalTo(20)
-            $0.width.greaterThanOrEqualTo(60)
+            $0.height.equalTo(22)
+        }
+        badgeIcon.contentMode = .scaleAspectFit
+        badgeIcon.tintColor = .white
+        statusBadge.addSubview(badgeIcon)
+        badgeIcon.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(6)
+            $0.centerY.equalToSuperview()
+            $0.width.height.equalTo(11)
         }
         statusLabel.font = .systemFont(ofSize: 11, weight: .semibold)
         statusLabel.textColor = .white
         statusBadge.addSubview(statusLabel)
         statusLabel.snp.makeConstraints {
+            $0.left.equalTo(badgeIcon.snp.right).offset(4)
+            $0.right.equalToSuperview().inset(8)
+            $0.top.bottom.equalToSuperview().inset(4)
             $0.centerY.equalToSuperview()
-            $0.left.right.equalToSuperview().inset(8)
         }
     }
     
@@ -76,32 +98,28 @@ final class HomeworkCell: UICollectionViewCell {
         containerView.addSubview(dateLabel)
         dateLabel.snp.makeConstraints {
             $0.centerY.equalTo(statusBadge)
-            $0.left.equalToSuperview().offset(16)
+            $0.left.equalToSuperview().offset(20)
         }
     }
     
-    private func setupStudentNameLabel() {
-        studentNameLabel.font = .systemFont(ofSize: 13, weight: .semibold)
-        studentNameLabel.textColor = .appAccent
+    private func setupNameStack() {
+        nameStack.axis = .vertical
+        nameStack.spacing = 2
+        nameStack.alignment = .leading
+        containerView.addSubview(nameStack)
+        nameStack.snp.makeConstraints {
+            $0.top.equalTo(statusBadge.snp.bottom).offset(10)
+            $0.left.equalToSuperview().offset(20)
+            $0.right.equalToSuperview().inset(48)
+        }
+        studentNameLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        studentNameLabel.textColor = .appTextSecondary
         studentNameLabel.isHidden = true
-        containerView.addSubview(studentNameLabel)
-        studentNameLabel.snp.makeConstraints {
-            $0.top.equalTo(statusBadge.snp.bottom).offset(8)
-            $0.left.equalToSuperview().offset(16)
-            $0.right.equalToSuperview().inset(16)
-        }
-    }
-    
-    private func setupTitleLabel() {
-        titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
         titleLabel.textColor = .appText
-        titleLabel.numberOfLines = 1
-        containerView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(studentNameLabel.snp.bottom).offset(2)
-            $0.left.equalToSuperview().offset(16)
-            $0.right.equalToSuperview().inset(16)
-        }
+        titleLabel.numberOfLines = 2
+        nameStack.addArrangedSubview(studentNameLabel)
+        nameStack.addArrangedSubview(titleLabel)
     }
     
     private func setupDescriptionLabel() {
@@ -110,63 +128,67 @@ final class HomeworkCell: UICollectionViewCell {
         descriptionLabel.numberOfLines = 2
         containerView.addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(4)
-            $0.left.equalToSuperview().offset(16)
+            $0.top.equalTo(nameStack.snp.bottom).offset(6)
+            $0.left.equalToSuperview().offset(20)
             $0.right.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().offset(-12).priority(.low)
         }
     }
     
     private func setupFeedbackLabel() {
-        feedbackLabel.font = .systemFont(ofSize: 13, weight: .medium)
+        feedbackIcon.image = UIImage(systemName: "text.bubble.fill")
+        feedbackIcon.tintColor = .appGreen
+        feedbackIcon.contentMode = .scaleAspectFit
+        feedbackIcon.isHidden = true
+        containerView.addSubview(feedbackIcon)
+        feedbackIcon.snp.makeConstraints {
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(8)
+            $0.left.equalToSuperview().offset(20)
+            $0.width.height.equalTo(13)
+        }
+        feedbackLabel.font = .systemFont(ofSize: 13)
         feedbackLabel.textColor = .appGreen
-        feedbackLabel.numberOfLines = 2
+        feedbackLabel.numberOfLines = 0
         feedbackLabel.isHidden = true
         containerView.addSubview(feedbackLabel)
         feedbackLabel.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(6)
-            $0.left.equalToSuperview().offset(16)
-            $0.right.equalToSuperview().inset(16)
-            $0.bottom.equalToSuperview().offset(-12)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(5)
+            $0.left.equalTo(feedbackIcon.snp.right).offset(5)
+            $0.right.equalToSuperview().inset(48)
+            $0.bottom.equalToSuperview().offset(-14)
         }
     }
     
     private func setupMenuButton() {
         containerView.addSubview(menuButton)
         menuButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(8)
+            $0.bottom.equalToSuperview().offset(-4)
             $0.right.equalToSuperview().inset(4)
             $0.width.height.equalTo(36)
         }
     }
     
     // MARK: - Configure
-    func configure(with homework: Homework, showStudent: Bool = false) {
-        dateLabel.text = formatter.createdDateString(homework)
-        titleLabel.text = homework.title
-        descriptionLabel.text = homework.description.isEmpty
-            ? "No description"
-            : homework.description
-        studentNameLabel.isHidden = !showStudent
-        studentNameLabel.text = homework.studentName
-        if let feedback = homework.teacherFeedback,
-           !feedback.isEmpty,
-           homework.status != .pending {
-            feedbackLabel.text = "💬 \(feedback)"
+    func configure(with model: HomeworkCellModel) {
+        dateLabel.text = model.dateText
+        titleLabel.text = model.title
+        descriptionLabel.text = model.description
+        descriptionLabel.isHidden = model.description == nil
+        studentNameLabel.text = model.studentName
+        studentNameLabel.isHidden = model.studentName == nil
+        if let feedback = model.feedbackText, !feedback.isEmpty {
+            feedbackLabel.text = feedback
             feedbackLabel.isHidden = false
+            feedbackIcon.isHidden = false
         } else {
             feedbackLabel.isHidden = true
+            feedbackIcon.isHidden = true
         }
-        switch homework.status {
-        case .pending:
-            statusBadge.backgroundColor = .appGold
-            statusLabel.text = "Pending"
-        case .reviewed:
-            statusBadge.backgroundColor = .appGreen
-            statusLabel.text = homework.grade.map { "Grade: \($0)/10" } ?? "Reviewed"
-        case .seen:
-            statusBadge.backgroundColor = .appTextSecondary
-            statusLabel.text = homework.grade.map { "Grade: \($0)/10" } ?? "Seen"
-        }
+        let style = model.statusStyle
+        statusBadge.backgroundColor = style.badgeColor
+        statusLabel.text = style.text
+        accentBar.setColor(style.accentColor)
+        badgeIcon.image = UIImage(systemName: style.icon)
     }
     
     func setMenuActions(_ actions: [CellMenuAction]) {

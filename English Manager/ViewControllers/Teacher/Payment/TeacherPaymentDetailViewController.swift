@@ -198,7 +198,7 @@ final class TeacherPaymentDetailViewController: UIViewController {
         amountTitle.font = .systemFont(ofSize: 14)
         amountTitle.textColor = .appTextSecondary
         amountValue.font = .systemFont(ofSize: 14, weight: .semibold)
-        amountValue.textColor = .appAccent
+        amountValue.textColor = .appText
         paymentCard.addSubview(amountTitle)
         paymentCard.addSubview(amountValue)
         amountTitle.snp.makeConstraints {
@@ -220,7 +220,7 @@ final class TeacherPaymentDetailViewController: UIViewController {
                                                   attributes: attr)
         config.image = UIImage(systemName: "magnifyingglass.circle.fill")
         config.imagePadding = 4
-        config.baseBackgroundColor = .appGold
+        config.baseBackgroundColor = .Brand.surfaceFill
         config.background.cornerRadius = Layout.cornerRadius
         config.cornerStyle = .fixed
         confirmButton.configuration = config
@@ -251,6 +251,8 @@ final class TeacherPaymentDetailViewController: UIViewController {
     private func setupNavigationBar() {
         title = viewModel.student.displayName
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plusminus"),
             style: .plain,

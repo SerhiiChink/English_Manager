@@ -19,7 +19,16 @@ final class TeacherLessonsViewController: UIViewController {
                     forCellWithReuseIdentifier: LessonCell.reuseId)
         return cv
     }()
-    private let emptyLabel = UILabel()
+    private let noStudentsState = EmptyStateView(
+        icon: "person.2",
+        title: "no_students_yet".localized,
+        subtitle: "go_to_students_hint".localized
+    )
+    private let noLessonsState = EmptyStateView(
+        icon: "calendar.badge.clock",
+        title: "no_lessons_yet".localized,
+        subtitle: "tap_student_to_add_schedule".localized
+    )
     
     // MARK: - Properties
     private let router: TeacherRouterProtocol
@@ -61,7 +70,7 @@ final class TeacherLessonsViewController: UIViewController {
         view.backgroundColor = .appBackground
         setupScheduleView()
         setupCollectionView()
-        setupEmptyLabel()
+        setupEmptyState()
     }
     
     private func setupScheduleView() {
@@ -85,21 +94,22 @@ final class TeacherLessonsViewController: UIViewController {
         }
     }
     
-    private func setupEmptyLabel() {
-        emptyLabel.text = "No lessons yet"// localiz
-        emptyLabel.textColor = .appTextSecondary
-        emptyLabel.font = .systemFont(ofSize: 16)
-        emptyLabel.textAlignment = .center
-        emptyLabel.isHidden = true
-        view.addSubview(emptyLabel)
-        emptyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+    private func setupEmptyState() {
+        [noStudentsState, noLessonsState].forEach {
+            view.addSubview($0)
+            $0.isHidden = true
+            $0.snp.makeConstraints {
+                $0.center.equalToSuperview()
+                $0.left.right.equalToSuperview().inset(32)
+            }
         }
     }
     
     private func setupNavigationBar() {
         title = "lessons_capitalized".localized
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
@@ -171,9 +181,11 @@ final class TeacherLessonsViewController: UIViewController {
     }
     
     private func reloadData() {
-        let isEmpty = viewModel.filteredLessons.isEmpty
-        emptyLabel.isHidden = !isEmpty
-        collectionView.isHidden = isEmpty
+        let hasStudents = !viewModel.students.isEmpty
+        let hasLessons = !viewModel.filteredLessons.isEmpty
+        noStudentsState.isHidden = hasStudents
+        noLessonsState.isHidden = !hasStudents || hasLessons
+        collectionView.isHidden = !hasLessons
         collectionView.reloadData()
     }
     
@@ -362,7 +374,7 @@ extension TeacherLessonsViewController {
             message: nil,
             preferredStyle: .actionSheet
         )
-        alert.addAction(UIAlertAction(title: "All lessons",
+        alert.addAction(UIAlertAction(title: "all_students".localized,
                                       style: .default) { [weak self] _ in
             self?.viewModel.filterByStudent(nil)
         })
@@ -376,7 +388,7 @@ extension TeacherLessonsViewController {
                     self?.viewModel.filterByStudent(student.id)
                 })
         }
-        alert.addAction(UIAlertAction(title: "Cancel",
+        alert.addAction(UIAlertAction(title: "cancel".localized,
                                       style: .cancel))
         present(alert, animated: true)
     }
@@ -432,7 +444,7 @@ extension TeacherLessonsViewController {
         router.showScheduleDetail(
             student: student,
             schedules: schedules,
-            onAdd: { [weak self] draft in 
+            onAdd: { [weak self] draft, completion in
                guard let self,
                      let teacherId = viewModel.currentTeacherId else { return }
                 let schedule = Schedule(studentId: draft.studentId,
@@ -441,7 +453,7 @@ extension TeacherLessonsViewController {
                                         time: draft.time,
                                         isActive: true,
                                         createdAt: Date())
-                viewModel.saveSchedule(schedule)
+                viewModel.saveSchedule(schedule, completion: completion)
             },
             onDelete: { [weak self] schedule in
                 self?.viewModel.deleteSchedule(schedule)

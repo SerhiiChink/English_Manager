@@ -15,8 +15,10 @@ final class LoginViewController: UIViewController {
         items: ["enter".localized,
                 "sign_up".localized]
     )
+    private let fieldsStack = UIStackView()
     private let emailField = UITextField()
     private let passwordField = UITextField()
+    private let nameField = UITextField()
     private let confirmPasswordField = UITextField()
     private let loginButton = UIButton(type: .system)
     private let forgotPasswordButton = UIButton(type: .system)
@@ -54,11 +56,13 @@ final class LoginViewController: UIViewController {
 
     // MARK: - setupUI
     private func setupUI() {
-        view.backgroundColor = .Splash.background
+        view.backgroundColor = .appBackground
         setupTapGesture()
         setupLogoLabel()
         setupSegmentedControl()
+        setupFieldsStack()
         setupEmailField()
+        setupNameField()
         setupPasswordField()
         setupConfirmPasswordField()
         setupLoginButton()
@@ -92,9 +96,9 @@ final class LoginViewController: UIViewController {
     private func setupSegmentedControl() {
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.backgroundColor = UIColor.Splash.loaderTrack
-        segmentedControl.selectedSegmentTintColor = UIColor.Splash.title
+        segmentedControl.selectedSegmentTintColor = .appAccent
         segmentedControl.setTitleTextAttributes(
-            [.foregroundColor: UIColor.Splash.subtitle],
+            [.foregroundColor: UIColor.appTextSecondary],
             for: .normal
         )
         segmentedControl.setTitleTextAttributes(
@@ -111,29 +115,36 @@ final class LoginViewController: UIViewController {
         }
     }
     
+    private func setupFieldsStack() {
+        fieldsStack.axis = .vertical
+        fieldsStack.spacing = 12
+        view.addSubview(fieldsStack)
+        fieldsStack.snp.makeConstraints {
+            $0.top.equalTo(segmentedControl.snp.bottom).offset(24)
+            $0.left.right.equalToSuperview().inset(Layout.padding)
+        }
+        [emailField, nameField, passwordField, confirmPasswordField].forEach {
+            $0.snp.makeConstraints { $0.height.equalTo(Layout.buttonHeight) }
+            fieldsStack.addArrangedSubview($0)
+        }
+    }
+    
     private func setupEmailField() {
         styleTextField(emailField, placeholder: "email".localized)
         emailField.keyboardType = .emailAddress
         emailField.autocapitalizationType = .none
         emailField.autocorrectionType = .no
-        view.addSubview(emailField)
-        emailField.snp.makeConstraints {
-            $0.top.equalTo(segmentedControl.snp.bottom).offset(24)
-            $0.left.right.equalToSuperview().inset(Layout.padding)
-            $0.height.equalTo(Layout.buttonHeight)
-        }
+    }
+    
+    private func setupNameField() {
+        styleTextField(nameField, placeholder: "name".localized)
+        nameField.autocapitalizationType = .words
+        nameField.isHidden = true
     }
     
     private func setupPasswordField() {
         styleTextField(passwordField, placeholder: "password".localized)
         passwordField.isSecureTextEntry = true
-        view.addSubview(passwordField)
-        passwordField.snp.makeConstraints {
-            $0.top.equalTo(emailField.snp.bottom).offset(12)
-            $0.left.right.equalToSuperview().inset(Layout.padding)
-            $0.height.equalTo(Layout.buttonHeight)
-
-        }
     }
     
     private func setupConfirmPasswordField() {
@@ -141,12 +152,6 @@ final class LoginViewController: UIViewController {
                        placeholder: "confirm_password".localized)
         confirmPasswordField.isSecureTextEntry = true
         confirmPasswordField.isHidden = true
-        view.addSubview(confirmPasswordField)
-        confirmPasswordField.snp.makeConstraints {
-            $0.top.equalTo(passwordField.snp.bottom).offset(12)
-            $0.left.right.equalToSuperview().inset(Layout.padding)
-            $0.height.equalTo(Layout.buttonHeight)
-        }
     }
     
     private func setupLoginButton() {
@@ -154,14 +159,14 @@ final class LoginViewController: UIViewController {
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.titleLabel?.font = .systemFont(ofSize: 16,
                                                    weight: .semibold)
-        loginButton.backgroundColor = .Splash.title
+        loginButton.backgroundColor = .appAccent
         loginButton.layer.cornerRadius = Layout.cornerRadius
         loginButton.addTarget(self,
                               action: #selector(loginTapped),
                               for: .touchUpInside)
         view.addSubview(loginButton)
         loginButton.snp.makeConstraints {
-            $0.top.equalTo(confirmPasswordField.snp.bottom).offset(24)
+            $0.top.equalTo(fieldsStack.snp.bottom).offset(24)
             $0.left.right.equalToSuperview().inset(Layout.padding)
             $0.height.equalTo(Layout.buttonHeight)
         }
@@ -170,7 +175,7 @@ final class LoginViewController: UIViewController {
     private func setupForgotPasswordButton() {
         forgotPasswordButton.setTitle("forgot_password".localized,
                                       for: .normal)
-        forgotPasswordButton.setTitleColor(.Splash.subtitle, for: .normal)
+        forgotPasswordButton.setTitleColor(.appTextSecondary, for: .normal)
         forgotPasswordButton.titleLabel?.font = .systemFont(ofSize: 14)
         forgotPasswordButton.addTarget(self,
                                        action: #selector(forgotPasswordTapped),
@@ -268,9 +273,12 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Helper
     private func updateUI() {
+        nameField.isHidden = isLogin
         confirmPasswordField.isHidden = isLogin
         forgotPasswordButton.isHidden = !isLogin
-        loginButton.setTitle(isLogin ? "login".localized : "sign_up".localized,
+        loginButton.setTitle(isLogin
+                                ? "login".localized
+                                : "sign_up".localized,
                              for: .normal)
         errorLabel.isHidden = true
     }
@@ -284,14 +292,12 @@ final class LoginViewController: UIViewController {
                                 placeholder: String) {
         field.attributedPlaceholder = NSAttributedString(
             string: placeholder,
-            attributes: [.foregroundColor: UIColor.Splash.subtitle]
+            attributes: [.foregroundColor: UIColor.appTextSecondary]
         )
         field.textColor = .Splash.title
         field.font = .systemFont(ofSize: 16)
-        field.backgroundColor = UIColor.Splash.background.withAlphaComponent(0.6)
+        field.backgroundColor = UIColor.appSurface.withAlphaComponent(0.8)
         field.layer.cornerRadius = Layout.cornerRadius
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.Splash.loaderTrack.cgColor
         field.borderStyle = .none
         let paddingView = UIView(
             frame: CGRect(x: 0, y: 0, width: 16, height: 0)
@@ -312,10 +318,8 @@ final class LoginViewController: UIViewController {
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
         ]))
         button.configuration = config
-        button.backgroundColor = UIColor.Splash.loaderTrack.withAlphaComponent(0.5)
+        button.backgroundColor = UIColor.appSurface
         button.layer.cornerRadius = Layout.cornerRadius
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.Splash.loaderFill.withAlphaComponent(0.3).cgColor
     }
     
     // MARK: - Actions
@@ -339,7 +343,8 @@ final class LoginViewController: UIViewController {
                 return
             }
             viewModel.register(email: emailField.text ?? "",
-                               password: passwordField.text ?? "")
+                               password: passwordField.text ?? "",
+                               name: nameField.text ?? "")
         }
     }
     

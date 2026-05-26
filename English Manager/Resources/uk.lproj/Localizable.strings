@@ -30,6 +30,8 @@
 "get_started" = "Розпочати";
 "sign_up_with_apple" = "Зареєструватися через Apple";
 "sign_up_with_google" = "Зареєструватися через Google";
+"name" = "Ім’я";
+"are_you_sure" = "Ви впевнені ?";
 
 // MARK: - Navigation & Tabs
 "profile" = "Профіль";
@@ -39,6 +41,8 @@
 "payment" = "Оплата";
 "lessons" = "уроки";
 "learning_system" = "LEARNING SYSTEM";
+"all_students" = "Всі студенти";
+"filter" = "Фільтр";
 
 // MARK: - Profile & Settings
 "first_name" = "Ім'я";
@@ -55,6 +59,9 @@
 "account" = "Акаунт";
 "session" = "Сесія";
 "no_name" = "Без імені";
+"change_password" = "Змінити пароль";
+"new_password" = "Новий пароль";
+"change" = "Змінити";
 
 // MARK: - Student Management
 "no_students_yet" = "Ще немає студентів";
@@ -64,6 +71,14 @@
 "select_student" = "Оберіть студента";
 "remove_student" = "Вилучити студента";
 "name(optional)" = "Ім'я (необов'язково)";
+"add_first_student_hint" = "Введіть email студента який вже зареєстрований в додатку";
+"go_to_students_hint" = "Перейдіть до розділу «Студенти» щоб додати першого учня";
+"student_lessons_hint" = "Ваш вчитель ще не додав уроки";
+"student_homework_hint" = "Ваш вчитель ще не додав домашніх завдань";
+"no_lessons_yet" = "Уроків ще немає";
+"no_homework_yet" = "Домашніх завдань ще немає";
+"homework_will_appear_here" = "Тут з'являться домашні завдання від студентів";
+"tap_student_to_add_schedule" = "Натисніть на картку студента щоб додати розклад";
 
 // MARK: - Lesson Details
 "new_lesson" = "Новий урок";
@@ -77,6 +92,13 @@
 "source_url_optional" = "Посилання на джерело (необов’язково)";
 "source_URL" = "Посилання на джерело";
 
+// MARK: - Homework Detail
+"review_homework" = "Перевірити домашнє завдання";
+"grade_range" = "Оцінка (1-10)";
+"feedback_optional" = "Коментар (необов’язково)";
+"invalid_grade" = "Невірна оцінка";
+"enter_grade_range" = "Введіть число від 1 до 10";
+
 // MARK: - Statuses
 "pending" = "В очікуванні";
 "confirmed" = "Підтверджено";
@@ -84,10 +106,11 @@
 "scheduled" = "Запланований";
 "completed" = "Завершений";
 "cancelled" = "Скасований";
+"grade" = "Оцінка:";
 
 // MARK: - Schedule
 "schedule" = "Розклад";
-"add_schedule" = "+ Додати розклад";
+"add_schedule" = "Додати розклад";
 "no_schedule_yet" = "Поки що немає розкладу";
 "select_schedule" = "Виберіть розклад";
 "delete_schedule" = "Видалити розклад";
@@ -102,7 +125,7 @@
 "lesson_price" = "Ціна уроку";
 "minimum_lessons" = "Мінімум уроків";
 "payment_history" = "Історія оплат";
-"pay_for_lessons" = "Оплата за уроки";
+"pay_for_lessons" = "Оплатити уроки";
 "payments" = "Оплати";
 "no_payments_yet" = "Ще немає оплат";
 "no_history_yet" = "Поки що немає історії";
@@ -131,6 +154,9 @@
 "balance_updated" = "Баланс оновлено";
 "total_paid" = "Всього cплачено";
 "auto_debit_suggestion" = "Увімкніть автосписання, щоб уроки списувалися автоматично після кожного заняття.";
+"how_to_pay" = "Як здійснити оплату";
+"payment_instruction" = "Здійсни оплату за навчання через сайт або додаток банку. Після цього повернись у додаток та додай запит на оплату в цьому розділі — вчитель отримає сповіщення та підтвердить платіж.";
+"setup_payment_settings" = "Налаштуйте оплату: вкажіть ціну за урок та кількість уроків до оплати";
 
 // MARK: - Actions & Alerts
 "add" = "Додати";

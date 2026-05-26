@@ -109,7 +109,7 @@ final class PaymentReviewViewController: UIViewController {
             $0.left.equalToSuperview().offset(16)
         }
         amountLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        amountLabel.textColor = .appAccent
+        amountLabel.textColor = .appGreen
         infoCard.addSubview(amountLabel)
         amountLabel.snp.makeConstraints {
             $0.centerY.equalTo(amountTitle)
@@ -155,7 +155,7 @@ final class PaymentReviewViewController: UIViewController {
         }, for: .touchUpInside)
         editButton.configuration = makeConfig(title: "edit".localized,
                                               icon: "pencil",
-                                              color: .appAccent)
+                                              color: .appBlue)
         editButton.layer.cornerRadius = 10
         editButton.addAction(UIAction { [weak self] _ in
             self?.showEditSheet()

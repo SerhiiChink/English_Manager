@@ -20,7 +20,8 @@ protocol TeacherLessonsViewModelProtocol: AnyObject {
     func addLesson(_ lesson: Lesson, occurrence: LessonOccurrence?)
     func nextOccurrence(for schesule: Schedule) -> LessonOccurrence?
     func deleteLesson(lesson: Lesson)
-    func saveSchedule(_ schedule: Schedule)
+    func saveSchedule(_ schedule: Schedule,
+                      completion: @escaping (Schedule) -> Void)
     func deleteSchedule(_ schedule: Schedule)
     func schedules(for studentId: String) -> [Schedule]
     func filterByDate(_ date: Date?)
@@ -250,7 +251,8 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
     }
     
     // MARK: - Save Schedule
-    func saveSchedule(_ schedule: Schedule) {
+    func saveSchedule(_ schedule: Schedule,
+                      completion: @escaping (Schedule) -> Void) {
         Task {
             do {
                 let saved = try await firestoreService.saveSchedule(schedule)
@@ -263,6 +265,7 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
                         schedules.append(saved)
                     }
                     onUpdate?()
+                    completion(saved)
                 }
             } catch {
                 await MainActor.run { [weak self] in

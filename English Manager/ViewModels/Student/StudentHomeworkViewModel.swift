@@ -23,6 +23,7 @@ protocol StudentHomeworkViewModelProtocol: AnyObject {
                         description: String,
                         link: String)
     func markAsSeen(_ homework: Homework)
+    func cellModel(for homework: Homework) -> HomeworkCellModel
 }
 
 final class StudentHomeworkViewModel: StudentHomeworkViewModelProtocol {
@@ -40,6 +41,7 @@ final class StudentHomeworkViewModel: StudentHomeworkViewModelProtocol {
     private let homeworkService: HomeworkFirestoreServiceProtocol
     private let firestoreService: FirestoreServiceProtocol
     private let authService: AuthServiceProtocol
+    private let formatter: HomeworkFormatterProtocol = HomeworkFormatter()
     
     // MARK: - Init
     init(
@@ -167,6 +169,11 @@ final class StudentHomeworkViewModel: StudentHomeworkViewModelProtocol {
                 }
             }
         }
+    }
+    
+    // MARK: - Cell Model
+    func cellModel(for homework: Homework) -> HomeworkCellModel {
+        formatter.cellModel(for: homework, showStudent: false)
     }
     
     // MARK: - Helper

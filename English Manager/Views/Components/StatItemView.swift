@@ -38,7 +38,7 @@ final class StatItemView: UIView {
         valueLabel.font = .systemFont(ofSize: 24, weight: .bold)
         valueLabel.textColor = UIColor.Brand.primary
         titleLabel.font = .systemFont(ofSize: 11)
-        titleLabel.textColor = UIColor.Brand.secondary
+        titleLabel.textColor = UIColor.appAccent
     }
     
     // MARK: - Configure

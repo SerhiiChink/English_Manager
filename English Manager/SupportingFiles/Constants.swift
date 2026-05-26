@@ -33,4 +33,8 @@ enum UDKeys {
     static let userRole = "userRole"
     static let userId = "userId"
     static let studentBalance = "studentBalance"
+    static let paymentSettingsHint = "didShowPaymentSettingsHint"
+    static func lastTeacherId(for studentId: String) -> String {
+        "lastTeacherId_\(studentId)"
+    }
 }

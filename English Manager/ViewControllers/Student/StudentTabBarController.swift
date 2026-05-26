@@ -26,7 +26,6 @@ final class StudentTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabs()
-        setupAppearance()
     }
     
     // MARK: - Setup
@@ -39,13 +38,7 @@ final class StudentTabBarController: UITabBarController {
         ], animated: false)
         selectedIndex = 1
     }
-    
-    private func setupAppearance() {
-        tabBar.backgroundColor = .appBackground
-        tabBar.tintColor = .Brand.primary
-        tabBar.unselectedItemTintColor = .Brand.secondary
-    }
-    
+
     // MARK: - Tabs
     private func makeProfileTab() -> UINavigationController {
         let nav = makeNav { StudentProfileViewController(router: $0) }

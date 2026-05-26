@@ -6,10 +6,16 @@
 //
 
 import UIKit
+import SnapKit
 
 final class StudentHomeworkViewController: UIViewController {
     // MARK: - UI
     private let contentView = HomeworkView()
+    private let emptyStateView = EmptyStateView(
+        icon: "doc.text",
+        title: "no_homework_yet".localized,
+        subtitle: "student_homework_hint".localized
+    )
     
     // MARK: - Properties
     private let router: StudentRouterProtocol
@@ -38,6 +44,7 @@ final class StudentHomeworkViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupContentView()
+        setupEmptyState()
         setupNavigationBar()
         refreshContoller()
         bindViewModel()
@@ -54,9 +61,19 @@ final class StudentHomeworkViewController: UIViewController {
         contentView.setDelegate(self)
     }
     
+    private func setupEmptyState() {
+        contentView.addSubview(emptyStateView)
+        emptyStateView.isHidden = true
+        emptyStateView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
     private func setupNavigationBar() {
-        title = "Homework"
+        title = "homework".localized
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                             target: self,
                             action: #selector(addTapped))
@@ -66,7 +83,9 @@ final class StudentHomeworkViewController: UIViewController {
     private func bindViewModel() {
         viewModel.onUpdate = { [weak self] in
             guard let self else { return }
-            contentView.reloadData(isEmpty: viewModel.homeworks.isEmpty)
+            let isEmpty = viewModel.homeworks.isEmpty
+            emptyStateView.isHidden = !isEmpty
+            contentView.reloadData(isEmpty: isEmpty)
         }
         viewModel.onError = { [weak self] message in
             self?.contentView.endRefreshing()
@@ -104,7 +123,8 @@ extension StudentHomeworkViewController: UICollectionViewDataSource {
             withReuseIdentifier: HomeworkCell.reuseId,
             for: indexPath) as! HomeworkCell
         let homework = viewModel.homeworks[indexPath.item]
-        cell.configure(with: homework)
+        let model = viewModel.cellModel(for: homework)
+        cell.configure(with: model)
         cell.setMenuActions([
             .edit { [weak self] in
                 self?.showEditHomeworkAlert(

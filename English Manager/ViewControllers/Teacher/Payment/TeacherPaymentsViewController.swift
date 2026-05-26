@@ -18,7 +18,11 @@ final class TeacherPaymentsViewController: UIViewController {
                     forCellWithReuseIdentifier: PaymentCell.reuseId)
         return cv
     }()
-    private let emptyLabel = UILabel()
+    private let emptyStateView = EmptyStateView(
+        icon: "person.2",
+        title: "no_students_yet".localized,
+        subtitle: "go_to_students_hint".localized
+    )
         
     // MARK: - Properties
     private let router: TeacherRouterProtocol
@@ -57,7 +61,7 @@ final class TeacherPaymentsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .appBackground
         setupCollectionView()
-        setupEmptyLabel()
+        setupEmptyState()
     }
     
     private func setupCollectionView() {
@@ -69,21 +73,19 @@ final class TeacherPaymentsViewController: UIViewController {
         }
     }
     
-    private func setupEmptyLabel() {
-        emptyLabel.text = "no_students_yet".localized
-        emptyLabel.textColor = .appTextSecondary
-        emptyLabel.font = .systemFont(ofSize: 16)
-        emptyLabel.textAlignment = .center
-        emptyLabel.isHidden = true
-        view.addSubview(emptyLabel)
-        emptyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+    private func setupEmptyState() {
+        view.addSubview(emptyStateView)
+        emptyStateView.isHidden = true
+        emptyStateView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
     private func setupNavіgationBar() {
         title = "payments".localized
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "gearshape"),
             style: .plain,
@@ -97,6 +99,7 @@ final class TeacherPaymentsViewController: UIViewController {
             guard let self else { return }
             collectionView.endRefreshing()
             reloadData()
+            showSettingsHintIfNeeded()
         }
         viewModel.onError = { [weak self] message in
             self?.collectionView.endRefreshing()
@@ -116,7 +119,7 @@ final class TeacherPaymentsViewController: UIViewController {
     // MARK: - Private
     private func reloadData() {
         let isEmpty = viewModel.students.isEmpty
-        emptyLabel.isHidden = !isEmpty
+        emptyStateView.isHidden = !isEmpty
         collectionView.isHidden = isEmpty
         collectionView.reloadData()
     }
@@ -124,6 +127,18 @@ final class TeacherPaymentsViewController: UIViewController {
     private func refreshController() {
         collectionView.addRefreshControl(target: self,
                                          action: #selector(refreshTapped))
+    }
+    
+    private func showSettingsHintIfNeeded() {
+        guard viewModel.settings == nil else { return }
+        guard !UserDefaults.standard.bool(
+            forKey: UDKeys.paymentSettingsHint
+        ) else { return }
+        UserDefaults.standard.set(true,
+                                  forKey: UDKeys.paymentSettingsHint)
+        ToastView.show(.warning("setup_payment_settings".localized),
+                       in: view,
+                       duration: ToastDuration.long)
     }
 }
 

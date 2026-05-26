@@ -10,6 +10,9 @@ import FirebaseFirestore
 
 protocol FirestoreServiceProtocol {
     func saveUser(_ user: User) async throws
+    func updateUserProfile(userId: String,
+                           name: String,
+                           surname: String) async throws
     func fetchUser(id: String) async throws -> User
     func saveLesson(_ lesson: Lesson) async throws -> Lesson
     func fetchLessons(teacherId: String) async throws -> [Lesson]
@@ -31,7 +34,6 @@ protocol FirestoreServiceProtocol {
     func updateTeacher(studentId: String,
                        teacherId: String) async throws
     func updateUserRole(userId: String, role: UserRole) async throws
-    func updateTeacherAlias(studentId: String, alias: String) async throws
     func updateUserAvatar(userId: String, url: String) async throws
     func removeStudent(studentId: String) async throws
 }
@@ -74,16 +76,21 @@ final class FirestoreService: FirestoreServiceProtocol {
             .updateData(["role": role.rawValue])
     }
     
-    func updateTeacherAlias(studentId: String, alias: String) async throws {
-        try await collection(Collections.users)
-            .document(studentId)
-            .updateData(["teacherAlias": alias])
-    }
-    
     func updateUserAvatar(userId: String, url: String) async throws {
         try await collection(Collections.users)
             .document(userId)
             .updateData(["photoURL": url])
+    }
+    
+    func updateUserProfile(userId: String,
+                           name: String,
+                           surname: String) async throws {
+        try await collection(Collections.users)
+            .document(userId)
+            .updateData([
+                "name": name,
+                "surname": surname,
+            ])
     }
     
     // MARK: - Lessons
@@ -177,7 +184,7 @@ final class FirestoreService: FirestoreServiceProtocol {
     func fetchHomeworks(teacherId: String) async throws -> [Homework] {
         let snapshot = try await collection(Collections.homeworks)
             .whereField("teacherId", isEqualTo: teacherId)
-            .order(by: "uploadedAt", descending: true)
+            .order(by: "createdAt", descending: true)
             .getDocuments()
         return try snapshot.decode(Homework.self)
     }
@@ -185,7 +192,7 @@ final class FirestoreService: FirestoreServiceProtocol {
     func fetchStudentHomeworks(studentId: String) async throws -> [Homework] {
         let snapshot = try await collection(Collections.homeworks)
             .whereField("studentId", isEqualTo: studentId)
-            .order(by: "uploadedAt", descending: true)
+            .order(by: "createdAt", descending: true)
             .getDocuments()
         return try snapshot.decode(Homework.self)
     }

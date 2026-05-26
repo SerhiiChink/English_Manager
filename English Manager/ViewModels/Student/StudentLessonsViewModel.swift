@@ -72,6 +72,9 @@ final class StudentLessonsViewModel: StudentLessonsViewModelProtocol {
                     forceRefresh: forceRefresh
                 )
                 guard let teacherId = user.teacherId else {
+                    UserDefaults.standard.removeObject(
+                        forKey: "lastTeacherId_\(studentId)"
+                    )
                     await MainActor.run { [weak self] in
                         self?.isFetching = false
                         self?.onLoading?(false)
@@ -112,11 +115,13 @@ final class StudentLessonsViewModel: StudentLessonsViewModelProtocol {
     
     private func checkNewTeacher(studentId: String,
                                  teacherId: String) -> Bool {
-        let key = "lastTeacherId_\(studentId)"
-        guard UserDefaults.standard.string(forKey: key) != teacherId else {
-            return false
-        }
-        UserDefaults.standard.set(teacherId, forKey: key)
+        guard UserDefaults.standard.string(
+            forKey: UDKeys.lastTeacherId(for: studentId)
+        ) != teacherId else { return false }
+        UserDefaults.standard.set(
+            teacherId,
+            forKey: UDKeys.lastTeacherId(for: studentId)
+        )
         return true
     }
 }

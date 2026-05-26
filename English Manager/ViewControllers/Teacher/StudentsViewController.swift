@@ -18,7 +18,12 @@ final class StudentsViewController: UIViewController {
                     forCellWithReuseIdentifier: StudentCell.reuseId)
         return cv
     }()
-    private let emptyLabel = UILabel()
+    private let emptyStateView = EmptyStateView(
+        icon: "person.badge.plus",
+        title: "no_students_yet".localized,
+        subtitle: "add_first_student_hint".localized,
+        action: "add_student".localized,
+        onAction: nil)
     
     // MARK: - Properties
     private let router: TeacherRouterProtocol
@@ -57,7 +62,7 @@ final class StudentsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .appBackground
         setupCollectionView()
-        setupEmptyLabel()
+        setupEmptyState()
     }
     
     private func setupCollectionView() {
@@ -69,21 +74,22 @@ final class StudentsViewController: UIViewController {
         }
     }
     
-    private func setupEmptyLabel() {
-        emptyLabel.text = "no_students_yet".localized
-        emptyLabel.textColor = .appTextSecondary
-        emptyLabel.font = .systemFont(ofSize: 16)
-        emptyLabel.textAlignment = .center
-        emptyLabel.isHidden = true
-        view.addSubview(emptyLabel)
-        emptyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+    private func setupEmptyState() {
+        view.addSubview(emptyStateView)
+        emptyStateView.isHidden = true
+        emptyStateView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        emptyStateView.onAction = { [weak self] in
+            self?.showAddStudentAlert()
         }
     }
     
     private func setupNavigationBar() {
         title = "students".localized
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
@@ -114,8 +120,8 @@ final class StudentsViewController: UIViewController {
     // MARK: - Private
     private func reloadData() {
         let isEmpty = viewModel.students.isEmpty
-        emptyLabel.isHidden = !isEmpty
         collectionView.isHidden = isEmpty
+        emptyStateView.isHidden = !isEmpty
         collectionView.reloadData()
     }
     
@@ -168,20 +174,15 @@ extension StudentsViewController {
             $0.keyboardType = .emailAddress
             $0.autocapitalizationType = .none
         }
-        alert .addTextField {
-            $0.placeholder = "name(optional)".localized
-        }
-        alert.addAction(UIAlertAction(
-            title: "cancel".localized,
-            style: .cancel)
+        alert.addAction(UIAlertAction(title: "cancel".localized,
+                                      style: .cancel)
         )
         alert.addAction(UIAlertAction(
             title: "add".localized,
             style: .default) { [weak self] _ in
                 guard let email = alert.textFields?[0].text,
                       !email.isEmpty else { return }
-                let name = alert.textFields?[1].text ?? ""
-                self?.viewModel.addStudent(email: email, name: name)
+                self?.viewModel.addStudent(email: email)
             })
         present(alert, animated: true)
     }

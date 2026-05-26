@@ -13,7 +13,8 @@ protocol TeacherRouterProtocol: AnyObject {
     func showScheduleDetail(
         student: User,
         schedules: [Schedule],
-        onAdd: @escaping (ScheduleDraft) -> Void,
+        onAdd: @escaping (ScheduleDraft,
+                          @escaping (Schedule) -> Void) -> Void,
         onDelete: @escaping(Schedule) -> Void,
         onToggleAutoDebit: @escaping (Bool) -> Void
     )
@@ -58,7 +59,8 @@ final class TeacherRouter: TeacherRouterProtocol {
     func showScheduleDetail(
         student: User,
         schedules: [Schedule],
-        onAdd: @escaping (ScheduleDraft) -> Void,
+        onAdd: @escaping (ScheduleDraft,
+                          @escaping (Schedule) -> Void) -> Void,
         onDelete: @escaping(Schedule) -> Void,
         onToggleAutoDebit: @escaping (Bool) -> Void
     ) {

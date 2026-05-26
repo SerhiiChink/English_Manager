@@ -115,8 +115,6 @@ final class StudentScheduleView: UIView {
         container.tag = index
         container.backgroundColor = chip.hasSchedule ? .appAccent : .appSurface
         container.layer.cornerRadius = Layout.cornerRadius
-        container.layer.borderWidth = 1
-        container.layer.borderColor = UIColor.appAccent.cgColor
         container.layer.shadowColor = UIColor.black.cgColor
         container.layer.shadowOpacity = 0.08
         container.layer.shadowOffset = CGSize(width: 0, height: 2)

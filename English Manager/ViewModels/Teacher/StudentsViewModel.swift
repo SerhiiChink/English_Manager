@@ -13,7 +13,7 @@ protocol StudentsViewModelProtocol: AnyObject {
     var onLoading: ((Bool) -> Void)? { get set }
     var students: [User] { get }
     func fetchStudents()
-    func addStudent(email: String, name: String)
+    func addStudent(email: String)
     func removeStudent(_ student: User)
 }
 
@@ -65,7 +65,7 @@ final class StudentsViewModel: StudentsViewModelProtocol {
     }
     
     // MARK: - Add Student
-    func addStudent(email: String, name: String) {
+    func addStudent(email: String) {
         guard let teacherId = authService.currentUserId else { return }
         onLoading?(true)
         Task {
@@ -84,12 +84,6 @@ final class StudentsViewModel: StudentsViewModelProtocol {
                         self?.onError?("Student already has a teacher")
                     }
                     return
-                }
-                if !name.isEmpty {
-                    try await firestoreService.updateTeacherAlias(
-                        studentId: student.id,
-                        alias: name
-                    )
                 }
                 try await firestoreService.updateTeacher(
                     studentId: student.id,

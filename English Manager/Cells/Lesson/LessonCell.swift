@@ -13,6 +13,7 @@ final class LessonCell: UICollectionViewCell {
     
     // MARK: - UI
     private let containerView = UIView()
+    private let accentBar = AccentBar()
     private let dateLabel = UILabel()
     private let studentNameLabel = UILabel()
     private let topicLabel = UILabel()
@@ -40,6 +41,7 @@ final class LessonCell: UICollectionViewCell {
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(4)
         }
+        setupAccentBar()
         setupDateLabel()
         setupStudentNameLabel()
         setupTopicLabel()
@@ -47,13 +49,22 @@ final class LessonCell: UICollectionViewCell {
         setupMenuButton()
     }
     
+    private func setupAccentBar() {
+        containerView.addSubview(accentBar)
+        accentBar.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(8)
+            $0.left.equalToSuperview().offset(8)
+            $0.width.equalTo(4)
+        }
+    }
+    
     private func setupDateLabel() {
         dateLabel.font = .systemFont(ofSize: 12, weight: .medium)
         dateLabel.textColor = .appTextSecondary
         containerView.addSubview(dateLabel)
         dateLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(12)
-            $0.left.equalToSuperview().offset(16)
+            $0.top.equalToSuperview().offset(16)
+            $0.left.equalToSuperview().offset(20)
             $0.right.equalToSuperview().offset(-16)
         }
     }
@@ -64,7 +75,7 @@ final class LessonCell: UICollectionViewCell {
         containerView.addSubview(studentNameLabel)
         studentNameLabel.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom).offset(4)
-            $0.left.equalToSuperview().offset(16)
+            $0.left.equalToSuperview().offset(20)
             $0.right.equalToSuperview().offset(-16)
         }
     }
@@ -76,7 +87,7 @@ final class LessonCell: UICollectionViewCell {
         containerView.addSubview(topicLabel)
         topicLabel.snp.makeConstraints {
             $0.top.equalTo(studentNameLabel.snp.bottom).offset(6)
-            $0.left.equalToSuperview().offset(16)
+            $0.left.equalToSuperview().offset(20)
             $0.right.equalToSuperview().offset(-16)
         }
     }
@@ -87,7 +98,7 @@ final class LessonCell: UICollectionViewCell {
         containerView.addSubview(bookLabel)
         bookLabel.snp.makeConstraints {
             $0.top.equalTo(topicLabel.snp.bottom).offset(6)
-            $0.left.equalToSuperview().offset(16)
+            $0.left.equalToSuperview().offset(20)
             $0.right.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-12)
         }
@@ -108,6 +119,7 @@ final class LessonCell: UICollectionViewCell {
         studentNameLabel.text = lesson.studentName
         topicLabel.text = lesson.topic
         bookLabel.text = lesson.bookTitle
+        accentBar.setColor(OccurrenceStatusMapper.accentColor(for: lesson))
     }
     
     func setMenuActions(_ actions: [CellMenuAction]) {

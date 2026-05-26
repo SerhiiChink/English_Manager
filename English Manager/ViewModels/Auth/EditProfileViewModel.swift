@@ -48,12 +48,11 @@ final class EditProfileViewModel: EditProfileViewModelProtocol {
             return
         }
         onLoading?(true)
-        var updatedUser = user
-        updatedUser.name = name
-        updatedUser.surname = surname
         Task {
             do {
-                try await firestoreService.saveUser(updatedUser)
+                try await firestoreService.updateUserProfile(userId: user.id,
+                                                             name: name,
+                                                             surname: surname)
                 await MainActor.run { [weak self] in
                     self?.onLoading?(false)
                     self?.onSuccess?()

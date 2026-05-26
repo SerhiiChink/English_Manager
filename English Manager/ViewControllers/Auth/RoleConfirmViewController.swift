@@ -106,7 +106,7 @@ final class RoleConfirmViewController: UIViewController {
             $0.left.right.equalToSuperview().inset(16)
         }
         roleDescriptionLabel.font = .systemFont(ofSize: 14)
-        roleDescriptionLabel.textColor = .Splash.subtitle
+        roleDescriptionLabel.textColor = .appTextSecondary
         roleDescriptionLabel.textAlignment = .center
         roleDescriptionLabel.numberOfLines = 0
         roleCard.addSubview(roleDescriptionLabel)
@@ -122,7 +122,7 @@ final class RoleConfirmViewController: UIViewController {
         confirmButton.setTitleColor(.white, for: .normal)
         confirmButton.titleLabel?.font = .systemFont(ofSize: 16,
                                                      weight: .semibold)
-        confirmButton.backgroundColor = .Splash.title
+        confirmButton.backgroundColor = .appAccent
         confirmButton.layer.cornerRadius = Layout.cornerRadius
         confirmButton.addTarget(self,
                                 action: #selector(confirmTapped),
@@ -137,7 +137,7 @@ final class RoleConfirmViewController: UIViewController {
     
     private func setupChangeButton() {
         changeButton.setTitle("confirm_role_change".localized, for: .normal)
-        changeButton.setTitleColor(.Splash.subtitle, for: .normal)
+        changeButton.setTitleColor(.appTextSecondary, for: .normal)
         changeButton.titleLabel?.font = .systemFont(ofSize: 15)
         changeButton.addTarget(self,
                                action: #selector(changeTapped),

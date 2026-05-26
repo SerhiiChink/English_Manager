@@ -26,7 +26,6 @@ final class TeacherTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabs()
-        setupAppearance()
     }
     
     // MARK: - Setup
@@ -39,12 +38,6 @@ final class TeacherTabBarController: UITabBarController {
             makePaymentsTab()
         ], animated: false)
         selectedIndex = 1
-    }
-    
-    private func setupAppearance() {
-        tabBar.backgroundColor = .appBackground
-        tabBar.tintColor = .Brand.primary
-        tabBar.unselectedItemTintColor = .Brand.secondary
     }
     
     // MARK: - Tabs

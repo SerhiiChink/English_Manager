@@ -18,7 +18,6 @@ final class HomeworkView: UIView {
                     forCellWithReuseIdentifier: HomeworkCell.reuseId)
         return cv
     }()
-    private let emptyLabel = UILabel()
     
     // MARK: - Callbacks
     var onRefresh: (() -> Void)?
@@ -38,7 +37,6 @@ final class HomeworkView: UIView {
     private func setupUI() {
         backgroundColor = .appBackground
         setupCollectionView()
-        setupEmptyLabel()
     }
     
     private func setupCollectionView() {
@@ -48,18 +46,6 @@ final class HomeworkView: UIView {
         }
         collectionView.addRefreshControl(target: self,
                                          action: #selector(refreshTapped))
-    }
-    
-    private func setupEmptyLabel() {
-        emptyLabel.text = "No homework yet"
-        emptyLabel.textColor = .appTextSecondary
-        emptyLabel.font = .systemFont(ofSize: 16)
-        emptyLabel.textAlignment = .center
-        emptyLabel.isHidden = true
-        addSubview(emptyLabel)
-        emptyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
     }
     
     // MARK: - Configure
@@ -77,7 +63,6 @@ final class HomeworkView: UIView {
     
     func reloadData(isEmpty: Bool) {
         collectionView.endRefreshing()
-        emptyLabel.isHidden = !isEmpty
         collectionView.isHidden = isEmpty
         collectionView.reloadData()
     }

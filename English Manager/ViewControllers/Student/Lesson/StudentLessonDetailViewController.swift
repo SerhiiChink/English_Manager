@@ -184,7 +184,7 @@ final class StudentLessonDetailViewController: UIViewController {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "link")
         config.imagePadding = 6
-        config.baseForegroundColor = .appAccent
+        config.baseForegroundColor = .appBlue
         config.contentInsets = .zero
         let bnt = UIButton(configuration: config)
         bnt.contentHorizontalAlignment = .left

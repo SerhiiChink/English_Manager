@@ -6,10 +6,16 @@
 //
 
 import UIKit
+import SnapKit
 
 final class TeacherHomeworkViewController: UIViewController {
     // MARK: - UI
     private let contentView = HomeworkView()
+    private let emptyStateView = EmptyStateView(
+        icon: "person.2",
+        title: "no_homework_yet".localized,
+        subtitle: "homework_will_appear_here".localized
+    )
     
     // MARK: - Properties
     private let router: TeacherRouterProtocol
@@ -38,6 +44,7 @@ final class TeacherHomeworkViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupContentView()
+        setupEmptyState()
         setupNavigatorBar()
         bindViewModel()
         refreshContoller()
@@ -54,9 +61,19 @@ final class TeacherHomeworkViewController: UIViewController {
         contentView.setDelegate(self)
     }
     
+    private func setupEmptyState() {
+        contentView.addSubview(emptyStateView)
+        emptyStateView.isHidden = true
+        emptyStateView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
     private func setupNavigatorBar() {
-        title = "Homework"
+        title = "homework".localized
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "line.3.horizontal.decrease"),
             style: .plain,
@@ -69,7 +86,9 @@ final class TeacherHomeworkViewController: UIViewController {
     private func bindViewModel() {
         viewModel.onUpdate = { [weak self] in
             guard let self else { return }
-            contentView.reloadData(isEmpty: viewModel.filteredHomeworks.isEmpty)
+            let isEmpty = viewModel.filteredHomeworks.isEmpty
+            emptyStateView.isHidden = !isEmpty
+            contentView.reloadData(isEmpty: isEmpty)
         }
         viewModel.onError = { [weak self] message in
             self?.contentView.endRefreshing()
@@ -106,8 +125,9 @@ extension TeacherHomeworkViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: HomeworkCell.reuseId,
             for: indexPath) as! HomeworkCell
-        cell.configure(with: viewModel.filteredHomeworks[indexPath.item],
-                       showStudent: true)
+        let homework = viewModel.filteredHomeworks[indexPath.item]
+        let model = viewModel.cellModel(for: homework)
+        cell.configure(with: model)
         cell.hideMenu()
         return cell
     }
@@ -129,11 +149,11 @@ extension TeacherHomeworkViewController: UICollectionViewDelegate {
 // MARK: - Filter Alert
 extension TeacherHomeworkViewController {
     private func showFilterAlert() {
-        let alert = UIAlertController(title: "Filter",
+        let alert = UIAlertController(title: "filter".localized,
                                       message: nil,
                                       preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(
-            title: "All",
+            title: "all_students".localized,
             style: .default) { [weak self] _ in
                 self?.viewModel.filterByStudent(nil)
             }
@@ -146,7 +166,7 @@ extension TeacherHomeworkViewController {
                 }
             )
         }
-        alert.addAction(UIAlertAction(title: "Cancel",
+        alert.addAction(UIAlertAction(title: "cancel".localized,
                                       style: .cancel))
         present(alert, animated: true)
     }

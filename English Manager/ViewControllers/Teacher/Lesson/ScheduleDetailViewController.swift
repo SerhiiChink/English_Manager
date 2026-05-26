@@ -24,7 +24,7 @@ final class ScheduleDetailViewController: UIViewController {
     // MARK: - Properties
     private let student: User
     private var schedules: [Schedule]
-    private let onAdd: (ScheduleDraft) -> Void
+    private let onAdd: (ScheduleDraft, @escaping (Schedule) -> Void) -> Void
     private let onDelete: (Schedule) -> Void
     private let onToggleAutoDebit: (Bool) -> Void
     private let formatter: ScheduleFormatterProtocol = ScheduleFormatter()
@@ -33,7 +33,8 @@ final class ScheduleDetailViewController: UIViewController {
     // MARK: - Init
     init(student: User,
          schedules: [Schedule],
-         onAdd: @escaping (ScheduleDraft) -> Void,
+         onAdd: @escaping (ScheduleDraft,
+                           @escaping (Schedule) -> Void) -> Void,
          onDelete: @escaping (Schedule) -> Void,
          onToggleAutoDebit: @escaping (Bool) -> Void) {
         self.student = student
@@ -311,8 +312,10 @@ extension ScheduleDetailViewController {
         let vc = SchedulePickerViewController(
             student: student
         ) { [weak self] draft in
-            self?.onAdd(draft)
-            self?.navigationController?.popViewController(animated: true)
+            self?.onAdd(draft) { savedSchedule in
+                self?.schedules.append(savedSchedule)
+                self?.reloadSchedules()
+            }
         }
         vc.modalPresentationStyle = .pageSheet
         if let sheet = vc.sheetPresentationController {
