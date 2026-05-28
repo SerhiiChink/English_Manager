@@ -7,17 +7,25 @@
 
 import UIKit
 import FirebaseCore
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         FirebaseApp.configure()
         setupAppearance()
+        let authService: AuthServiceProtocol = AuthService()
+        let firestoreService: FirestoreServiceProtocol = FirestoreService()
+        setupPushNotifications(application: application,
+                               authService: authService,
+                               firestoreService: firestoreService)
         return true
     }
+
 
     // MARK: UISceneSession Lifecycle
     func application(
@@ -32,6 +40,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didDiscardSceneSessions sceneSessions: Set<UISceneSession>
     ) {}
+}
+
+// MARK: - Push Notifications
+private extension AppDelegate {
+    func setupPushNotifications(
+        application: UIApplication,
+        authService: AuthServiceProtocol,
+        firestoreService: FirestoreServiceProtocol
+    ) {
+        PushNotificationService.shared.onTokenRefresh = { token in
+            guard let userId = authService.currentUserId else { return }
+            Task {
+                try? await firestoreService.updateFCMToken(userId: userId,
+                                                           token: token)
+            }
+        }
+        PushNotificationService.shared.setup()
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: [.alert, .badge, .sound]
+        ) { granted, _ in
+            guard granted else { return }
+            DispatchQueue.main.async {
+                application.registerForRemoteNotifications()
+            }
+        }
+    }
 }
 
 // MARK: - Global Appearance

@@ -5,7 +5,7 @@
 //  Created by Sergej Klepikov on 04.04.2026.
 //
 
-import UIKit
+import Foundation
 import FirebaseFirestore
 
 protocol PaymentFirestoreServiceProtocol {

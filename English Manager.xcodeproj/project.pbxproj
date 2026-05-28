@@ -79,6 +79,8 @@
 		577D57B52FC2279500E54BD1 /* HomeworkCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57B42FC2279500E54BD1 /* HomeworkCellModel.swift */; };
 		577D57B72FC2F14C00E54BD1 /* AccentBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57B62FC2F14C00E54BD1 /* AccentBar.swift */; };
 		577D57BA2FC4EF6B00E54BD1 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57B92FC4EF6B00E54BD1 /* EmptyStateView.swift */; };
+		577D57BE2FC82F1D00E54BD1 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57BD2FC82F1D00E54BD1 /* PushNotificationService.swift */; };
+		577D57C02FC830AE00E54BD1 /* PushNotificationMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D57BF2FC830AE00E54BD1 /* PushNotificationMapper.swift */; };
 		5797B8F02F6AB6EA004416DF /* TeacherProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */; };
 		5797B8F42F6ABBBA004416DF /* StatItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8F32F6ABBBA004416DF /* StatItemView.swift */; };
 		5797B8F82F6C07D4004416DF /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5797B8F72F6C07D4004416DF /* EditProfileViewModel.swift */; };
@@ -94,7 +96,6 @@
 		57BA703C2F8A79D80025389F /* TeacherPaymentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA703B2F8A79D80025389F /* TeacherPaymentDetailViewController.swift */; };
 		57BA703E2F8A91A90025389F /* PaymentCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA703D2F8A91A90025389F /* PaymentCellModel.swift */; };
 		57BA70402F8AD29F0025389F /* StudentScheduleBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA703F2F8AD29F0025389F /* StudentScheduleBannerView.swift */; };
-		57BA70472F8AD4F60025389F /* AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA70462F8AD4F60025389F /* AppIcons.swift */; };
 		57BA704C2F8ADA1E0025389F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 57BA704B2F8ADA1E0025389F /* Localizable.strings */; };
 		57BA70512F8ADAB60025389F /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA70502F8ADAB60025389F /* String+Localization.swift */; };
 		57BA70532F8AECDE0025389F /* StudentPaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA70522F8AECDE0025389F /* StudentPaymentsViewModel.swift */; };
@@ -235,6 +236,8 @@
 		577D57B42FC2279500E54BD1 /* HomeworkCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkCellModel.swift; sourceTree = "<group>"; };
 		577D57B62FC2F14C00E54BD1 /* AccentBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentBar.swift; sourceTree = "<group>"; };
 		577D57B92FC4EF6B00E54BD1 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		577D57BD2FC82F1D00E54BD1 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
+		577D57BF2FC830AE00E54BD1 /* PushNotificationMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationMapper.swift; sourceTree = "<group>"; };
 		5797B8EF2F6AB6EA004416DF /* TeacherProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherProfileViewModel.swift; sourceTree = "<group>"; };
 		5797B8F32F6ABBBA004416DF /* StatItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatItemView.swift; sourceTree = "<group>"; };
 		5797B8F72F6C07D4004416DF /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
@@ -249,7 +252,6 @@
 		57BA703B2F8A79D80025389F /* TeacherPaymentDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPaymentDetailViewController.swift; sourceTree = "<group>"; };
 		57BA703D2F8A91A90025389F /* PaymentCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCellModel.swift; sourceTree = "<group>"; };
 		57BA703F2F8AD29F0025389F /* StudentScheduleBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentScheduleBannerView.swift; sourceTree = "<group>"; };
-		57BA70462F8AD4F60025389F /* AppIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcons.swift; sourceTree = "<group>"; };
 		57BA704A2F8ADA1E0025389F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		57BA704D2F8ADA540025389F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Main.strings; sourceTree = "<group>"; };
 		57BA704E2F8ADA540025389F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -487,7 +489,6 @@
 				575091BE2F56F373002132EF /* LaunchScreen.storyboard */,
 				575091DE2F5847A6002132EF /* GoogleService-Info.plist */,
 				575091F32F599127002132EF /* Constants.swift */,
-				57BA70462F8AD4F60025389F /* AppIcons.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -551,6 +552,7 @@
 				57D9D1B92F65727B0061605F /* FirestoreService.swift */,
 				5797B8FB2F6D8F9A004416DF /* StorageService.swift */,
 				5797B8FD2F6D9D19004416DF /* ImagePickerService.swift */,
+				577D57BD2FC82F1D00E54BD1 /* PushNotificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -671,6 +673,7 @@
 				57F02CED2FA9EE2F0089DA31 /* PaymentStatusMapper.swift */,
 				57F02D002FAE7C080089DA31 /* AccountStatusMapper.swift */,
 				57F02D0B2FB1C5D20089DA31 /* RoleMapper.swift */,
+				577D57BF2FC830AE00E54BD1 /* PushNotificationMapper.swift */,
 			);
 			path = Mappers;
 			sourceTree = "<group>";
@@ -1072,11 +1075,11 @@
 			files = (
 				57BA703E2F8A91A90025389F /* PaymentCellModel.swift in Sources */,
 				57F02D0C2FB1C5D20089DA31 /* RoleMapper.swift in Sources */,
+				577D57C02FC830AE00E54BD1 /* PushNotificationMapper.swift in Sources */,
 				57EE38E92F7A6EF600A3272A /* HomeworkView.swift in Sources */,
 				57320AC62F81900300D1A6E8 /* StudentScheduleView.swift in Sources */,
 				574B83DA2F6E05520042045B /* TeacherPaymentsViewController.swift in Sources */,
 				574B83DB2F6E05520042045B /* StudentLessonsViewController.swift in Sources */,
-				57BA70472F8AD4F60025389F /* AppIcons.swift in Sources */,
 				57F6C05D2F6F171B0041E8BE /* StatsCardView.swift in Sources */,
 				574B83DC2F6E05520042045B /* LoginViewController.swift in Sources */,
 				57F02D0E2FB1C8180089DA31 /* RoleConfirmViewController.swift in Sources */,
@@ -1167,6 +1170,7 @@
 				57F02D062FAF9DD00089DA31 /* PaymentHistoryView.swift in Sources */,
 				575091DD2F584136002132EF /* UIColor+App.swift in Sources */,
 				57F02D0A2FB087FD0089DA31 /* SplashViewModel.swift in Sources */,
+				577D57BE2FC82F1D00E54BD1 /* PushNotificationService.swift in Sources */,
 				577D57B52FC2279500E54BD1 /* HomeworkCellModel.swift in Sources */,
 				5797B8F82F6C07D4004416DF /* EditProfileViewModel.swift in Sources */,
 				57F02D012FAE7C080089DA31 /* AccountStatusMapper.swift in Sources */,

@@ -180,3 +180,11 @@
 "clear_history" = "Очистити історію";
 "clear_history_message" = "Ви впевнені, що хочете очистити історію оплат?";
 "you_added_to_lessons" = "Вас додано до занять";
+
+// MARK: - Push Notifications
+"push_balance_empty_title" = "Закінчилися кошти";
+"push_balance_empty_body" = "Поповніть баланс, щоб продовжити заняття.";
+"push_lesson_reminder_title" = "Заняття через 1 годину";
+"push_lesson_reminder_body" = "Підготуйтеся до заняття";
+"push_payment_pending_title" = "Підтвердження оплати";
+"push_payment_pending_body" = "%1$@ оплатив %2$@ занять";

@@ -193,18 +193,28 @@ exports.processCompletedLessons = functions
 
             if (isAutoDebit) {
                 const currentBalance = studentData?.lessonsBalance || 0
+                const newBalance = currentBalance - 1
+
                 batch.update(studentDoc.ref, {
                     lessonsBalance: admin.firestore.FieldValue.increment(-1)
                 })
-                if (currentBalance <= 0) {
+
+                if (newBalance <= 0) {
                     const fcmToken = studentData?.fcmToken
                     if (fcmToken) {
                         pushPromises.push(
                             admin.messaging().send({
                                 token: fcmToken,
-                                notification: {
-                                    title: 'Баланс уроків вичерпано',
-                                    body: 'Поповніть баланс для продовження занять'
+                                apns: {
+                                    payload: {
+                                        aps: {
+                                            alert: {
+                                                'title-loc-key': 'push_balance_empty_title',
+                                                'loc-key': 'push_balance_empty_body'
+                                            },
+                                            sound: 'default'
+                                        }
+                                    }
                                 },
                                 data: { type: 'balance_empty' }
                             })
@@ -222,10 +232,9 @@ exports.processCompletedLessons = functions
             const scheduleDoc = scheduleCache[occurrence.scheduleId]
             if (!scheduleDoc.exists || !scheduleDoc.data().isActive) continue
 
-            const schedule = scheduleDoc.data()
             const currentScheduledAt = occurrence.scheduledAt.toDate()
             const nextDate = new Date(currentScheduledAt)
-            nextDate.setDate(nextDate.getDate() + 7) // рівно +7 днів
+            nextDate.setDate(nextDate.getDate() + 7)
 
             const existing = await db.collection('lessonOccurrences')
                 .where('scheduleId', '==', occurrence.scheduleId)
@@ -290,58 +299,26 @@ exports.sendLessonReminders = functions
 
             return admin.messaging().send({
                 token: fcmToken,
-                notification: {
-                    title: 'Заняття через годину',
-                    body: 'Не забудьте підготуватись'
+                apns: {
+                    payload: {
+                        aps: {
+                            alert: {
+                                'title-loc-key': 'push_lesson_reminder_title',
+                                'loc-key': 'push_lesson_reminder_body'
+                            },
+                            sound: 'default'
+                        }
+                    }
                 },
                 data: {
                     type: 'lesson_reminder',
                     occurrenceId: doc.id
-                },
-                apns: {
-                    payload: {
-                        aps: { category: 'LESSON_REMINDER' }
-                    }
                 }
             })
         }).filter(Boolean)
 
         await Promise.all(promises)
         console.log(`Reminders sent for ${snapshot.size} lessons`)
-        return null
-    })
-
-// ─────────────────────────────────────────
-// MARK: - Homework Reviewed Push
-// ─────────────────────────────────────────
-exports.onHomeworkReviewed = functions
-    .firestore
-    .document('homeworks/{homeworkId}')
-    .onUpdate(async (change) => {
-        const before = change.before.data()
-        const after = change.after.data()
-
-        if (before.status === after.status) return null
-        if (after.status !== 'reviewed') return null
-
-        const student = await db.collection('users')
-            .doc(after.studentId).get()
-        const fcmToken = student.data()?.fcmToken
-        if (!fcmToken) return null
-
-        const grade = after.grade ? `. Оцінка: ${after.grade}/10` : ''
-
-        await admin.messaging().send({
-            token: fcmToken,
-            notification: {
-                title: 'Домашнє завдання перевірено',
-                body: `${after.title}${grade}`
-            },
-            data: {
-                type: 'homework_reviewed',
-                homeworkId: change.after.id
-            }
-        })
         return null
     })
 
@@ -361,45 +338,21 @@ exports.onPaymentCreated = functions
 
         await admin.messaging().send({
             token: fcmToken,
-            notification: {
-                title: 'Нова оплата',
-                body: `${payment.studentName} оплатив ${payment.lessonsCount} занять`
+            apns: {
+                payload: {
+                    aps: {
+                        alert: {
+                            'title-loc-key': 'push_payment_pending_title',
+                            'loc-key': 'push_payment_pending_body',
+                            'loc-args': [payment.studentName, String(payment.lessonsCount)]
+                        },
+                        sound: 'default'
+                    }
+                }
             },
             data: {
                 type: 'payment_pending',
                 paymentId: snap.id
-            }
-        })
-        return null
-    })
-
-// ─────────────────────────────────────────
-// MARK: - Payment Confirmed Push
-// ─────────────────────────────────────────
-exports.onPaymentConfirmed = functions
-    .firestore
-    .document('payments/{paymentId}')
-    .onUpdate(async (change) => {
-        const before = change.before.data()
-        const after = change.after.data()
-
-        if (before.status === after.status) return null
-        if (after.status !== 'confirmed') return null
-
-        const student = await db.collection('users')
-            .doc(after.studentId).get()
-        const fcmToken = student.data()?.fcmToken
-        if (!fcmToken) return null
-
-        await admin.messaging().send({
-            token: fcmToken,
-            notification: {
-                title: 'Оплату підтверджено',
-                body: `Додано ${after.confirmedLessons || after.lessonsCount} занять`
-            },
-            data: {
-                type: 'payment_confirmed',
-                paymentId: change.after.id
             }
         })
         return null
@@ -566,7 +519,6 @@ function getNextDateForWeekday(from, weekday, time) {
     if (diff < 0) {
         diff += 7
     } else if (diff === 0) {
-        // Сьогодні той самий день — перевіряємо чи час ще не минув
         const scheduledToday = new Date(date)
         scheduledToday.setHours(hours, minutes, 0, 0)
         if (scheduledToday <= from) {

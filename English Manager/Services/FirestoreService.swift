@@ -14,6 +14,7 @@ protocol FirestoreServiceProtocol {
                            name: String,
                            surname: String) async throws
     func fetchUser(id: String) async throws -> User
+    func updateFCMToken(userId: String, token: String) async throws
     func saveLesson(_ lesson: Lesson) async throws -> Lesson
     func fetchLessons(teacherId: String) async throws -> [Lesson]
     func fetchStudentLessons(studentId: String) async throws -> [Lesson]
@@ -91,6 +92,12 @@ final class FirestoreService: FirestoreServiceProtocol {
                 "name": name,
                 "surname": surname,
             ])
+    }
+    
+    func updateFCMToken(userId: String, token: String) async throws {
+        try await db.collection(Collections.users)
+            .document(userId)
+            .updateData(["fcmToken": token])
     }
     
     // MARK: - Lessons
