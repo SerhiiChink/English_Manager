@@ -44,6 +44,10 @@ final class EditProfileViewController: UIViewController {
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = .appBackground
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
         setupAvatarView()
         setupNameField()
         setupSurNameField()
@@ -166,5 +170,9 @@ final class EditProfileViewController: UIViewController {
             name: nameField.text ?? "",
             surname: surnameField.text ?? ""
         )
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

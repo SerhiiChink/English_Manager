@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GoogleSignIn
 
 protocol StudentProfileViewModelProtocol: AnyObject {
     var onUpdate: (() -> Void)? { get set }
@@ -14,11 +15,13 @@ protocol StudentProfileViewModelProtocol: AnyObject {
     var onAccountDeleted: (() -> Void)? { get set }
     var user: User? { get }
     var statItems: [StatItem] { get }
+    var isGoogleUser: Bool { get }
     func fetchProfile()
     func refresh()
     func signOut()
     func changePassword(_ password: String)
     func deleteAccount(email: String, password: String)
+    func deleteAccountWithGoogle(presenting: UIViewController)
 }
 
 final class StudentProfileViewModel: StudentProfileViewModelProtocol {
@@ -40,6 +43,8 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
                      value: "\(homeworkCount)")
         ]
     }
+    
+    var isGoogleUser: Bool { authService.isGoogleUser }
     
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
@@ -139,6 +144,27 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
             do {
                 try await authService.deleteAccount(email: email,
                                                     password: password)
+                UserDefaults.standard.removeObject(forKey: UDKeys.userRole)
+                UserDefaults.standard.removeObject(forKey: UDKeys.userId)
+                await MainActor.run { [weak self] in
+                    self?.onLoading?(false)
+                    self?.onAccountDeleted?()
+                }
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.onLoading?(false)
+                    self?.onError?(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func deleteAccountWithGoogle(presenting: UIViewController) {
+        onLoading?(true)
+        Task {
+            do {
+                try await authService
+                    .deleteAccountWithGoogle(presenting: presenting)
                 UserDefaults.standard.removeObject(forKey: UDKeys.userRole)
                 UserDefaults.standard.removeObject(forKey: UDKeys.userId)
                 await MainActor.run { [weak self] in

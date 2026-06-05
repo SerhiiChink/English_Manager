@@ -213,7 +213,14 @@ extension TeacherLessonsViewController: UICollectionViewDataSource {
                 self?.showEditLesson(lesson: lesson)
             },
             .delete { [weak self] in
-                self?.viewModel.deleteLesson(lesson: lesson)
+                self?.viewModel.deleteLesson(lesson: lesson) { index in
+                    guard let index else { return }
+                    self?.collectionView.performBatchUpdates {
+                        self?.collectionView.deleteItems(
+                            at: [IndexPath(item: index, section: 0)]
+                        )
+                    }
+                }
             }
         ])
         return cell

@@ -76,9 +76,14 @@ final class TeacherProfileViewController: UIViewController {
             self?.viewModel.refresh()
         }
         contentView.onDeleteAccount = { [weak self] in
-            self?.showDeleteAccountAlert { email, password in
-                self?.viewModel.deleteAccount(email: email,
-                                              password: password)
+            guard let self else { return }
+            if viewModel.isGoogleUser {
+                viewModel.deleteAccountWithGoogle(presenting: self)
+            } else {
+                showDeleteAccountAlert { email, password in
+                    self.viewModel.deleteAccount(email: email,
+                                                 password: password)
+                }
             }
         }
     }

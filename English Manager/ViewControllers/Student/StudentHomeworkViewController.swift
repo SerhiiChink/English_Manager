@@ -135,10 +135,16 @@ extension StudentHomeworkViewController: UICollectionViewDataSource {
                             title: title,
                             description: description,
                             link: link)
-                })
+                    })
             },
             .delete { [weak self] in
-                self?.viewModel.deleteHomework(homework)
+                guard let self else { return }
+                self.viewModel.deleteHomework(homework) { [weak self] index in
+                    guard let index, let self else { return }
+                    self.contentView.deleteItem(
+                        at: IndexPath(item: index, section: 0)
+                    )
+                }
             }
         ])
         return cell

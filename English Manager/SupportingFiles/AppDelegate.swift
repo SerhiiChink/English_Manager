@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseCore
 import UserNotifications
+import GoogleSignIn
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         FirebaseApp.configure()
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(
+            clientID: AuthKeys.googleClientID
+        )
         setupAppearance()
         let authService: AuthServiceProtocol = AuthService()
         let firestoreService: FirestoreServiceProtocol = FirestoreService()
@@ -25,7 +29,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                firestoreService: firestoreService)
         return true
     }
-
+    
+    // MARK: - Google Sign In URL Handler
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        GIDSignIn.sharedInstance.handle(url)
+    }
 
     // MARK: UISceneSession Lifecycle
     func application(

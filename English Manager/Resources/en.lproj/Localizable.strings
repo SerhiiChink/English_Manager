@@ -27,8 +27,8 @@
 "confirm_role_change" = "Change role";
 "back_to_login" = "Back to Login";
 "account_exists_login" = "Account already exists. Please sign in.";
-"sign_up_with_apple" = "Sign up with Apple";
-"sign_up_with_google" = "Sign up with Google";
+"sign_up_with_apple" = "Continue with Apple";
+"sign_up_with_google" = "Continue with Google";
 "name" = "Name";
 "are_you_sure" = "Are you sure?";
 
@@ -188,3 +188,11 @@
 "push_lesson_reminder_body" = "Get ready for your lesson";
 "push_payment_pending_title" = "Payment confirmation";
 "push_payment_pending_body" = "%1$@ paid for %2$@ lessons";
+
+// MARK: - Password Validation
+"validation_email_empty" = "Please enter your email";
+"validation_email_invalid" = "Invalid email address";
+"validation_password_empty" = "Please enter your password";
+"validation_password_too_short" = "Password must be at least 8 characters";
+"validation_password_no_uppercase" = "Password must contain at least one uppercase letter";
+"validation_password_no_digit" = "Password must contain at least one digit";

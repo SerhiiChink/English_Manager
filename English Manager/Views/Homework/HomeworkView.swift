@@ -67,6 +67,12 @@ final class HomeworkView: UIView {
         collectionView.reloadData()
     }
     
+    func deleteItem(at indexPath: IndexPath) {
+        collectionView.performBatchUpdates {
+            collectionView.deleteItems(at: [indexPath])
+        }
+    }
+    
     // MARK: - Actions
     @objc private func refreshTapped() {
         onRefresh?()

@@ -281,21 +281,23 @@ final class ScheduleDetailViewController: UIViewController {
         guard index < schedules.count else { return }
         let schedule = schedules[index]
         swipeAnimator.swipeLeft(on: container) { [weak self] in
-            self?.showDeleteConfirmation(for: schedule)
+            self?.showDeleteConfirmation(for: schedule, view: container)
         }
     }
 }
 
 // MARK: - Alerts
 extension ScheduleDetailViewController {
-    private func showDeleteConfirmation(for schedule: Schedule) {
+    private func showDeleteConfirmation(for schedule: Schedule, view: UIView) {
         let alert = UIAlertController(
             title: "delete_schedule".localized,
             message: formatter.formatted(schedule),
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "cancel".localized,
-                                      style: .cancel))
+                                      style: .cancel) { [weak self] _ in
+            self?.swipeAnimator.snapBack(view)
+        })
         alert.addAction(UIAlertAction(
             title: "delete".localized,
             style: .destructive) { [weak self] _ in

@@ -7,6 +7,11 @@
 
 import Foundation
 
+// MARK: - Auth
+enum AuthKeys {
+    static let googleClientID = "445005210150-errjhm2k8lsfpk4civhrh081gdpkr5ph.apps.googleusercontent.com"
+}
+
     // MARK: - Firebase Collections
 enum Collections {
     static let users = "users"

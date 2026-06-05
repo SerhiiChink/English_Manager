@@ -19,7 +19,8 @@ protocol TeacherLessonsViewModelProtocol: AnyObject {
     func fetchLessons()
     func addLesson(_ lesson: Lesson, occurrence: LessonOccurrence?)
     func nextOccurrence(for schesule: Schedule) -> LessonOccurrence?
-    func deleteLesson(lesson: Lesson)
+    func deleteLesson(lesson: Lesson,
+                      completion: @escaping (Int?) -> Void)
     func saveSchedule(_ schedule: Schedule,
                       completion: @escaping (Schedule) -> Void)
     func deleteSchedule(_ schedule: Schedule)
@@ -217,8 +218,10 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
     }
     
     // MARK: - Delete Lessons
-    func deleteLesson(lesson: Lesson) {
+    func deleteLesson(lesson: Lesson,
+                      completion: @escaping (Int?) -> Void) {
         guard let id = lesson.id else { return }
+        let index = filteredLessons.firstIndex { $0.id == id }
         onLoading?(true)
         Task {
             do {
@@ -226,12 +229,13 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
                 await MainActor.run { [weak self] in
                     self?.allLessons.removeAll { $0.id == id }
                     self?.onLoading?(false)
-                    self?.onUpdate?()
+                    completion(index)
                 }
             } catch {
                 await MainActor.run { [weak self] in
                     self?.onLoading?(false)
                     self?.onError?(error.localizedDescription)
+                    completion(nil)
                 }
             }
         }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GoogleSignIn
 
 protocol LoginViewModelProtocol {
     var onSuccess: (() -> Void)? { get set }
@@ -13,6 +14,7 @@ protocol LoginViewModelProtocol {
     var onLoading: ((Bool) -> Void)? { get set }
     func login(email: String, password: String)
     func register(email: String, password: String, name: String)
+    func signInWithGoogle(presenting: UIViewController)
     func  resetPassword(email: String)
 }
 
@@ -71,6 +73,12 @@ final class LoginViewModel: LoginViewModelProtocol {
                             email: email,
                             role: nil)
             try await self.firestoreService.saveUser(user)
+        }
+    }
+    
+    func signInWithGoogle(presenting: UIViewController) {
+        performAuth {
+            try await self.authService.signInWithGoogle(presenting: presenting)
         }
     }
     

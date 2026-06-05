@@ -17,7 +17,8 @@ protocol StudentHomeworkViewModelProtocol: AnyObject {
     func addHomework(title: String,
                      description: String,
                      link: String)
-    func deleteHomework(_ homework: Homework)
+    func deleteHomework(_ homework: Homework,
+                        completion: @escaping (Int?) -> Void)
     func updateHomework(_ homework: Homework,
                         title: String,
                         description: String,
@@ -103,8 +104,10 @@ final class StudentHomeworkViewModel: StudentHomeworkViewModelProtocol {
     }
     
     // MARK: - Delete
-    func deleteHomework(_ homework: Homework) {
+    func deleteHomework(_ homework: Homework,
+                        completion: @escaping (Int?) -> Void) {
         guard let id = homework.id else { return }
+        let index = homeworks.firstIndex { $0.id == id }
         onLoading?(true)
         Task {
             do {
@@ -112,12 +115,13 @@ final class StudentHomeworkViewModel: StudentHomeworkViewModelProtocol {
                 await MainActor.run { [weak self] in
                     self?.homeworks.removeAll { $0.id == id }
                     self?.onLoading?(false)
-                    self?.onUpdate?()
+                    completion(index)
                 }
             } catch {
                 await MainActor.run { [weak self] in
                     self?.onLoading?(false)
                     self?.onError?(error.localizedDescription)
+                    completion(nil)
                 }
             }
         }

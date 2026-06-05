@@ -43,7 +43,6 @@
 		575091D12F56F385002132EF /* English_ManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575091CE2F56F385002132EF /* English_ManagerUITests.swift */; };
 		575091D22F56F385002132EF /* English_ManagerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575091CF2F56F385002132EF /* English_ManagerUITestsLaunchTests.swift */; };
 		575091DD2F584136002132EF /* UIColor+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575091DC2F584136002132EF /* UIColor+App.swift */; };
-		575091DF2F5847A6002132EF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 575091DE2F5847A6002132EF /* GoogleService-Info.plist */; };
 		575091E22F5849B0002132EF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 575091E12F5849B0002132EF /* FirebaseAuth */; };
 		575091E42F5849B0002132EF /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 575091E32F5849B0002132EF /* FirebaseFirestore */; };
 		575091E62F5849B0002132EF /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 575091E52F5849B0002132EF /* FirebaseMessaging */; };
@@ -99,6 +98,9 @@
 		57BA704C2F8ADA1E0025389F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 57BA704B2F8ADA1E0025389F /* Localizable.strings */; };
 		57BA70512F8ADAB60025389F /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA70502F8ADAB60025389F /* String+Localization.swift */; };
 		57BA70532F8AECDE0025389F /* StudentPaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA70522F8AECDE0025389F /* StudentPaymentsViewModel.swift */; };
+		57C5DE7D2FCC347900476861 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 57C5DE7C2FCC347900476861 /* GoogleSignIn */; };
+		57C5DE7F2FCC347900476861 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 57C5DE7E2FCC347900476861 /* GoogleSignInSwift */; };
+		57C5DE812FCC363C00476861 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 57C5DE802FCC363C00476861 /* GoogleService-Info.plist */; };
 		57D9D11D2F602C3F0061605F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57D9D11C2F602C3F0061605F /* SnapKit */; };
 		57D9D1BA2F65727B0061605F /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1B92F65727B0061605F /* FirestoreService.swift */; };
 		57D9D1BC2F6574170061605F /* QuerySnapshot+Decode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9D1BB2F6574170061605F /* QuerySnapshot+Decode.swift */; };
@@ -204,7 +206,6 @@
 		575091CE2F56F385002132EF /* English_ManagerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = English_ManagerUITests.swift; sourceTree = "<group>"; };
 		575091CF2F56F385002132EF /* English_ManagerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = English_ManagerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		575091DC2F584136002132EF /* UIColor+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+App.swift"; sourceTree = "<group>"; };
-		575091DE2F5847A6002132EF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		575091F32F599127002132EF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		575091F52F599306002132EF /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		575091F72F59940C002132EF /* Lesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
@@ -258,6 +259,7 @@
 		57BA704F2F8ADA540025389F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		57BA70502F8ADAB60025389F /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
 		57BA70522F8AECDE0025389F /* StudentPaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPaymentsViewModel.swift; sourceTree = "<group>"; };
+		57C5DE802FCC363C00476861 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		57D9D1B92F65727B0061605F /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		57D9D1BB2F6574170061605F /* QuerySnapshot+Decode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuerySnapshot+Decode.swift"; sourceTree = "<group>"; };
 		57D9D1BF2F65826C0061605F /* TeacherLessonsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherLessonsViewModel.swift; sourceTree = "<group>"; };
@@ -309,7 +311,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57C5DE7F2FCC347900476861 /* GoogleSignInSwift in Frameworks */,
 				5797B9012F6DF478004416DF /* Kingfisher in Frameworks */,
+				57C5DE7D2FCC347900476861 /* GoogleSignIn in Frameworks */,
 				575091E62F5849B0002132EF /* FirebaseMessaging in Frameworks */,
 				575091E82F5849B0002132EF /* FirebaseStorage in Frameworks */,
 				57F02CDE2FA20BF10089DA31 /* FirebaseCrashlytics in Frameworks */,
@@ -487,7 +491,7 @@
 				575091C12F56F373002132EF /* SceneDelegate.swift */,
 				575091BC2F56F373002132EF /* Info.plist */,
 				575091BE2F56F373002132EF /* LaunchScreen.storyboard */,
-				575091DE2F5847A6002132EF /* GoogleService-Info.plist */,
+				57C5DE802FCC363C00476861 /* GoogleService-Info.plist */,
 				575091F32F599127002132EF /* Constants.swift */,
 			);
 			path = SupportingFiles;
@@ -917,6 +921,8 @@
 				57D9D11C2F602C3F0061605F /* SnapKit */,
 				5797B9002F6DF478004416DF /* Kingfisher */,
 				57F02CDD2FA20BF10089DA31 /* FirebaseCrashlytics */,
+				57C5DE7C2FCC347900476861 /* GoogleSignIn */,
+				57C5DE7E2FCC347900476861 /* GoogleSignInSwift */,
 			);
 			productName = "English Manager";
 			productReference = 575091862F56F356002132EF /* English Manager.app */;
@@ -999,6 +1005,7 @@
 				575091E02F5849B0002132EF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				57D9D11B2F602C3F0061605F /* XCRemoteSwiftPackageReference "SnapKit" */,
 				5797B8FF2F6DF478004416DF /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				57C5DE7B2FCC347900476861 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 575091872F56F356002132EF /* Products */;
@@ -1019,7 +1026,7 @@
 			files = (
 				57BA704C2F8ADA1E0025389F /* Localizable.strings in Resources */,
 				575091C72F56F373002132EF /* Assets.xcassets in Resources */,
-				575091DF2F5847A6002132EF /* GoogleService-Info.plist in Resources */,
+				57C5DE812FCC363C00476861 /* GoogleService-Info.plist in Resources */,
 				575091C92F56F373002132EF /* LaunchScreen.storyboard in Resources */,
 				575091CA2F56F373002132EF /* Main.storyboard in Resources */,
 				57F02CE72FA88C270089DA31 /* Localizable.stringsdict in Resources */,
@@ -1602,6 +1609,14 @@
 				minimumVersion = 8.8.0;
 			};
 		};
+		57C5DE7B2FCC347900476861 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
 		57D9D11B2F602C3F0061605F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1637,6 +1652,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5797B8FF2F6DF478004416DF /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		57C5DE7C2FCC347900476861 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57C5DE7B2FCC347900476861 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		57C5DE7E2FCC347900476861 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57C5DE7B2FCC347900476861 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
 		};
 		57D9D11C2F602C3F0061605F /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

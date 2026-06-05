@@ -16,6 +16,9 @@ final class PaymentHistoryView: UIView {
     private let divider = UIView()
     private let stackView = UIStackView()
     
+    // MARK: - Properties
+    private let formatter: PaymentFormatterProtocol = PaymentFormatter()
+    
     // MARK: - Callbacks
     var onClear: (() -> Void)?
     
@@ -89,10 +92,10 @@ final class PaymentHistoryView: UIView {
     }
     
     // MARK: - Configure
-    func configure(totalText: String, rows: [UIView]) {
+    func configure(totalText: String, payments: [PaymentRequest]) {
         totalLabel.text = totalText
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        guard !rows.isEmpty else {
+        guard !payments.isEmpty else {
             let empty = UILabel()
             empty.text = "no_history_yet".localized
             empty.font = .systemFont(ofSize: 14)
@@ -102,14 +105,58 @@ final class PaymentHistoryView: UIView {
             empty.snp.makeConstraints { $0.height.equalTo(44) }
             return
         }
-        rows.enumerated().forEach { index, row in
-            stackView.addArrangedSubview(row)
-            if index < rows.count - 1 {
+        payments.enumerated().forEach { index, payment in
+            stackView.addArrangedSubview(makeRow(for: payment))
+            if index < payments.count - 1 {
                 let separator = UIView()
                 separator.backgroundColor = .appBackground
                 stackView.addArrangedSubview(separator)
                 separator.snp.makeConstraints { $0.height.equalTo(1) }
             }
         }
+    }
+    
+    // MARK: - Private
+    private func makeRow(for payment: PaymentRequest) -> UIView {
+        let container = UIView()
+        let style = PaymentStatusMapper.style(for: payment.status)
+        let dot = UIView()
+        dot.backgroundColor = style.color
+        dot.layer.cornerRadius = 4
+        container.addSubview(dot)
+        dot.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(16)
+            $0.centerY.equalToSuperview()
+            $0.width.height.equalTo(8)
+        }
+        let dateLabel = UILabel()
+        dateLabel.text = formatter.dateString(payment)
+        dateLabel.font = .systemFont(ofSize: 12)
+        dateLabel.textColor = .appTextSecondary
+        container.addSubview(dateLabel)
+        dateLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(12)
+            $0.left.equalTo(dot.snp.right).offset(10)
+        }
+        let detailLabel = UILabel()
+        detailLabel.text = formatter.detailText(payment)
+        detailLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        detailLabel.textColor = .appText
+        container.addSubview(detailLabel)
+        detailLabel.snp.makeConstraints {
+            $0.top.equalTo(dateLabel.snp.bottom).offset(2)
+            $0.left.equalTo(dot.snp.right).offset(10)
+            $0.bottom.equalToSuperview().offset(-12)
+        }
+        let amountLabel = UILabel()
+        amountLabel.text = formatter.amountString(payment)
+        amountLabel.font = .systemFont(ofSize: 14, weight: .semibold)
+        amountLabel.textColor = style.color
+        container.addSubview(amountLabel)
+        amountLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.right.equalToSuperview().inset(16)
+        }
+        return container
     }
 }

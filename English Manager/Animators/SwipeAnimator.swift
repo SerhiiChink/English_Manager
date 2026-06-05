@@ -9,6 +9,7 @@ import UIKit
 
 protocol SwipeAnimatorProtocol {
     func swipeLeft(on view: UIView, completion: @escaping () -> Void)
+    func snapBack(_ view: UIView)
 }
 
 final class SwipeAnimator: SwipeAnimatorProtocol {
@@ -20,15 +21,24 @@ final class SwipeAnimator: SwipeAnimatorProtocol {
                            delay: 0,
                            options: [.curveEaseIn]) {
                 view.transform = CGAffineTransform(
-                    translationX: -view.frame.width - 100,
+                    translationX: -(view.frame.width + 100),
                     y: 0
                 )
                 view.alpha = 0
             } completion: { _ in
-                view.transform = .identity
-                view.alpha = 1
                 completion()
             }
+        }
+    }
+    
+    func snapBack(_ view: UIView) {
+        UIView.animate(withDuration: 0.3,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.5,
+                       options: .curveEaseOut) {
+            view.transform = .identity
+            view.alpha = 1
         }
     }
 }

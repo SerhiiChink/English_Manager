@@ -255,53 +255,10 @@ final class StudentPaymentsViewController: UIViewController {
         minLabel.text = viewModel.minLessonsText
         historyView.configure(
             totalText: viewModel.totalPaidText,
-            rows: viewModel.payments.map { makeHistoryRow(payment: $0) }
+            payments: viewModel.payments
         )
         payButton.isUserInteractionEnabled = !viewModel.hasPendingPayment
         payButton.alpha = viewModel.hasPendingPayment ? 0.4 : 1.0
-    }
-    
-    private func makeHistoryRow(payment: PaymentRequest) -> UIView {
-        let container = UIView()
-        let style = PaymentStatusMapper.style(for: payment.status)
-        let dot = UIView()
-        dot.backgroundColor = style.color
-        dot.layer.cornerRadius = 4
-        container.addSubview(dot)
-        dot.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(16)
-            $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(8)
-        }
-        let dateLabel = UILabel()
-        dateLabel.text = formatter.dateString(payment)
-        dateLabel.font = .systemFont(ofSize: 12)
-        dateLabel.textColor = .appTextSecondary
-        container.addSubview(dateLabel)
-        dateLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(12)
-            $0.left.equalTo(dot.snp.right).offset(10)
-        }
-        let detailLabel = UILabel()
-        detailLabel.text = formatter.detailText(payment)
-        detailLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        detailLabel.textColor = .appText
-        container.addSubview(detailLabel)
-        detailLabel.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(2)
-            $0.left.equalTo(dot.snp.right).offset(10)
-            $0.bottom.equalToSuperview().offset(-12)
-        }
-        let amountLabel = UILabel()
-        amountLabel.text = formatter.amountString(payment)
-        amountLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        amountLabel.textColor = style.color
-        container.addSubview(amountLabel)
-        amountLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.right.equalToSuperview().inset(16)
-        }
-        return container
     }
 }
 

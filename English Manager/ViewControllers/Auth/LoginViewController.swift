@@ -241,13 +241,13 @@ final class LoginViewController: UIViewController {
     private func setupGoogleButton() {
         styleSocialButton(googleButton,
                           title: "sign_up_with_google".localized,
-                          icon: nil)
+                          icon: UIImage(systemName: "globe"))
         googleButton.addTarget(self,
                                action: #selector(googleTapped),
                                for: .touchUpInside)
         view.addSubview(googleButton)
         googleButton.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(34)
             $0.left.right.equalToSuperview().inset(Layout.padding)
             $0.height.equalTo(Layout.buttonHeight)
         }
@@ -357,6 +357,6 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func googleTapped() {
-        // Google sign in
+        viewModel.signInWithGoogle(presenting: self)
     }
 }

@@ -28,8 +28,8 @@
 "back_to_login" = "Назад до входу";
 "account_exists_login" = "Акаунт вже існує. Увійдіть у систему.";
 "get_started" = "Розпочати";
-"sign_up_with_apple" = "Зареєструватися через Apple";
-"sign_up_with_google" = "Зареєструватися через Google";
+"sign_up_with_apple" = "Продовжити з Apple";
+"sign_up_with_google" = "Продовжити з Google";
 "name" = "Ім’я";
 "are_you_sure" = "Ви впевнені ?";
 
@@ -188,3 +188,11 @@
 "push_lesson_reminder_body" = "Підготуйтеся до заняття";
 "push_payment_pending_title" = "Підтвердження оплати";
 "push_payment_pending_body" = "%1$@ оплатив %2$@ занять";
+
+// MARK: - Password Validation
+"validation_email_empty" = "Введіть email";
+"validation_email_invalid" = "Невірний формат email";
+"validation_password_empty" = "Введіть пароль";
+"validation_password_too_short" = "Пароль має містити мінімум 8 символів";
+"validation_password_no_uppercase" = "Пароль має містити хоча б одну велику літеру";
+"validation_password_no_digit" = "Пароль має містити хоча б одну цифру";

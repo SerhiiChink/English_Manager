@@ -17,27 +17,27 @@ protocol ValidationServiceProtocol {
 final class ValidationService: ValidationServiceProtocol {
     func validateEmail(_ email: String) -> ValidationResult {
         guard !email.isEmpty else {
-            return .failure("Type email")
+            return .failure("validation_email_empty".localized)
         }
         guard isValidEmail(email) else {
-            return .failure("Invalid email")
+            return .failure("validation_email_invalid".localized)
         }
         return .success
     }
     
     func validatePassword(_ password: String) -> ValidationResult {
         guard !password.isEmpty else {
-            return .failure("Type password")
+            return .failure("validation_password_empty".localized)
         }
         guard password.count >= 8 else {
-            return .failure("Password must be at least 8 characters")
+            return .failure("validation_password_too_short".localized)
         }
         guard password.range(of: "[A-Z]",
                              options: .regularExpression) != nil else {
-           return .failure("Password must contain at least one uppercase letter")
+            return .failure("validation_password_no_uppercase".localized)
         }
         guard password.rangeOfCharacter(from: .decimalDigits) != nil else {
-            return .failure("Password must contain at least one digit")
+            return .failure("validation_password_no_digit".localized)
         }
         return .success
     }
