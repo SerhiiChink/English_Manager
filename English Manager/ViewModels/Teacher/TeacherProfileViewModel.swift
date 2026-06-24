@@ -7,6 +7,7 @@
 
 import Foundation
 import GoogleSignIn
+import AuthenticationServices
 
 protocol TeacherProfileViewModelProtocol: AnyObject {
     var onUpdate: (() -> Void)? { get set }
@@ -16,12 +17,14 @@ protocol TeacherProfileViewModelProtocol: AnyObject {
     var user: User? { get }
     var statItems: [StatItem] { get }
     var isGoogleUser: Bool { get }
+    var isAppleUser: Bool { get }
     func fetchProfile()
     func refresh()
     func signOut()
     func changePassword(_ password: String)
     func deleteAccount(email: String, password: String)
     func deleteAccountWithGoogle(presenting: UIViewController)
+    func deleteAccountWithApple(window: ASPresentationAnchor)
 }
 
 final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
@@ -45,6 +48,7 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
     }
     
     var isGoogleUser: Bool { authService.isGoogleUser }
+    var isAppleUser: Bool { authService.isAppleUser }
     
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
@@ -175,6 +179,27 @@ final class TeacherProfileViewModel: TeacherProfileViewModelProtocol {
             } catch {
                 await MainActor.run { [weak self] in
                     self?.onLoading?(false)
+                    self?.onError?(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func deleteAccountWithApple(window: ASPresentationAnchor) {
+        onLoading?(true)
+        Task {
+            do {
+                try await authService.deleteAccountWithApple(window: window)
+                UserDefaults.standard.removeObject(forKey: UDKeys.userRole)
+                UserDefaults.standard.removeObject(forKey: UDKeys.userId)
+                await MainActor.run { [weak self] in
+                    self?.onLoading?(false)
+                    self?.onAccountDeleted?()
+                }
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.onLoading?(false)
+                    if (error as NSError).code == ASAuthorizationError.canceled.rawValue { return }
                     self?.onError?(error.localizedDescription)
                 }
             }

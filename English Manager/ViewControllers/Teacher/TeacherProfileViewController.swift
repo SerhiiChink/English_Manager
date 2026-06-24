@@ -79,6 +79,9 @@ final class TeacherProfileViewController: UIViewController {
             guard let self else { return }
             if viewModel.isGoogleUser {
                 viewModel.deleteAccountWithGoogle(presenting: self)
+            } else if viewModel.isAppleUser {
+                guard let window = view.window else { return }
+                viewModel.deleteAccountWithApple(window: window)
             } else {
                 showDeleteAccountAlert { email, password in
                     self.viewModel.deleteAccount(email: email,

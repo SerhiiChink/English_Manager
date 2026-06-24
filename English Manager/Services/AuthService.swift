@@ -9,11 +9,14 @@ import Foundation
 import FirebaseAuth
 import FirebaseStorage
 import GoogleSignIn
+import AuthenticationServices
+import CryptoKit
 
 protocol AuthServiceProtocol {
     var isLoggedIn: Bool { get }
     var currentUserId: String? { get }
     var isGoogleUser: Bool { get }
+    var isAppleUser: Bool { get }
     func signIn(email: String, password: String) async throws
     func signUp(email: String, password: String) async throws
     func signOut() throws
@@ -21,12 +24,15 @@ protocol AuthServiceProtocol {
     func changePassword(_ password: String) async throws
     func deleteAccount(email: String, password: String) async throws
     func signInWithGoogle(presenting: UIViewController) async throws
+    func signInWithApple(window: ASPresentationAnchor) async throws 
     func deleteAccountWithGoogle(presenting: UIViewController) async throws
+    func deleteAccountWithApple(window: ASPresentationAnchor) async throws
 }
 
 final class AuthService: AuthServiceProtocol {
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
+    private var currentNonce: String?
     var isLoggedIn: Bool {
         Auth.auth().currentUser != nil
     }
@@ -38,6 +44,11 @@ final class AuthService: AuthServiceProtocol {
     var isGoogleUser: Bool {
         Auth.auth().currentUser?.providerData
             .contains { $0.providerID == "google.com" } ?? false
+    }
+    
+    var isAppleUser: Bool {
+        Auth.auth().currentUser?.providerData
+            .contains { $0.providerID == "apple.com" } ?? false
     }
     
     // MARK: - Init
@@ -117,6 +128,7 @@ final class AuthService: AuthServiceProtocol {
         }
     }
     
+    // MARK: - Delete Account With Google
     func deleteAccountWithGoogle(presenting: UIViewController) async throws {
         guard let user = Auth.auth().currentUser else { return }
         let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenting)
@@ -130,5 +142,81 @@ final class AuthService: AuthServiceProtocol {
             .child("avatars").child(user.uid).child("avatar.jpg")
         try? await avatarRef.delete()
         try await user.delete()
+    }
+    
+    // MARK: - Apple Sign In
+    func signInWithApple(window: ASPresentationAnchor) async throws {
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(nonce)
+        return try await withCheckedThrowingContinuation { continuation in
+            let controller = ASAuthorizationController(authorizationRequests: [request])
+            let delegate = AppleSignInDelegate(
+                nonce: nonce,
+                firestoreService: firestoreService,
+                window: window) { result in
+                    continuation.resume(with: result)
+                }
+            controller.delegate = delegate
+            controller.presentationContextProvider = delegate
+            controller.performRequests()
+            objc_setAssociatedObject(controller,
+                                     "delegate",
+                                     delegate,
+                                     .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+    
+    // MARK: - Delete Account With Apple
+    func deleteAccountWithApple(window: ASPresentationAnchor) async throws {
+        guard let user = Auth.auth().currentUser else { return }
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(nonce)
+        let result: Void = try await withCheckedThrowingContinuation { continuation in
+            let controller = ASAuthorizationController(authorizationRequests: [request])
+            let delegate = AppleSignInDelegate(
+                nonce: nonce,
+                firestoreService: firestoreService,
+                window: window
+            ) { result in
+                continuation.resume(with: result)
+            }
+            controller.delegate = delegate
+            controller.presentationContextProvider = delegate
+            controller.performRequests()
+            objc_setAssociatedObject(controller,
+                                     "delegate",
+                                     delegate,
+                                     .OBJC_ASSOCIATION_RETAIN)
+        }
+        _ = result
+        let avatarRef = Storage.storage().reference()
+            .child("avatars")
+            .child(user.uid)
+            .child("avatar.jpg")
+        try? await avatarRef.delete()
+        try await user.delete()
+    }
+    
+    // MARK: - Helpers
+    private func randomNonceString(length: Int = 32) -> String {
+        var randomBytes = [UInt8](repeating: 0, count: length)
+        _ = SecRandomCopyBytes(kSecRandomDefault,
+                               randomBytes.count,
+                               &randomBytes)
+        return randomBytes.map { String(format: "%02x", $0) }.joined()
+    }
+    
+    private func sha256(_ input: String) -> String {
+        let data = Data(input.utf8)
+        let hash = SHA256.hash(data: data)
+        return hash.map { String(format: "%02x", $0) }.joined()
     }
 }

@@ -98,6 +98,7 @@
 		57BA704C2F8ADA1E0025389F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 57BA704B2F8ADA1E0025389F /* Localizable.strings */; };
 		57BA70512F8ADAB60025389F /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA70502F8ADAB60025389F /* String+Localization.swift */; };
 		57BA70532F8AECDE0025389F /* StudentPaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA70522F8AECDE0025389F /* StudentPaymentsViewModel.swift */; };
+		57C488E52FE9E62F00547839 /* AppleSignInDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C488E42FE9E62F00547839 /* AppleSignInDelegate.swift */; };
 		57C5DE7D2FCC347900476861 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 57C5DE7C2FCC347900476861 /* GoogleSignIn */; };
 		57C5DE7F2FCC347900476861 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 57C5DE7E2FCC347900476861 /* GoogleSignInSwift */; };
 		57C5DE812FCC363C00476861 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 57C5DE802FCC363C00476861 /* GoogleService-Info.plist */; };
@@ -259,6 +260,8 @@
 		57BA704F2F8ADA540025389F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		57BA70502F8ADAB60025389F /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
 		57BA70522F8AECDE0025389F /* StudentPaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPaymentsViewModel.swift; sourceTree = "<group>"; };
+		57C488E32FE9DD5600547839 /* English Manager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "English Manager.entitlements"; sourceTree = "<group>"; };
+		57C488E42FE9E62F00547839 /* AppleSignInDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInDelegate.swift; sourceTree = "<group>"; };
 		57C5DE802FCC363C00476861 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		57D9D1B92F65727B0061605F /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		57D9D1BB2F6574170061605F /* QuerySnapshot+Decode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuerySnapshot+Decode.swift"; sourceTree = "<group>"; };
@@ -439,6 +442,7 @@
 		575091C32F56F373002132EF /* English Manager */ = {
 			isa = PBXGroup;
 			children = (
+				57C488E32FE9DD5600547839 /* English Manager.entitlements */,
 				5779E65D2F98D0C4007B7FBA /* Mappers */,
 				5779E5FB2F93E150007B7FBA /* Animators */,
 				57F6C0582F6EB55F0041E8BE /* Views */,
@@ -557,6 +561,7 @@
 				5797B8FB2F6D8F9A004416DF /* StorageService.swift */,
 				5797B8FD2F6D9D19004416DF /* ImagePickerService.swift */,
 				577D57BD2FC82F1D00E54BD1 /* PushNotificationService.swift */,
+				57C488E42FE9E62F00547839 /* AppleSignInDelegate.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -907,6 +912,7 @@
 				575091832F56F356002132EF /* Frameworks */,
 				575091842F56F356002132EF /* Resources */,
 				57F02CE02FA20C970089DA31 /* ShellScript */,
+				57C488E62FEBD85B00547839 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -976,7 +982,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2630;
-				LastUpgradeCheck = 2630;
+				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					575091852F56F356002132EF = {
 						CreatedOnToolsVersion = 26.3;
@@ -1050,6 +1056,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		57C488E62FEBD85B00547839 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
 		57F02CE02FA20C970089DA31 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -1091,6 +1114,7 @@
 				574B83DC2F6E05520042045B /* LoginViewController.swift in Sources */,
 				57F02D0E2FB1C8180089DA31 /* RoleConfirmViewController.swift in Sources */,
 				574B83DD2F6E05520042045B /* TeacherLessonsViewController.swift in Sources */,
+				57C488E52FE9E62F00547839 /* AppleSignInDelegate.swift in Sources */,
 				5773F8A42F714F3B00D73305 /* TeacherHomeworkViewModel.swift in Sources */,
 				57F02D152FB5C7B40089DA31 /* SplashConstants.swift in Sources */,
 				57F02D112FB5C35B0089DA31 /* SplashArcView.swift in Sources */,
@@ -1281,9 +1305,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "English Manager/English Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = Y69SCP5F9J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "English Manager/SupportingFiles/Info.plist";
@@ -1315,9 +1341,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "English Manager/English Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = Y69SCP5F9J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "English Manager/SupportingFiles/Info.plist";
@@ -1404,6 +1432,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1462,6 +1491,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};

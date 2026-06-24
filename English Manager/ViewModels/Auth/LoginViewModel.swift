@@ -7,6 +7,7 @@
 
 import Foundation
 import GoogleSignIn
+import AuthenticationServices
 
 protocol LoginViewModelProtocol {
     var onSuccess: (() -> Void)? { get set }
@@ -15,6 +16,7 @@ protocol LoginViewModelProtocol {
     func login(email: String, password: String)
     func register(email: String, password: String, name: String)
     func signInWithGoogle(presenting: UIViewController)
+    func signInWithApple(window: ASPresentationAnchor)
     func  resetPassword(email: String)
 }
 
@@ -82,6 +84,12 @@ final class LoginViewModel: LoginViewModelProtocol {
         }
     }
     
+    func signInWithApple(window: ASPresentationAnchor) {
+        performAuth {
+            try await self.authService.signInWithApple(window: window)
+        }
+    }
+    
     // MARK: - Reset Password
     func resetPassword(email: String) {
         if case .failure(let message) = validator.validateEmail(email) {
@@ -106,6 +114,7 @@ final class LoginViewModel: LoginViewModelProtocol {
             } catch {
                 await MainActor.run { [ weak self ] in
                     self?.onLoading?(false)
+                    if (error as NSError).code == ASAuthorizationError.canceled.rawValue { return }
                     self?.onError?(error.localizedDescription)
                 }
             }

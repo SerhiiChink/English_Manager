@@ -353,7 +353,8 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func appleTapped() {
-        // Apple sign in
+        guard let window = view.window else { return }
+        viewModel.signInWithApple(window: window)
     }
     
     @objc private func googleTapped() {
