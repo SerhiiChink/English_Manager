@@ -1,8 +1,11 @@
 const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
+const { DateTime } = require('luxon');
 
 admin.initializeApp();
 const db = admin.firestore();
+
+const DEFAULT_TIMEZONE = 'Europe/Kiev';
 
 // ─────────────────────────────────────────
 // MARK: - Generate Occurrences (weekly)
@@ -18,13 +21,16 @@ exports.generateWeeklyOccurrences = functions
 
         const batch = db.batch()
         const nextMonday = getNextMonday()
+        const tzCache = {}
 
         for (const doc of schedules.docs) {
             const schedule = doc.data()
+            const tz = await resolveTeacherTimezone(schedule.teacherId, tzCache)
             const lessonDate = getDateForWeekday(
                 nextMonday,
                 schedule.weekday,
-                schedule.time
+                schedule.time,
+                tz
             )
             const existing = await db.collection('lessonOccurrences')
                 .where('scheduleId', '==', doc.id)
@@ -59,10 +65,12 @@ exports.onScheduleCreated = functions
         const schedule = snap.data()
         if (!schedule.isActive) return null
 
+        const tz = await resolveTeacherTimezone(schedule.teacherId, {})
         const nextDate = getNextDateForWeekday(
             new Date(),
             schedule.weekday,
-            schedule.time
+            schedule.time,
+            tz
         )
 
         await db.collection('lessonOccurrences').add({
@@ -100,10 +108,12 @@ exports.onScheduleUpdated = functions
         oldOccurrences.docs.forEach(doc => batch.delete(doc.ref))
 
         if (after.isActive) {
+            const tz = await resolveTeacherTimezone(after.teacherId, {})
             const nextDate = getNextDateForWeekday(
                 new Date(),
                 after.weekday,
-                after.time
+                after.time,
+                tz
             )
             const newRef = db.collection('lessonOccurrences').doc()
             batch.set(newRef, {
@@ -261,7 +271,7 @@ exports.processCompletedLessons = functions
     })
 
 // ─────────────────────────────────────────
-// MARK: - Send Reminders (every hour)
+// MARK: - Send Reminders (every hour, 2h before lesson)
 // ─────────────────────────────────────────
 exports.sendLessonReminders = functions
     .pubsub
@@ -269,19 +279,22 @@ exports.sendLessonReminders = functions
     .timeZone('Europe/Kiev')
     .onRun(async () => {
         const now = new Date()
-        const inOneHour = new Date(now.getTime() + 60 * 60 * 1000)
-        const inOneHourPlus5 = new Date(inOneHour.getTime() + 5 * 60 * 1000)
+        const inTwoHours = new Date(now.getTime() + 2 * 60 * 60 * 1000)
+        const inThreeHours = new Date(inTwoHours.getTime() + 60 * 60 * 1000)
 
         const snapshot = await db.collection('lessonOccurrences')
-            .where('scheduledAt', '>=', inOneHour)
-            .where('scheduledAt', '<=', inOneHourPlus5)
+            .where('scheduledAt', '>=', inTwoHours)
+            .where('scheduledAt', '<', inThreeHours)
             .where('status', '==', 'scheduled')
             .get()
 
         if (snapshot.empty) return null
 
+        const toNotify = snapshot.docs.filter(doc => !doc.data().notifiedAt)
+        if (toNotify.length === 0) return null
+
         const studentIds = [...new Set(
-            snapshot.docs.map(d => d.data().studentId)
+            toNotify.map(d => d.data().studentId)
         )]
         const studentDocs = await Promise.all(
             studentIds.map(id => db.collection('users').doc(id).get())
@@ -291,10 +304,14 @@ exports.sendLessonReminders = functions
             if (doc.exists) studentsMap[doc.id] = doc.data()
         })
 
-        const promises = snapshot.docs.map(doc => {
+        const batch = db.batch()
+        const pushPromises = toNotify.map(doc => {
             const occurrence = doc.data()
             const student = studentsMap[occurrence.studentId]
             const fcmToken = student?.fcmToken
+
+            batch.update(doc.ref, { notifiedAt: now })
+
             if (!fcmToken) return null
 
             return admin.messaging().send({
@@ -317,8 +334,9 @@ exports.sendLessonReminders = functions
             })
         }).filter(Boolean)
 
-        await Promise.all(promises)
-        console.log(`Reminders sent for ${snapshot.size} lessons`)
+        await batch.commit()
+        await Promise.all(pushPromises)
+        console.log(`Reminders sent for ${pushPromises.length} lessons`)
         return null
     })
 
@@ -488,7 +506,20 @@ async function cascadeDelete(collectionName, studentId, teacherId) {
 }
 
 // ─────────────────────────────────────────
-// MARK: - Helpers
+// MARK: - Timezone Helper
+// ─────────────────────────────────────────
+async function resolveTeacherTimezone(teacherId, cache) {
+    if (cache[teacherId]) return cache[teacherId]
+    const doc = await db.collection('users').doc(teacherId).get()
+    const tz = doc.exists && doc.data().timezone
+        ? doc.data().timezone
+        : DEFAULT_TIMEZONE
+    cache[teacherId] = tz
+    return tz
+}
+
+// ─────────────────────────────────────────
+// MARK: - Date Helpers
 // ─────────────────────────────────────────
 function getNextMonday() {
     const now = new Date()
@@ -500,33 +531,37 @@ function getNextMonday() {
     return nextMonday
 }
 
-function getDateForWeekday(weekStart, weekday, time) {
-    const date = new Date(weekStart)
-    const offset = weekday === 1 ? 6 : weekday - 2
-    date.setDate(weekStart.getDate() + offset)
+function getDateForWeekday(weekStart, weekday, time, timeZone) {
     const [hours, minutes] = time.split(':').map(Number)
-    date.setHours(hours, minutes, 0, 0)
-    return date
+    const offset = weekday === 1 ? 6 : weekday - 2
+
+    return DateTime.fromJSDate(weekStart, { zone: timeZone })
+        .plus({ days: offset })
+        .set({ hour: hours, minute: minutes, second: 0, millisecond: 0 })
+        .toJSDate()
 }
 
-function getNextDateForWeekday(from, weekday, time) {
-    const date = new Date(from)
-    const jsDay = weekday === 1 ? 0 : weekday - 1
-    const currentDay = date.getDay()
-    let diff = jsDay - currentDay
+function getNextDateForWeekday(from, weekday, time, timeZone) {
     const [hours, minutes] = time.split(':').map(Number)
+    const jsDay = weekday === 1 ? 0 : weekday - 1
+
+    const fromZoned = DateTime.fromJSDate(from, { zone: timeZone })
+    const currentJsDay = fromZoned.weekday % 7
+    let diff = jsDay - currentJsDay
 
     if (diff < 0) {
         diff += 7
     } else if (diff === 0) {
-        const scheduledToday = new Date(date)
-        scheduledToday.setHours(hours, minutes, 0, 0)
-        if (scheduledToday <= from) {
+        const scheduledToday = fromZoned.set({
+            hour: hours, minute: minutes, second: 0, millisecond: 0
+        })
+        if (scheduledToday.toJSDate() <= from) {
             diff += 7
         }
     }
 
-    date.setDate(date.getDate() + diff)
-    date.setHours(hours, minutes, 0, 0)
-    return date
+    return fromZoned
+        .plus({ days: diff })
+        .set({ hour: hours, minute: minutes, second: 0, millisecond: 0 })
+        .toJSDate()
 }

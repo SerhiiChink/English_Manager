@@ -91,7 +91,7 @@ final class StudentScheduleBannerView: UIView {
     }
 
     // MARK: - Configure
-    func configure(schedules: [Schedule]) {
+    func configure(schedules: [Schedule], timezone: String? = nil) {
         schedulesStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         let isEmpty = schedules.isEmpty
         emptyStateView.isHidden = !isEmpty
@@ -100,7 +100,8 @@ final class StudentScheduleBannerView: UIView {
         guard !isEmpty else { return }
         schedules.forEach { schedule in
             let label = UILabel()
-            label.text = scheduleFormatter.formatted(schedule)
+            label.text = scheduleFormatter.formatted(schedule,
+                                                     timezone: timezone)
             label.font = .systemFont(ofSize: 13, weight: .medium)
             label.textColor = .appText
             schedulesStack.addArrangedSubview(label)

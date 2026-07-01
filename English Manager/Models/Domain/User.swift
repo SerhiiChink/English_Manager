@@ -20,6 +20,7 @@ struct User: Codable {
     var totalLessonsPaid: Int?
     var teacherId: String?
     var isAutoDebitEnabled: Bool?
+    var timezone: String?
     
     var fullName: String {
         [name, surname]

@@ -16,6 +16,7 @@ final class ProfileView: UIView {
     private let avatarImageView = AvatarView()
     private let fullNameLabel = UILabel()
     private let emailLabel = UILabel()
+    private let teacherBannerView = TeacherBannerView()
     private let editButton = UIButton(type: .system)
     private let changePasswordButton = UIButton(type: .system)
     private let signOutButton = UIButton(type: .system)
@@ -89,6 +90,11 @@ final class ProfileView: UIView {
             $0.left.right.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(24)
         }
+        emailLabel.isUserInteractionEnabled = true
+        emailLabel.addGestureRecognizer(UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(emailLongPressed(_:))
+        ))
     }
     
     private func setupButtons() {
@@ -178,13 +184,22 @@ final class ProfileView: UIView {
     }
     
     // MARK: - Public
-    func build(statsView: UIView) {
+    func build(statsView: UIView, showTeacherBanner: Bool = false) {
         contentView.addSubview(statsView)
         statsView.snp.makeConstraints {
             $0.top.equalTo(profileCard.snp.bottom).offset(12)
             $0.left.right.equalToSuperview().inset(Layout.padding)
         }
-        buildBottomStack(below: statsView)
+        if showTeacherBanner {
+            contentView.addSubview(teacherBannerView)
+            teacherBannerView.snp.makeConstraints {
+                $0.top.equalTo(statsView.snp.bottom).offset(12)
+                $0.left.right.equalToSuperview().inset(Layout.padding)
+            }
+            buildBottomStack(below: teacherBannerView)
+        } else {
+            buildBottomStack(below: statsView)
+        }
     }
     
     private func buildBottomStack(below anchor: UIView) {
@@ -218,6 +233,10 @@ final class ProfileView: UIView {
         emailLabel.text = user.email
     }
     
+    func configureTeacher(_ teacher: User?) {
+        teacherBannerView.configure(teacher: teacher)
+    }
+    
     func endRefreshing() {
         scrollView.endRefreshing()
     }
@@ -228,4 +247,9 @@ final class ProfileView: UIView {
     @objc private func signOutTapped() { onSignOut?() }
     @objc private func refreshTapped() { onRefresh?() }
     @objc private func deleteAccountTapped() { onDeleteAccount?() }
+    @objc private func emailLongPressed(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else { return }
+        UIPasteboard.general.string = emailLabel.text
+        ToastView.show(.success("email_copied".localized), in: self)
+    }
 }

@@ -279,15 +279,23 @@ extension StudentPaymentsViewController {
     private func confirmSingleLesson(price: Double) {
         let alert = UIAlertController(
             title: "pay for lessons".localized,
-            message: "1 lesson · \(Int(price)) UAH",
+            message: "\("price".localized): \(Int(price)) UAH/\("lesson".localized)",
             preferredStyle: .alert
         )
+        alert.addTextField {
+            $0.placeholder = "number_of_lessons".localized
+            $0.keyboardType = .numberPad
+            $0.text = "1"
+        }
         alert.addAction(UIAlertAction(title: "cancel".localized,
                                       style: .cancel))
         alert.addAction(UIAlertAction(
             title: "send".localized,
             style: .default) { [weak self] _ in
-                self?.viewModel.createPayment(lessonsCount: 1)
+                guard let text = alert.textFields?[0].text,
+                      let count = Int(text),
+                      count > 0 else { return }
+                self?.viewModel.createPayment(lessonsCount: count)
             }
         )
         present(alert, animated: true)

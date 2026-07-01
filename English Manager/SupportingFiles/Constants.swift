@@ -42,4 +42,7 @@ enum UDKeys {
     static func lastTeacherId(for studentId: String) -> String {
         "lastTeacherId_\(studentId)"
     }
+    static func last_timezone(userId: String) -> String {
+        "lastTimezone_\(userId)"
+    }
 }

@@ -116,7 +116,8 @@ final class StudentLessonsViewController: UIViewController {
         viewModel.onUpdate = { [weak self] in
             guard let self else { return }
             collectionView.endRefreshing()
-            scheduleBanner.configure(schedules: viewModel.schedules)
+            scheduleBanner.configure(schedules: viewModel.schedules,
+                                     timezone: viewModel.teacherTimezone)
             updateAutoDebitButton()
             reloadData()
         }

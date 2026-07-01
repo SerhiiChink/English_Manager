@@ -42,6 +42,7 @@ final class SplashViewModel: SplashViewModelProtocol {
         }
         Task {
             let user = try? await firestoreService.fetchUser(id: userId)
+            await updateTimezoneIfNeeded(userId: userId)
             await MainActor.run { [weak self] in
                 if let role = user?.role {
                     self?.onShowMain?(role)
@@ -50,5 +51,15 @@ final class SplashViewModel: SplashViewModelProtocol {
                 }
             }
         }
+    }
+    
+    // MARK: - Private
+    private func updateTimezoneIfNeeded(userId: String) async {
+        let key = UDKeys.last_timezone(userId: userId)
+        let current = TimeZone.current.identifier
+        guard UserDefaults.standard.string(forKey: key) != current else { return }
+        try? await firestoreService.updateUserTimezone(userId: userId,
+                                                       timezone: current)
+        UserDefaults.standard.set(current, forKey: key)
     }
 }

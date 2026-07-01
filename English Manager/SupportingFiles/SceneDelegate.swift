@@ -30,6 +30,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         self.window = window
         setupPushNavigation()
+        if let response = connectionOptions.notificationResponse {
+            let userInfo = response.notification.request.content.userInfo
+            let target = PushNotificationMapper.navigationTarget(from: userInfo)
+            router.navigateToPush(target: target)
+        }
     }
     
     // MARK: - Private
@@ -37,18 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         PushNotificationService.shared.onNotificationTap = { [weak self] target in
             guard let self else { return }
             DispatchQueue.main.async {
-                guard let rootNav = self.window?.rootViewController as? UINavigationController,
-                      let tabBar = rootNav.viewControllers.first(
-                          where: { $0 is UITabBarController }
-                      ) as? UITabBarController else { return }
-                switch target {
-                case .payments:
-                    tabBar.selectedIndex = tabBar is TeacherTabBarController ? 4 : 3
-                case .lessons:
-                    tabBar.selectedIndex = 1
-                case .none:
-                    break
-                }
+                self.router?.navigateToPush(target: target)
             }
         }
     }

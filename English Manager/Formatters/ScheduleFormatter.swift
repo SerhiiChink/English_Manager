@@ -9,10 +9,7 @@ import Foundation
 
 protocol ScheduleFormatterProtocol {
     func timeString(from date: Date) -> String
-    func formatted(_ schedule: Schedule) -> String
-    func formattedList(_ schedule: [Schedule]) -> String
-    func shortFormatted(_ schedule: Schedule) -> String
-    func shortFormattedList(_ schedule: [Schedule]) -> String
+    func formatted(_ schedule: Schedule, timezone: String?) -> String
 }
 
 final class ScheduleFormatter: ScheduleFormatterProtocol {
@@ -33,30 +30,19 @@ final class ScheduleFormatter: ScheduleFormatterProtocol {
         timeFormatter.string(from: date)
     }
     
-    func formatted(_ schedule: Schedule) -> String {
+    func formatted(_ schedule: Schedule, timezone: String? = nil) -> String {
         guard schedule.weekday >= 1 && schedule.weekday <= 7 else {
-            return schedule.time
+            return "\(schedule.time)\(tzSuffix(from: timezone))"
         }
         let adjustedIndex = schedule.weekday - 1
         let day = weekdayFormatter.weekdaySymbols[adjustedIndex]
-        return "\(day) \(schedule.time)"
+        return "\(day) \(schedule.time)\(tzSuffix(from: timezone))"
     }
-    
-    func formattedList(_ schedule: [Schedule]) -> String {
-        schedule.map { formatted($0) }.joined(separator: " · ")
-    }
-    
-    // MARK: - Short Form Schedule
-    func shortFormatted(_ schedule: Schedule) -> String {
-        guard schedule.weekday >= 1 && schedule.weekday <= 7 else {
-            return schedule.time
-        }
-        let adjustedIndex = schedule.weekday % 7
-        let day = weekdayFormatter.shortWeekdaySymbols[adjustedIndex]
-        return "\(day) \(schedule.time)"
-    }
-    
-    func shortFormattedList(_ schedule: [Schedule]) -> String {
-        schedule.map { shortFormatted($0) }.joined(separator: ", ")
+
+    // MARK: - Private
+    private func tzSuffix(from identifier: String?) -> String {
+        guard let identifier else { return "" }
+        let city = identifier.components(separatedBy: "/").last ?? ""
+        return city.isEmpty ? "" : " (\(city))"
     }
 }

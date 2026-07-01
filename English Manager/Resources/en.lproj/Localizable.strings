@@ -61,6 +61,8 @@
 "no_name" = "No Name";
 "new_password" = "New Password";
 "change" = "Change";
+"your_teacher" = "Your teacher";
+"no_teacher_yet" = "No teacher yet";
 
 // MARK: - Student Management
 "no_students_yet" = "No students yet";
@@ -180,11 +182,12 @@
 "clear_history" = "Clear history";
 "clear_history_message" = "Are you sure you want to clear payment history?";
 "you_added_to_lessons" = "You have been added to lessons";
+"email_copied" = "Email copied";
 
 // MARK: - Push Notifications
 "push_balance_empty_title" = "Balance is empty";
 "push_balance_empty_body" = "Top up your balance to continue lessons.";
-"push_lesson_reminder_title" = "Lesson in 1 hour";
+"push_lesson_reminder_title" = "Lesson in 2 hours";
 "push_lesson_reminder_body" = "Get ready for your lesson";
 "push_payment_pending_title" = "Payment confirmation";
 "push_payment_pending_body" = "%1$@ paid for %2$@ lessons";

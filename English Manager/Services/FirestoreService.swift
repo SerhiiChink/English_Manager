@@ -36,6 +36,7 @@ protocol FirestoreServiceProtocol {
                        teacherId: String) async throws
     func updateUserRole(userId: String, role: UserRole) async throws
     func updateUserAvatar(userId: String, url: String) async throws
+    func updateUserTimezone(userId: String, timezone: String) async throws
     func removeStudent(studentId: String) async throws
 }
 
@@ -81,6 +82,12 @@ final class FirestoreService: FirestoreServiceProtocol {
         try await collection(Collections.users)
             .document(userId)
             .updateData(["photoURL": url])
+    }
+    
+    func updateUserTimezone(userId: String, timezone: String) async throws {
+        try await collection(Collections.users)
+            .document(userId)
+            .updateData(["timezone": timezone])
     }
     
     func updateUserProfile(userId: String,

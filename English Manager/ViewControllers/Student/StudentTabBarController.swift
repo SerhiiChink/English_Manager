@@ -7,9 +7,11 @@
 
 import UIKit
 
-final class StudentTabBarController: UITabBarController {
+final class StudentTabBarController: UITabBarController,
+                                     PushNavigationProviding {
     // MARK: - Properties
     private let authRouter: AuthRouterProtocol
+    lazy var pushNavigationHandler: PushNavigationHandlerProtocol = StudentPushNavigationHandler(tabBar: self)
     
     // MARK: - Init
     init(authRouter: AuthRouterProtocol) {

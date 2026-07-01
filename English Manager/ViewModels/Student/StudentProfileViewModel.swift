@@ -15,6 +15,7 @@ protocol StudentProfileViewModelProtocol: AnyObject {
     var onLoading: ((Bool) -> Void)? { get set }
     var onAccountDeleted: (() -> Void)? { get set }
     var user: User? { get }
+    var teacher: User? { get }
     var statItems: [StatItem] { get }
     var isGoogleUser: Bool { get }
     var isAppleUser: Bool { get }
@@ -36,6 +37,7 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
     
     // MARK: - Data
     private(set) var user: User?
+    private(set) var teacher: User?
     private var lessonsCount: Int = 0
     private var homeworkCount: Int = 0
     var statItems: [StatItem] {
@@ -87,6 +89,16 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
                     service: firestoreService,
                     forceRefresh: forceRefresh
                 )
+                let fetchedTeacher: User?
+                if let teacherId = fetchedUser.teacherId {
+                    fetchedTeacher = try? await UserCache.shared.getUser(
+                        id: teacherId,
+                        service: firestoreService,
+                        forceRefresh: forceRefresh
+                    )
+                } else {
+                    fetchedTeacher = nil
+                }
                 async let lessons = firestoreService
                     .fetchStudentLessons(studentId: userId)
                 async let homeworks = firestoreService
@@ -95,6 +107,7 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
                      fetchedHomeworks) = try await (lessons, homeworks)
                 await MainActor.run { [weak self] in
                     self?.user = fetchedUser
+                    self?.teacher = fetchedTeacher
                     self?.lessonsCount = fetchedLessons.count
                     self?.homeworkCount = fetchedHomeworks.count
                     self?.isFetching = false

@@ -40,5 +40,10 @@ enum PushNotificationMapper {
             return .none
         }
     }
+    
+    static func navigationTarget(from userInfo: [AnyHashable: Any]) -> PushNavigationTarget {
+        let rawType = userInfo["type"] as? String ?? ""
+        return navigationTarget(for: PushType(rawValue: rawType))
+    }
 }
 

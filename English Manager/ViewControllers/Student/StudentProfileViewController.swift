@@ -42,7 +42,7 @@ final class StudentProfileViewController: UIViewController {
         setupNavigationBar()
         setupCallbacks()
         bindViewModel()
-        contentView.build(statsView: statsCard)
+        contentView.build(statsView: statsCard, showTeacherBanner: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +100,7 @@ final class StudentProfileViewController: UIViewController {
                 contentView.configure(user: user)
             }
             statsCard.configure(items: viewModel.statItems)
+            contentView.configureTeacher(viewModel.teacher)
         }
         viewModel.onError = { [weak self] message in
             self?.contentView.endRefreshing()

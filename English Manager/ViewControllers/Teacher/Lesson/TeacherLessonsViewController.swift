@@ -256,7 +256,8 @@ extension TeacherLessonsViewController {
                                       message: "select_schedule".localized,
                                       preferredStyle: .actionSheet)
         schedule.forEach { schedule in
-            let title = scheduleFormatter.formatted(schedule)
+            let title = scheduleFormatter.formatted(schedule,
+                                                    timezone: nil)
             let occurrence = viewModel.nextOccurrence(for: schedule)
             alert.addAction(UIAlertAction(
                 title: title,

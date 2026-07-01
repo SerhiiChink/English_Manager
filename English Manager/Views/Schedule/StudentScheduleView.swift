@@ -96,7 +96,7 @@ final class StudentScheduleView: UIView {
                 student: student,
                 hasSchedule: !studentSchedule.isEmpty,
                 scheduleString: studentSchedule.map {
-                    scheduleFormatter.formatted($0)
+                    scheduleFormatter.formatted($0, timezone: nil)
                 },
                 isAutoDebitEnabled: student.isAutoDebitEnabled ?? false
             )

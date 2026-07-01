@@ -141,6 +141,8 @@
 		57F02D1A2FB79C4C0089DA31 /* AnimatedSplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F02D192FB79C4C0089DA31 /* AnimatedSplashViewModel.swift */; };
 		57F02D1D2FB7A1140089DA31 /* AnimatedSplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F02D1C2FB7A1140089DA31 /* AnimatedSplashViewController.swift */; };
 		57F02D1F2FB7A4590089DA31 /* SplashAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F02D1E2FB7A4590089DA31 /* SplashAnimator.swift */; };
+		57F0B1FF2FF1251500303593 /* TeacherBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F0B1FE2FF1251500303593 /* TeacherBannerView.swift */; };
+		57F0B2012FF27DB400303593 /* PushNavigationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F0B2002FF27DB400303593 /* PushNavigationHandler.swift */; };
 		57F6C05B2F6EB5890041E8BE /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C05A2F6EB5890041E8BE /* ProfileView.swift */; };
 		57F6C05D2F6F171B0041E8BE /* StatsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C05C2F6F171B0041E8BE /* StatsCardView.swift */; };
 		57F6C05F2F6F33E60041E8BE /* StudentProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C05E2F6F33E60041E8BE /* StudentProfileViewController.swift */; };
@@ -301,6 +303,8 @@
 		57F02D192FB79C4C0089DA31 /* AnimatedSplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedSplashViewModel.swift; sourceTree = "<group>"; };
 		57F02D1C2FB7A1140089DA31 /* AnimatedSplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedSplashViewController.swift; sourceTree = "<group>"; };
 		57F02D1E2FB7A4590089DA31 /* SplashAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashAnimator.swift; sourceTree = "<group>"; };
+		57F0B1FE2FF1251500303593 /* TeacherBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherBannerView.swift; sourceTree = "<group>"; };
+		57F0B2002FF27DB400303593 /* PushNavigationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNavigationHandler.swift; sourceTree = "<group>"; };
 		57F6C05A2F6EB5890041E8BE /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		57F6C05C2F6F171B0041E8BE /* StatsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCardView.swift; sourceTree = "<group>"; };
 		57F6C05E2F6F33E60041E8BE /* StudentProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentProfileViewController.swift; sourceTree = "<group>"; };
@@ -606,6 +610,7 @@
 				5750924E2F5B0A16002132EF /* AuthRouter.swift */,
 				5773F8A72F73E52900D73305 /* TeacherRouter.swift */,
 				5773F8A92F73E7A000D73305 /* StudentRouter.swift */,
+				57F0B2002FF27DB400303593 /* PushNavigationHandler.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -887,6 +892,7 @@
 			isa = PBXGroup;
 			children = (
 				57F6C05A2F6EB5890041E8BE /* ProfileView.swift */,
+				57F0B1FE2FF1251500303593 /* TeacherBannerView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -912,7 +918,6 @@
 				575091832F56F356002132EF /* Frameworks */,
 				575091842F56F356002132EF /* Resources */,
 				57F02CE02FA20C970089DA31 /* ShellScript */,
-				57C488E62FEBD85B00547839 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1056,23 +1061,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		57C488E62FEBD85B00547839 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
-		};
 		57F02CE02FA20C970089DA31 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -1191,11 +1179,13 @@
 				5750924F2F5B0A16002132EF /* AuthRouter.swift in Sources */,
 				5797B8FC2F6D8F9A004416DF /* StorageService.swift in Sources */,
 				57F6C0632F6F45F60041E8BE /* UIViewController+ProfileAlerts.swift in Sources */,
+				57F0B2012FF27DB400303593 /* PushNavigationHandler.swift in Sources */,
 				57F6C05F2F6F33E60041E8BE /* StudentProfileViewController.swift in Sources */,
 				5750924B2F5AEEFF002132EF /* LoginViewModel.swift in Sources */,
 				57D9D1C02F65826C0061605F /* TeacherLessonsViewModel.swift in Sources */,
 				57F02D1F2FB7A4590089DA31 /* SplashAnimator.swift in Sources */,
 				575091FC2F599842002132EF /* PaymentRequest.swift in Sources */,
+				57F0B1FF2FF1251500303593 /* TeacherBannerView.swift in Sources */,
 				575092002F599B22002132EF /* AuthService.swift in Sources */,
 				57D9D1D12F66B8490061605F /* StudentsViewModel.swift in Sources */,
 				57F02D062FAF9DD00089DA31 /* PaymentHistoryView.swift in Sources */,
@@ -1307,7 +1297,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "English Manager/English Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = Y69SCP5F9J;
@@ -1323,7 +1313,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.serhii.kliepikov.English-Manager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1343,7 +1333,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "English Manager/English Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = Y69SCP5F9J;
@@ -1359,7 +1349,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.serhii.kliepikov.English-Manager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

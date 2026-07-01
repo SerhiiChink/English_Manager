@@ -14,6 +14,7 @@ protocol AuthRouterProtocol: AnyObject {
     func showMainScreen(role: UserRole)
     func showRoleConfirmation(role: UserRole)
     func showAnimatedSplash(role: UserRole)
+    func navigateToPush(target: PushNavigationTarget)
 }
 
 final class AuthRouter: AuthRouterProtocol {
@@ -21,6 +22,7 @@ final class AuthRouter: AuthRouterProtocol {
     private let navigationController: UINavigationController
     private let authService: AuthServiceProtocol
     private let firestoreService: FirestoreServiceProtocol
+    private var pendingPushTarget: PushNavigationTarget?
     
     // MARK: - Init
     init(
@@ -60,9 +62,17 @@ final class AuthRouter: AuthRouterProtocol {
         case .teacher:
             let vc = TeacherTabBarController(authRouter: self)
             navigationController.setViewControllers([vc], animated: true)
+            if let target = pendingPushTarget {
+                pendingPushTarget = nil
+                executeNavigation(to: vc, target: target)
+            }
         case .student:
             let vc = StudentTabBarController(authRouter: self)
             navigationController.setViewControllers([vc], animated: true)
+            if let target = pendingPushTarget {
+                pendingPushTarget = nil
+                executeNavigation(to: vc, target: target)
+            }
         }
     }
     
@@ -78,5 +88,23 @@ final class AuthRouter: AuthRouterProtocol {
         let vc = AnimatedSplashViewController(router: self,
                                       viewModel: viewModel)
         navigationController.setViewControllers([vc], animated: true)
+    }
+    
+    func navigateToPush(target: PushNavigationTarget) {
+        guard let tabBar = navigationController.viewControllers.first(
+            where: { $0 is UITabBarController }
+        ) as? UITabBarController else {
+            pendingPushTarget = target
+            return
+        }
+        executeNavigation(to: tabBar, target: target)
+    }
+    
+    // MARK: - Private
+    private func executeNavigation(to tabBar: UITabBarController,
+                                   target: PushNavigationTarget) {
+       (tabBar as? PushNavigationProviding)?
+            .pushNavigationHandler
+            .navigate(to: target)
     }
 }

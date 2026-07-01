@@ -16,6 +16,7 @@ protocol StudentLessonsViewModelProtocol: AnyObject {
     var schedules: [Schedule] { get }
     var teacherName: String? { get }
     var isAutoDebitEnabled: Bool { get }
+    var teacherTimezone: String? { get }
     func fetchLessons()
     func refresh()
 }
@@ -32,6 +33,7 @@ final class StudentLessonsViewModel: StudentLessonsViewModelProtocol {
     private(set) var schedules: [Schedule] = []
     private(set) var teacherName: String?
     private(set) var isAutoDebitEnabled: Bool = false
+    private(set) var teacherTimezone: String?
     private var isFetching = false
     
     // MARK: - Properties
@@ -73,7 +75,7 @@ final class StudentLessonsViewModel: StudentLessonsViewModelProtocol {
                 )
                 guard let teacherId = user.teacherId else {
                     UserDefaults.standard.removeObject(
-                        forKey: "lastTeacherId_\(studentId)"
+                        forKey: UDKeys.lastTeacherId(for: studentId)
                     )
                     await MainActor.run { [weak self] in
                         self?.isFetching = false
@@ -94,14 +96,16 @@ final class StudentLessonsViewModel: StudentLessonsViewModelProtocol {
                      fetchedSchedules) = try await (lessons,
                                                       schedules)
                 await MainActor.run { [weak self] in
-                    self?.lessons = fetchedLessons
-                    self?.schedules = fetchedSchedules
-                    self?.teacherName = fetchedTeacher.shortName
-                    self?.isAutoDebitEnabled = user.isAutoDebitEnabled ?? false
-                    self?.isFetching = false
-                    self?.onLoading?(false)
-                    if isNewTeacher { self?.onTeacherAssigned?() }
-                    self?.onUpdate?()
+                    guard let self else { return }
+                    self.lessons = fetchedLessons
+                    self.schedules = fetchedSchedules
+                    self.teacherName = fetchedTeacher.shortName
+                    self.teacherTimezone = fetchedTeacher.timezone
+                    self.isAutoDebitEnabled = user.isAutoDebitEnabled ?? false
+                    self.isFetching = false
+                    self.onLoading?(false)
+                    if isNewTeacher { self.onTeacherAssigned?() }
+                    self.onUpdate?()
                 }
             } catch {
                 await MainActor.run { [weak self] in

@@ -243,7 +243,7 @@ final class ScheduleDetailViewController: UIViewController {
             $0.width.height.equalTo(16)
         }
         let label = UILabel()
-        label.text = formatter.formatted(schedule)
+        label.text = formatter.formatted(schedule, timezone: nil)
         label.font = .systemFont(ofSize: 15)
         label.textColor = .appText
         container.addSubview(label)
@@ -291,7 +291,7 @@ extension ScheduleDetailViewController {
     private func showDeleteConfirmation(for schedule: Schedule, view: UIView) {
         let alert = UIAlertController(
             title: "delete_schedule".localized,
-            message: formatter.formatted(schedule),
+            message: formatter.formatted(schedule, timezone: nil),
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "cancel".localized,
