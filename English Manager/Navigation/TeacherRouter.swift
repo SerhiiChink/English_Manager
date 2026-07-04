@@ -9,7 +9,6 @@ import UIKit
 
 protocol TeacherRouterProtocol: AnyObject {
     func showEditProfile(user: User)
-//    func showLessonDetail(_ lesson: Lesson)
     func showScheduleDetail(
         student: User,
         schedules: [Schedule],
@@ -50,11 +49,6 @@ final class TeacherRouter: TeacherRouterProtocol {
         let vc = EditProfileViewController(user: user)
         navigationController?.pushViewController(vc, animated: true)
     }
-    
-//    func showLessonDetail(_ lesson: Lesson) {
-//        let vc = StudentLessonDetailViewController(lesson: lesson)
-//        navigationController?.pushViewController(vc, animated: true)
-//    }
     
     func showScheduleDetail(
         student: User,

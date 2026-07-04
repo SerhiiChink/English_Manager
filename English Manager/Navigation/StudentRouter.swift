@@ -11,7 +11,6 @@ protocol StudentRouterProtocol: AnyObject {
     func showEditProfile(user: User)
     func showLessonDetail(_ lesson: Lesson,
                           teacherName: String?)
-//    func showHomeworkDetail(_ homework: Homework)
     func showLogin()
 }
 
@@ -41,10 +40,6 @@ final class StudentRouter: StudentRouterProtocol {
                                                    teacherName: teacherName)
         navigationController?.pushViewController(vc, animated: true)
     }
-    
-//    func showHomeworkDetail(_ homework: Homework) {
-//        
-//    }
     
     func showLogin() {
         authRouter.showLogin()
