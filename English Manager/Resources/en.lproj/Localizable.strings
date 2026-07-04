@@ -1,0 +1,201 @@
+//
+//  Localizable.strings
+//  English Manager
+//
+//  Created by Sergej Klepikov on 11.04.2026.
+//
+
+// MARK: - Auth & Roles
+"enter" = "Enter";
+"login" = "Login";
+"sign_up" = "Sign Up";
+"sign_out" = "Sign Out";
+"email" = "Email";
+"password" = "Password";
+"confirm_password" = "Confirm password";
+"forgot_password" = "Forgot password?";
+"or" = "or";
+"password_are_not_the_same" = "Passwords do not match";
+"choose_your_role" = "Choose your role";
+"teacher" = "Teacher";
+"student" = "Student";
+"english_manager" = "English Manager";
+"teacher_role_description" = "Manage students, schedules, homework, and payments.";
+"student_role_description" = "Track lessons, homework, payments, and your learning progress.";
+"confirm_role_title" = "Confirm role";
+"confirm_role_yes" = "Yes, continue";
+"confirm_role_change" = "Change role";
+"back_to_login" = "Back to Login";
+"account_exists_login" = "Account already exists. Please sign in.";
+"sign_up_with_apple" = "Continue with Apple";
+"sign_up_with_google" = "Continue with Google";
+"name" = "Name";
+"are_you_sure" = "Are you sure?";
+
+// MARK: - Navigation & Tabs
+"profile" = "Profile";
+"students" = "Students";
+"lessons_capitalized" = "Lessons";
+"homework" = "Homework";
+"payment" = "Payment";
+"lessons" = "lessons";
+"learning_system" = "LEARNING SYSTEM";
+"get_started" = "Get Started";
+"filter" = "Filter";
+"all_students" = "All Students";
+
+// MARK: - Profile & Settings
+"first_name" = "First name";
+"last_name" = "Last name";
+"edit_profile" = "Edit profile";
+"payment_settings" = "Payment Settings";
+"lesson_price_(UAH)" = "Lesson price (UAH)";
+"min_lessons_to_pay" = "Min lessons to pay";
+"auto_debit" = "Auto debit";
+"auto_debit_description" = "Lessons will be automatically deducted from your balance after each class.";
+"change_password" = "Change Password";
+"delete_account" = "Delete account";
+"delete_account_warning" = "All your data will be permanently deleted";
+"account" = "Account";
+"session" = "Session";
+"no_name" = "No Name";
+"new_password" = "New Password";
+"change" = "Change";
+"your_teacher" = "Your teacher";
+"no_teacher_yet" = "No teacher yet";
+
+// MARK: - Student Management
+"no_students_yet" = "No students yet";
+"add_student" = "Add Student";
+"no_students" = "No Students";
+"add_students_first" = "Add students first in Students tab";
+"select_student" = "Select student";
+"remove_student" = "Remove student";
+"name(optional)" = "Name (optional)";
+"add_first_student_hint" = "Enter the email of a student who is already registered in the app";
+"go_to_students_hint" = "Go to the Students section to add your first student";
+"student_lessons_hint" = "Your teacher hasn’t added any lessons yet";
+"student_homework_hint" = "Your teacher hasn’t added any homework yet";
+"no_lessons_yet" = "No lessons yet";
+"no_homework_yet" = "No homework yet";
+"homework_will_appear_here" = "Homework from students will appear here";
+"tap_student_to_add_schedule" = "Tap on a student card to add a schedule";
+
+// MARK: - Lesson Details
+"new_lesson" = "New Lesson";
+"edit_lesson" = "Edit lesson";
+"lesson_detail" = "Lesson Detail";
+"topic" = "Topic";
+"description" = "Description";
+"pages" = "Pages";
+"materials" = "Materials";
+"no_materials" = "No materials";
+"source_url_optional" = "Source URL (optional)";
+"source_URL" = "Source URL";
+"all_students" = "All Students";
+
+// MARK: - Homework Detail
+"review_homework" = "Review Homework";
+"grade_range" = "Grade (1-10)";
+"feedback_optional" = "Feedback (optional)";
+"invalid_grade" = "Invalid grade";
+"enter_grade_range" = "Enter a number from 1 to 10";
+
+// MARK: - Statuses
+"pending" = "Pending";
+"confirmed" = "Confirmed";
+"rejected" = "Rejected";
+"scheduled" = "Scheduled";
+"completed" = "Completed";
+"cancelled" = "Cancelled";
+"grade" = "Grade:";
+
+// MARK: - Schedule
+"schedule" = "Schedule";
+"add_schedule" = "Add schedule";
+"no_schedule_yet" = "No schedule yet";
+"select_schedule" = "Select schedule";
+"delete_schedule" = "Delete schedule";
+"auto_debit" = "Auto-Pay";
+"no_schedule_yet" = "No schedule yet";
+
+// MARK: - Payments & Balance
+"date" = "Date";
+"price" = "Price";
+"balance" = "Balance";
+"not_paid" = "Not paid";
+"lesson_price" = "Lesson price";
+"minimum_lessons" = "Minimum lessons";
+"payment_history" = "Payment History";
+"pay_for_lessons" = "Pay for Lessons";
+"payments" = "Payments";
+"no_payments_yet" = "No payments yet";
+"no_history_yet" = "No history yet";
+"amount" = "Amount";
+"total_received" = "Total received:";
+"minimum_payment" = "Minimum payment is";
+"confirm_payment" = "Confirm Payment";
+"confirm_payment?" = "Confirm Payment?";
+"edit_payment" = "Edit Payment";
+"reject_payment?" = "Reject Payment?";
+"number_of_lessons" = "Number of lessons";
+"auto_pay_on" = "Auto-Pay On";
+"auto_pay_off" = "Auto-Pay Off";
+"auto_debit_description" = "Automatically deducts a lesson from the balance after each scheduled session.";
+"last_payment" = "Last payment";
+"lessons_paid" = "Lessons paid";
+"review_payment" = "Review payment";
+"adjust_balance" = "Adjust balance";
+"adjust_balance_warning" = "This will change the student's lesson balance.";
+"adjust" = "Adjust";
+"balance_adjusted" = "Balance adjusted";
+"history_cleared" = "History cleared";
+"verify_payment" = "Verify payment";
+"low_balance" = "Low balance";
+"paid" = "Paid";
+"balance_updated" = "Balance updated";
+"total_paid" = "Total paid";
+"auto_debit_suggestion" = "Enable auto debit to deduct lessons automatically after each class.";
+"how_to_pay" = "How to pay";
+"payment_instruction" = "Pay for lessons through your bank’s website or mobile app. Then return to the app and submit a payment request in this section — your teacher will receive a notification and confirm the payment.";
+"setup_payment_settings" = "Set up your payment settings: lesson price and the number of lessons required before payment";
+
+// MARK: - Actions & Alerts
+"add" = "Add";
+"error" = "Error";
+"save" = "Save";
+"edit" = "Edit";
+"send" = "Send";
+"cancel" = "Cancel";
+"confirm" = "Confirm";
+"reject" = "Reject";
+"reject" = "Reject";
+"delete" = "Delete";
+"clear" = "Clear";
+"skip" = "Skip";
+"this_action_cannot_be_undone" = "This action cannot be undone";
+"link_already_used" = "Link already used";
+"duplicate_source_warning" = "This source was used in lesson with %1$@ on %2$@. Add anyway?";
+"add_anyway" = "Add anyway";
+"payment_not_configured_error" = "The teacher hasn't set up payments yet";
+"invalid_amount" = "Invalid amount";
+"clear_history" = "Clear history";
+"clear_history_message" = "Are you sure you want to clear payment history?";
+"you_added_to_lessons" = "You have been added to lessons";
+"email_copied" = "Email copied";
+
+// MARK: - Push Notifications
+"push_balance_empty_title" = "Balance is empty";
+"push_balance_empty_body" = "Top up your balance to continue lessons.";
+"push_lesson_reminder_title" = "Lesson in 2 hours";
+"push_lesson_reminder_body" = "Get ready for your lesson";
+"push_payment_pending_title" = "Payment confirmation";
+"push_payment_pending_body" = "%1$@ paid for %2$@ lessons";
+
+// MARK: - Password Validation
+"validation_email_empty" = "Please enter your email";
+"validation_email_invalid" = "Invalid email address";
+"validation_password_empty" = "Please enter your password";
+"validation_password_too_short" = "Password must be at least 8 characters";
+"validation_password_no_uppercase" = "Password must contain at least one uppercase letter";
+"validation_password_no_digit" = "Password must contain at least one digit";
