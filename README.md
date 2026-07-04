@@ -17,13 +17,21 @@ Schedule lessons · track homework · manage payments · send push notifications
 
 ## Screenshots
 
-| Teacher · Lessons | Teacher · Payments | Student · Homework |
-|:---:|:---:|:---:|
-| ![](docs/screenshots/teacher_lessons.png) | ![](docs/screenshots/teacher_payments.png) | ![](docs/screenshots/student_homework.png) |
+<div align="center">
 
-| Push Notification | Schedule | Dark Mode |
-|:---:|:---:|:---:|
-| ![](docs/screenshots/push.png) | ![](docs/screenshots/schedule.png) | ![](docs/screenshots/dark_mode.png) |
+| Onboarding | Sign In | Teacher · Lessons | Teacher · Schedule |
+|:---:|:---:|:---:|:---:|
+| <img src="screenshots/01-onboarding.png" width="200"/> | <img src="screenshots/02-login.png" width="200"/> | <img src="screenshots/03-lessons.png" width="200"/> | <img src="screenshots/04-schedule.png" width="200"/> |
+
+| Payment Confirmation | Homework Review | Student · Profile | Student · Lessons |
+|:---:|:---:|:---:|:---:|
+| <img src="screenshots/05-payment-confirmation.png" width="200"/> | <img src="screenshots/06-homework-teacher.png" width="200"/> | <img src="screenshots/07-student-profile.png" width="200"/> | <img src="screenshots/08-student-lessons.png" width="200"/> |
+
+| Student · Payments | Role Selection |
+|:---:|:---:|
+| <img src="screenshots/09-student-payments.png" width="200"/> | <img src="screenshots/10-role-selection.png" width="200"/> |
+
+</div>
 
 ---
 
@@ -122,5 +130,5 @@ cd functions && npm install && firebase deploy --only functions
 
 ## Contact
 
-**Serhii Kliepikov** — iOS Developer  
-[LinkedIn](https://www.linkedin.com/in/serhii-kliepikov-9699a5363/) · sergej.klepikov.96@gmail.com
+**Serhii Klepikov** — iOS Developer  
+[LinkedIn](https://linkedin.com/in/your-profile) · your.email@example.com
