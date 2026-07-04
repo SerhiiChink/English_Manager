@@ -131,4 +131,4 @@ cd functions && npm install && firebase deploy --only functions
 ## Contact
 
 **Serhii Klepikov** — iOS Developer  
-[LinkedIn](https://linkedin.com/in/your-profile) · your.email@example.com
+[LinkedIn](https://www.linkedin.com/in/serhii-kliepikov-9699a5363/) · sergej.klepikov.96@gmail.com
