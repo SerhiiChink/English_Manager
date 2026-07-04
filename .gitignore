@@ -62,3 +62,19 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 GoogleService-Info.plist
 GoogleService-Info*.plist
+
+# Firebase secrets
+serviceAccountKey.json
+*.p8
+.env
+.env.local
+firebase-adminsdk-*.json
+
+# Node.js Cloud Functions
+functions/node_modules/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+**/.DS_Store
