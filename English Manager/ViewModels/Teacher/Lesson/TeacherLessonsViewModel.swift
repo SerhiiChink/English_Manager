@@ -14,8 +14,11 @@ protocol TeacherLessonsViewModelProtocol: AnyObject {
     var students: [User] { get }
     var schedules: [Schedule] { get }
     var occurrences: [LessonOccurrence] { get }
+    var pendingConfirmations: [LessonOccurrence] { get }
     var filteredLessons: [Lesson] { get }
     var allSourceLink: [SourceLink] { get }
+    var currentConfirmation: LessonOccurrence? { get }
+    var rescheduledLessons: [RescheduledLesson] { get }
     func fetchLessons()
     func addLesson(_ lesson: Lesson, occurrence: LessonOccurrence?)
     func nextOccurrence(for schesule: Schedule) -> LessonOccurrence?
@@ -24,13 +27,13 @@ protocol TeacherLessonsViewModelProtocol: AnyObject {
     func saveSchedule(_ schedule: Schedule,
                       completion: @escaping (Schedule) -> Void)
     func deleteSchedule(_ schedule: Schedule)
+    func deleteRescheduled(id: String)
     func schedules(for studentId: String) -> [Schedule]
     func filterByDate(_ date: Date?)
     func filterByStudent(_ studentId: String?)
     func checkDuplicateLink(_ url: String) -> Lesson?
     var currentTeacherId: String? { get }
     func updateLesson(_ lesson: Lesson)
-    func updateAutoDebit(for student: User, isEnabled: Bool)
 }
 
 final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
@@ -44,6 +47,7 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
     private(set) var students: [User] = []
     private(set) var schedules: [Schedule] = []
     private(set) var occurrences: [LessonOccurrence] = []
+    private(set) var pendingConfirmations: [LessonOccurrence] = []
     private var selectedDate: Date?
     private var selectedStudentId: String?
     private var isFetching = false
@@ -71,10 +75,26 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
         authService.currentUserId
     }
     
+    var currentConfirmation: LessonOccurrence? {
+        pendingConfirmations.first
+    }
+    
+    var rescheduledLessons: [RescheduledLesson] {
+        occurrences
+            .filter { $0.scheduleId == nil && $0.status == .scheduled }
+            .compactMap { occurrence in
+                guard let id = occurrence.id else { return nil }
+                return RescheduledLesson(id: id,
+                                         studentId: occurrence.studentId,
+                                         scheduledAt: occurrence.scheduledAt)
+            }
+    }
+    
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
     private let authService: AuthServiceProtocol
     private let occurrenceService: OccurrenceFirestoreServiceProtocol
+    private var notificationObserver: NSObjectProtocol?
     
     // MARK: - Init
     init(
@@ -85,27 +105,41 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
         self.firestoreService = firestoreService
         self.authService = authService
         self.occurrenceService = occurrenceService
+        setupNotificationObservers()
+    }
+    
+    deinit {
+        if let observer = notificationObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     // MARK: - Fetch
     func fetchLessons() {
         guard !isFetching else { return }
         guard let teacherId = authService.currentUserId else {
-            onError?("The user is not authorized") // localiz
+            onError?("The user is not authorized")
             return
         }
         isFetching = true
         onLoading?(true)
         Task {
             do {
-                async let lessons = firestoreService.fetchLessons(teacherId: teacherId)
-                async let students = firestoreService.fetchStudents(teacherId: teacherId)
-                async let schedules = firestoreService.fetchSchedules(teacherId: teacherId)
+                async let lessons = firestoreService
+                    .fetchLessons(teacherId: teacherId)
+                async let students = firestoreService
+                    .fetchStudents(teacherId: teacherId)
+                async let schedules = firestoreService
+                    .fetchSchedules(teacherId: teacherId)
+                async let confirmations = occurrenceService
+                    .fetchPendingConfirmations(teacherId: teacherId)
                 let (fetchedLessons,
                      fetchedStudents,
-                     fetchedSchedules) = try await (lessons,
-                                                    students,
-                                                    schedules)
+                     fetchedSchedules,
+                     fetchedConfirmations) = try await (lessons,
+                                                        students,
+                                                        schedules,
+                                                        confirmations)
                 let fetchedOccurrences = try await withThrowingTaskGroup(
                     of: [LessonOccurrence].self
                 ) { group in
@@ -122,13 +156,15 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
                     return all
                 }
                 await MainActor.run { [weak self] in
-                    self?.allLessons = fetchedLessons
-                    self?.students = fetchedStudents
-                    self?.schedules = fetchedSchedules
-                    self?.occurrences = fetchedOccurrences
-                    self?.isFetching = false
-                    self?.onLoading?(false)
-                    self?.onUpdate?()
+                    guard let self else { return }
+                    self.allLessons = fetchedLessons
+                    self.students = fetchedStudents
+                    self.schedules = fetchedSchedules
+                    self.pendingConfirmations = fetchedConfirmations
+                    self.occurrences = fetchedOccurrences
+                    self.isFetching = false
+                    self.onLoading?(false)
+                    self.onUpdate?()
                 }
             } catch {
                 await MainActor.run { [weak self] in
@@ -192,31 +228,6 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
         }
     }
     
-    func updateAutoDebit(for student: User, isEnabled: Bool) {
-        Task {
-            do {
-                try await firestoreService
-                    .updateAutoDebit(studentId: student.id,
-                                     isEnabled: isEnabled)
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    if let index = students.firstIndex(
-                        where: { $0.id == student.id }
-                    ) {
-                        var updated = students[index]
-                        updated.isAutoDebitEnabled = isEnabled
-                        students[index] = updated
-                    }
-                    onUpdate?()
-                }
-            } catch {
-                await MainActor.run { [weak self] in
-                    self?.onError?(error.localizedDescription)
-                }
-            }
-        }
-    }
-    
     // MARK: - Delete Lessons
     func deleteLesson(lesson: Lesson,
                       completion: @escaping (Int?) -> Void) {
@@ -236,6 +247,22 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
                     self?.onLoading?(false)
                     self?.onError?(error.localizedDescription)
                     completion(nil)
+                }
+            }
+        }
+    }
+    
+    func deleteRescheduled(id: String) {
+        Task {
+            do {
+                try await occurrenceService.deleteOccurrence(id: id)
+                await MainActor.run { [weak self] in
+                    self?.occurrences.removeAll { $0.id == id }
+                    self?.onUpdate?()
+                }
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.onError?(error.localizedDescription)
                 }
             }
         }
@@ -296,6 +323,17 @@ final class TeacherLessonsViewModel: TeacherLessonsViewModelProtocol {
                     self?.onError?(error.localizedDescription)
                 }
             }
+        }
+    }
+    
+    // MARK: - Private
+    private func setupNotificationObservers() {
+        notificationObserver = NotificationCenter.default.addObserver(
+            forName: .lessonCompleted,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.fetchLessons()
         }
     }
     

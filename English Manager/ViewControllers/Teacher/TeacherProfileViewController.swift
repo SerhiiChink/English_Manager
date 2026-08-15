@@ -57,6 +57,9 @@ final class TeacherProfileViewController: UIViewController {
     
     // MARK: - Callbacks
     private func setupCallbacks() {
+        contentView.onStudents = { [weak self] in
+            self?.router.showStudents()
+        }
         contentView.onEdit = { [weak self] in
             guard let user = self?.viewModel.user else { return }
             self?.router.showEditProfile(user: user)
@@ -95,6 +98,7 @@ final class TeacherProfileViewController: UIViewController {
     private func bindViewModel() {
         viewModel.onUpdate = { [weak self] in
             guard let self else { return }
+            contentView.build(statsView: statsCard, showStudentsButton: true)
             contentView.endRefreshing()
             if let user = viewModel.user {
                 contentView.configure(user: user)

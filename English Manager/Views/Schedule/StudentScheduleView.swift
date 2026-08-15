@@ -97,8 +97,7 @@ final class StudentScheduleView: UIView {
                 hasSchedule: !studentSchedule.isEmpty,
                 scheduleString: studentSchedule.map {
                     scheduleFormatter.formatted($0, timezone: nil)
-                },
-                isAutoDebitEnabled: student.isAutoDebitEnabled ?? false
+                }
             )
             chips.append(chip)
             let chipView = makeChip(for: chip, index: chips.count - 1)
@@ -110,10 +109,11 @@ final class StudentScheduleView: UIView {
     private func makeChip(for chip: StudentChip, index: Int) -> UIView {
         let screenWidth = UIScreen.main.bounds.width
         let cardWidth = screenWidth / 2.7
-        
         let container = UIView()
         container.tag = index
-        container.backgroundColor = chip.hasSchedule ? .appAccent : .appSurface
+        container.backgroundColor = chip.hasSchedule
+            ? .appAccent
+            : .appSurface
         container.layer.cornerRadius = Layout.cornerRadius
         container.layer.shadowColor = UIColor.black.cgColor
         container.layer.shadowOpacity = 0.08
@@ -122,29 +122,21 @@ final class StudentScheduleView: UIView {
         container.snp.makeConstraints {
             $0.width.equalTo(cardWidth)
         }
-        let dot = UIView()
-        dot.backgroundColor = chip.isAutoDebitEnabled ? .appGreen : .appRed
-        dot.layer.cornerRadius = 4
-        container.addSubview(dot)
-        dot.snp.makeConstraints {
-            $0.top.left.equalToSuperview().inset(12)
-            $0.width.height.equalTo(8)
-        }
-        
         let nameLabel = UILabel()
         nameLabel.text = chip.student.name.isEmpty
             ? chip.student.email
             : chip.student.name
         nameLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        nameLabel.textColor = chip.hasSchedule ? .white : .appText
+        nameLabel.textColor = chip.hasSchedule
+            ? .white
+            : .appText
         nameLabel.numberOfLines = 1
         nameLabel.lineBreakMode = .byTruncatingTail
         container.addSubview(nameLabel)
         nameLabel.snp.makeConstraints {
-            $0.top.equalTo(dot.snp.bottom).offset(8)
+            $0.top.equalToSuperview().inset(12)
             $0.left.right.equalToSuperview().inset(12)
         }
-        
         let scheduleLabel = UILabel()
         if chip.hasSchedule {
             let studentSchedule = chip.scheduleString
@@ -161,11 +153,10 @@ final class StudentScheduleView: UIView {
         }
         container.addSubview(scheduleLabel)
         scheduleLabel.snp.makeConstraints {
-            $0.top.equalTo(nameLabel.snp.bottom).offset(4)
+            $0.top.equalTo(nameLabel.snp.bottom).offset(6)
             $0.left.right.equalToSuperview().inset(12)
             $0.bottom.lessThanOrEqualToSuperview().inset(12)
         }
-        
         container.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(chipTapped(_:)))

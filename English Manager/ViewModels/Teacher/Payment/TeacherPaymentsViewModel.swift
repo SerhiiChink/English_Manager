@@ -13,6 +13,7 @@ protocol TeacherPaymentsViewModelProtocol: AnyObject {
     var onLoading: ((Bool) -> Void)? { get set }
     var students: [User] { get }
     var settings: TeacherSettings? { get }
+    var pendingCount: Int { get }
     func fetchData()
     func saveSettings(price: Double, minLessons: Int, currency: String)
     func cellMode(for student: User) -> PaymentCellModel
@@ -29,6 +30,9 @@ final class TeacherPaymentsViewModel: TeacherPaymentsViewModelProtocol {
     private var payments: [PaymentRequest] = []
     private(set) var settings: TeacherSettings?
     private var isFetching = false
+    var pendingCount: Int {
+        payments.filter { $0.status == .pending }.count
+    }
     
     // MARK: - Properties
     private let paymentService: PaymentFirestoreServiceProtocol
@@ -89,8 +93,7 @@ final class TeacherPaymentsViewModel: TeacherPaymentsViewModelProtocol {
             teacherId: teacherId,
             lessonPrice: price,
             minLessons: minLessons,
-            currency: currency,
-            showAutoDebitPrompt: self.settings?.showAutoDebitPrompt ?? true
+            currency: currency
         )
         onLoading?(true)
         Task {

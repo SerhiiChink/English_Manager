@@ -24,6 +24,11 @@ extension UIColor {
     // MARK: - Text
     static let appText: UIColor = .label
     static let appTextSecondary: UIColor = .secondaryLabel
+    static let appWhite: UIColor = UIColor { trait in
+        trait.userInterfaceStyle == .dark
+            ? UIColor(hex: "#F2F2F7")
+            : .white
+    }
 
     // MARK: - Accent
     static let appAccent: UIColor = UIColor { trait in

@@ -33,7 +33,8 @@ enum BalanceLevelMapper {
     }
     
     static func level(balance: Int, minLessons: Int) -> BalanceLevel {
-        guard minLessons > 0 else { return balance == 0 ? .empty : .ok }
+        guard balance > 0 else { return .empty }
+        guard minLessons > 0 else { return .ok }
         switch balance {
         case 0:
             return .empty

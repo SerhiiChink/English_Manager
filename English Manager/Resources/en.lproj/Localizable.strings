@@ -51,8 +51,6 @@
 "payment_settings" = "Payment Settings";
 "lesson_price_(UAH)" = "Lesson price (UAH)";
 "min_lessons_to_pay" = "Min lessons to pay";
-"auto_debit" = "Auto debit";
-"auto_debit_description" = "Lessons will be automatically deducted from your balance after each class.";
 "change_password" = "Change Password";
 "delete_account" = "Delete account";
 "delete_account_warning" = "All your data will be permanently deleted";
@@ -93,6 +91,16 @@
 "source_url_optional" = "Source URL (optional)";
 "source_URL" = "Source URL";
 "all_students" = "All Students";
+"rescheduled" = "Rescheduled";
+"pending" = "Pending";
+"student_missed" = "Student missed";
+"lesson_cancelled" = "Lesson cancelled";
+"charge_the_lesson" = "Charge the lesson";
+"next_date_by_schedule" = "Next date by schedule";
+"custom_date" = "Select custom date";
+"select_date" = "Select date";
+"how_was_the_lesson" = "How was the lesson?";
+"confirm_lesson_result" = "Confirm lesson result";
 
 // MARK: - Homework Detail
 "review_homework" = "Review Homework";
@@ -111,13 +119,14 @@
 "grade" = "Grade:";
 
 // MARK: - Schedule
-"schedule" = "Schedule";
+"schedule" = "Lesson schedule";
 "add_schedule" = "Add schedule";
 "no_schedule_yet" = "No schedule yet";
 "select_schedule" = "Select schedule";
 "delete_schedule" = "Delete schedule";
-"auto_debit" = "Auto-Pay";
 "no_schedule_yet" = "No schedule yet";
+"rescheduled_lessons" = "Rescheduled Lessons";
+"delete_rescheduled" = "Delete Rescheduled Lesson";
 
 // MARK: - Payments & Balance
 "date" = "Date";
@@ -139,8 +148,6 @@
 "edit_payment" = "Edit Payment";
 "reject_payment?" = "Reject Payment?";
 "number_of_lessons" = "Number of lessons";
-"auto_pay_on" = "Auto-Pay On";
-"auto_pay_off" = "Auto-Pay Off";
 "auto_debit_description" = "Automatically deducts a lesson from the balance after each scheduled session.";
 "last_payment" = "Last payment";
 "lessons_paid" = "Lessons paid";
@@ -187,10 +194,14 @@
 // MARK: - Push Notifications
 "push_balance_empty_title" = "Balance is empty";
 "push_balance_empty_body" = "Top up your balance to continue lessons.";
-"push_lesson_reminder_title" = "Lesson in 2 hours";
+"push_lesson_reminder_title" = "Lesson in 1 hour";
 "push_lesson_reminder_body" = "Get ready for your lesson";
 "push_payment_pending_title" = "Payment confirmation";
 "push_payment_pending_body" = "%1$@ paid for %2$@ lessons";
+"push_lesson_completed_title" = "Lesson completed";
+"push_lesson_completed_body" = "Check how your lesson went.";
+"push_lesson_rescheduled_title" = "Lesson rescheduled";
+"push_lesson_rescheduled_body" = "The time of your lesson has been changed.";
 
 // MARK: - Password Validation
 "validation_email_empty" = "Please enter your email";
@@ -199,3 +210,12 @@
 "validation_password_too_short" = "Password must be at least 8 characters";
 "validation_password_no_uppercase" = "Password must contain at least one uppercase letter";
 "validation_password_no_digit" = "Password must contain at least one digit";
+
+// MARK: - FeedNews
+"learn" = "Learn";
+"no_feed_yet" = "Nothing Here Yet";
+"select_channel_hint" = "Select a channel above to load articles";
+"no_bookmarks_yet" = "No Bookmarks Yet";
+"bookmark_hint" = "Tap the bookmark icon on any article to save it here";
+"bookmarks" = "Bookmarks";
+"materials" = "Materials";

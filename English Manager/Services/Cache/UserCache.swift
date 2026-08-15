@@ -22,7 +22,7 @@ final class UserCache {
     
     // MARK: - Properties
     private let ttl: TimeInterval = 5 * 60
-    private var memoryCache: User?
+    private var memoryCache: [String: User] = [:]
     private var loadingTask: Task<User, Error>?
     
     // MARK: - Get
@@ -30,7 +30,7 @@ final class UserCache {
                  service: FirestoreServiceProtocol,
                  forceRefresh: Bool = false) async throws -> User {
         if !forceRefresh {
-            if let memory = memoryCache, memory.id == id { return memory }
+            if let memory = memoryCache[id] { return memory }
             if let cached = cachedUser(for: id) { return cached }
         }
         if let task = loadingTask {
@@ -48,7 +48,7 @@ final class UserCache {
     
     // MARK: - Save
     func save(_ user: User) {
-        memoryCache = user
+        memoryCache[user.id] = user
         guard let data = try? JSONEncoder().encode(user) else { return }
         UserDefaults.standard.set(data, forKey: Keys.user(id: user.id))
         UserDefaults.standard.set(Date(), forKey: Keys.timestamp(id: user.id))
@@ -56,7 +56,7 @@ final class UserCache {
     
     // MARK: - Invalidate
     func invalidate(userId: String) {
-        memoryCache = nil
+        memoryCache[userId] = nil
         loadingTask = nil
         UserDefaults.standard.removeObject(forKey: Keys.user(id: userId))
         UserDefaults.standard.removeObject(forKey: Keys.timestamp(id: userId))
@@ -72,7 +72,7 @@ final class UserCache {
                 forKey: Keys.user(id: id)),
             let user = try? JSONDecoder().decode(User.self, from: data)
         else { return nil }
-        memoryCache = user
+        memoryCache[id] = user
         return user
     }
 }

@@ -19,6 +19,7 @@ final class StudentScheduleBannerView: UIView {
     
     // MARK: - Properties
     private let scheduleFormatter: ScheduleFormatterProtocol = ScheduleFormatter()
+    private let lessonFormatter: LessonFormatterProtocol = LessonFormatter()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -69,9 +70,8 @@ final class StudentScheduleBannerView: UIView {
         scheduleStateView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        
         schedulesStack.axis = .vertical
-        schedulesStack.spacing = 4
+        schedulesStack.spacing = 6
         schedulesStack.alignment = .leading
         scheduleStateView.addSubview(schedulesStack)
         calendarIcon.image = UIImage(systemName: "calendar")
@@ -91,9 +91,11 @@ final class StudentScheduleBannerView: UIView {
     }
 
     // MARK: - Configure
-    func configure(schedules: [Schedule], timezone: String? = nil) {
+    func configure(schedules: [Schedule],
+                   rescheduledLessons: [RescheduledLesson] = [],
+                   timezone: String? = nil) {
         schedulesStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        let isEmpty = schedules.isEmpty
+        let isEmpty = schedules.isEmpty && rescheduledLessons.isEmpty
         emptyStateView.isHidden = !isEmpty
         scheduleStateView.isHidden = isEmpty
         isHidden = false
@@ -105,6 +107,33 @@ final class StudentScheduleBannerView: UIView {
             label.font = .systemFont(ofSize: 13, weight: .medium)
             label.textColor = .appText
             schedulesStack.addArrangedSubview(label)
+        }
+        if !rescheduledLessons.isEmpty {
+            let titleLabel = UILabel()
+            titleLabel.text = "rescheduled_lessons".localized
+            titleLabel.font = .systemFont(ofSize: 11, weight: .semibold)
+            titleLabel.textColor = .appBlue
+            schedulesStack.addArrangedSubview(titleLabel)
+            rescheduledLessons.forEach { lesson in
+                let itemStack = UIStackView()
+                itemStack.axis = .horizontal
+                itemStack.spacing = 8
+                itemStack.alignment = .center
+                let iconImageView = UIImageView()
+                iconImageView.image = UIImage(systemName: "clock.badge.exclamationmark")
+                iconImageView.tintColor = .appRed
+                iconImageView.contentMode = .scaleAspectFit
+                iconImageView.snp.makeConstraints {
+                    $0.size.equalTo(14)
+                }
+                let dateLabel = UILabel()
+                dateLabel.text = lessonFormatter.occurrenceDateString(for: lesson.scheduledAt)
+                dateLabel.font = .systemFont(ofSize: 13, weight: .medium)
+                dateLabel.textColor = .appText
+                itemStack.addArrangedSubview(iconImageView)
+                itemStack.addArrangedSubview(dateLabel)
+                schedulesStack.addArrangedSubview(itemStack)
+            }
         }
     }
 }

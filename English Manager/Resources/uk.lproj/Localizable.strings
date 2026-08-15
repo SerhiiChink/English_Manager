@@ -51,8 +51,6 @@
 "payment_settings" = "Налаштування оплати";
 "lesson_price_(UAH)" = "Ціна уроку (UAH)";
 "min_lessons_to_pay" = "Мін. кількість уроків для оплати";
-"auto_debit" = "Автосписання";
-"auto_debit_description" = "Уроки будуть автоматично списуватись з вашого балансу після кожного заняття.";
 "change_password" = "Змінити пароль";
 "delete_account" = "Видалити акаунт";
 "delete_account_warning" = "Всі ваші дані будуть видалені безповоротно";
@@ -93,6 +91,16 @@
 "no_materials" = "Немає матеріалів";
 "source_url_optional" = "Посилання на джерело (необов’язково)";
 "source_URL" = "Посилання на джерело";
+"rescheduled" = "Перенесено";
+"pending" = "Очікує підтвердження";
+"student_missed" = "Учень пропустив";
+"lesson_cancelled" = "Урок скасовано";
+"charge_the_lesson" = "Списати урок";
+"next_date_by_schedule" = "Наступна дата за розкладом";
+"custom_date" = "Обрати іншу дату";
+"select_date" = "Оберіть дату";
+"how_was_the_lesson" = "Як минув урок?";
+"confirm_lesson_result" = "Підтвердьте результат уроку";
 
 // MARK: - Homework Detail
 "review_homework" = "Перевірити домашнє завдання";
@@ -111,13 +119,14 @@
 "grade" = "Оцінка:";
 
 // MARK: - Schedule
-"schedule" = "Розклад";
+"schedule" = "Розклад занять";
 "add_schedule" = "Додати розклад";
 "no_schedule_yet" = "Поки що немає розкладу";
 "select_schedule" = "Виберіть розклад";
 "delete_schedule" = "Видалити розклад";
-"auto_debit" = "Auto-Pay";
 "no_schedule_yet" = "Графік занять відсутній";
+"rescheduled_lessons" = "Перенесені уроки";
+"delete_rescheduled" = "Видалити перенесений урок";
 
 // MARK: - Payments & Balance
 "date" = "Дата";
@@ -139,8 +148,6 @@
 "edit_payment" = "Змінити платіж";
 "reject_payment?" = "Відхилити платіж?";
 "number_of_lessons" = "Кількість уроків";
-"auto_pay_on" = "Auto-Pay On";
-"auto_pay_off" = "Auto-Pay Off";
 "auto_debit_description" = "Автоматично списує урок з балансу після кожного заняття за розкладом.";
 "last_payment" = "Остання оплата";
 "lessons_paid" = "Оплачено уроків";
@@ -187,10 +194,14 @@
 // MARK: - Push Notifications
 "push_balance_empty_title" = "Закінчилися кошти";
 "push_balance_empty_body" = "Поповніть баланс, щоб продовжити заняття.";
-"push_lesson_reminder_title" = "Заняття через 2 години";
+"push_lesson_reminder_title" = "Заняття через 1 годину";
 "push_lesson_reminder_body" = "Підготуйтеся до заняття";
 "push_payment_pending_title" = "Підтвердження оплати";
 "push_payment_pending_body" = "%1$@ оплатив %2$@ занять";
+"push_lesson_completed_title" = "Заняття завершено";
+"push_lesson_completed_body" = "Перевірте, як пройшло ваше заняття.";
+"push_lesson_rescheduled_title" = "Заняття перенесено";
+"push_lesson_rescheduled_body" = "Час проведення вашого уроку було змінено.";
 
 // MARK: - Password Validation
 "validation_email_empty" = "Введіть email";
@@ -199,3 +210,12 @@
 "validation_password_too_short" = "Пароль має містити мінімум 8 символів";
 "validation_password_no_uppercase" = "Пароль має містити хоча б одну велику літеру";
 "validation_password_no_digit" = "Пароль має містити хоча б одну цифру";
+
+// MARK: - FeedNews
+"learn" = "Навчання";
+"no_feed_yet" = "Поки нічого немає";
+"select_channel_hint" = "Оберіть канал вище щоб завантажити статті";
+"no_bookmarks_yet" = "Закладок ще немає";
+"bookmark_hint" = "Натисніть на іконку закладки щоб зберегти статтю";
+"bookmarks" = "Закладки";
+"materials" = "Матеріали";

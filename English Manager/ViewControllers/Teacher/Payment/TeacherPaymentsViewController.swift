@@ -100,6 +100,7 @@ final class TeacherPaymentsViewController: UIViewController {
             collectionView.endRefreshing()
             reloadData()
             showSettingsHintIfNeeded()
+            updateTabBadge()
         }
         viewModel.onError = { [weak self] message in
             self?.collectionView.endRefreshing()
@@ -139,6 +140,13 @@ final class TeacherPaymentsViewController: UIViewController {
         ToastView.show(.warning("setup_payment_settings".localized),
                        in: view,
                        duration: ToastDuration.long)
+    }
+    
+    private func updateTabBadge() {
+        let count = viewModel.pendingCount
+        navigationController?.tabBarItem.badgeValue = count > 0
+            ? "\(count)"
+            : nil
     }
 }
 

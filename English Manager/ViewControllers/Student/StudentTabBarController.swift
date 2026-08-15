@@ -35,6 +35,7 @@ final class StudentTabBarController: UITabBarController,
         setViewControllers([
             makeProfileTab(),
             makeStudentLessonsTabs(),
+            makeFeedTab(),
             makeHomeworkTab(),
             makePaymentsTab()
         ], animated: false)
@@ -58,6 +59,18 @@ final class StudentTabBarController: UITabBarController,
             title: "lessons_capitalized".localized,
             image: UIImage(systemName: "calendar"),
             selectedImage: UIImage(systemName: "calendar.fill")
+        )
+        return nav
+    }
+    
+    private func makeFeedTab() -> UIViewController {
+        let nav = UINavigationController()
+        let router = FeedRouter(navigationController: nav)
+        nav.viewControllers = [FeedViewController(router: router)]
+        nav.tabBarItem = UITabBarItem(
+            title: "learn".localized,
+            image: UIImage(systemName: "newspaper"),
+            selectedImage: UIImage(systemName: "newspaper.fill")
         )
         return nav
     }

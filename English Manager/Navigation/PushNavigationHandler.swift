@@ -42,7 +42,7 @@ final class StudentPushNavigationHandler: PushNavigationHandlerProtocol {
     
     func navigate(to target: PushNavigationTarget) {
         switch target {
-        case .payments: tabBar?.selectedIndex = 3
+        case .payments: tabBar?.selectedIndex = 4
         case .lessons:  tabBar?.selectedIndex = 1
         case .none:     break
         }

@@ -11,6 +11,8 @@ enum PushType: String {
     case paymentPending = "payment_pending"
     case balanceEmpty = "balance_empty"
     case lessonReminder = "lesson_reminder"
+    case lessonCompleted = "lesson_completed"
+    case lessonRescheduled = "lesson_rescheduled"
     case unknown
     
     init(rawValue: String) {
@@ -18,6 +20,8 @@ enum PushType: String {
         case "payment_pending": self = .paymentPending
         case "balance_empty": self = .balanceEmpty
         case "lesson_reminder": self = .lessonReminder
+        case "lesson_completed": self = .lessonCompleted
+        case "lesson_rescheduled": self = .lessonRescheduled
         default: self = .unknown
         }
     }
@@ -34,7 +38,7 @@ enum PushNotificationMapper {
         switch type {
         case .paymentPending, .balanceEmpty:
             return .payments
-        case .lessonReminder:
+        case .lessonReminder, .lessonCompleted, .lessonRescheduled:
             return .lessons
         case .unknown:
             return .none

@@ -32,7 +32,6 @@ protocol AuthServiceProtocol {
 final class AuthService: AuthServiceProtocol {
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
-    private var currentNonce: String?
     var isLoggedIn: Bool {
         Auth.auth().currentUser != nil
     }
@@ -79,12 +78,17 @@ final class AuthService: AuthServiceProtocol {
     
     // MARK: - Change Password
     func changePassword(_ password: String) async throws {
-        try await Auth.auth().currentUser?.updatePassword(to: password)
+        guard let user = Auth.auth().currentUser else {
+            throw AuthError.noCurrentUser
+        }
+        try await user.updatePassword(to: password)
     }
     
     // MARK: - Delete Account
     func deleteAccount(email: String, password: String) async throws {
-        guard let user = Auth.auth().currentUser else { return }
+        guard let user = Auth.auth().currentUser else {
+            throw AuthError.noCurrentUser
+        }
         let credential = EmailAuthProvider.credential(withEmail: email,
                                                       password: password)
         try await user.reauthenticate(with: credential)
@@ -101,10 +105,7 @@ final class AuthService: AuthServiceProtocol {
         let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenting)
         let user = result.user
         guard let idToken = user.idToken?.tokenString else {
-            throw NSError(
-                domain: "GoogleSignIn",
-                code: -1, userInfo: [NSLocalizedDescriptionKey: "Missing ID token"]
-            )
+            throw AuthError.missingToken
         }
         let credential = GoogleAuthProvider.credential(
             withIDToken: idToken,
@@ -130,9 +131,13 @@ final class AuthService: AuthServiceProtocol {
     
     // MARK: - Delete Account With Google
     func deleteAccountWithGoogle(presenting: UIViewController) async throws {
-        guard let user = Auth.auth().currentUser else { return }
+        guard let user = Auth.auth().currentUser else {
+            throw AuthError.noCurrentUser
+        }
         let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenting)
-        guard let idToken = result.user.idToken?.tokenString else { return }
+        guard let idToken = result.user.idToken?.tokenString else {
+            throw AuthError.missingToken
+        }
         let credential = GoogleAuthProvider.credential(
             withIDToken: idToken,
             accessToken: result.user.accessToken.tokenString
@@ -147,7 +152,6 @@ final class AuthService: AuthServiceProtocol {
     // MARK: - Apple Sign In
     func signInWithApple(window: ASPresentationAnchor) async throws {
         let nonce = randomNonceString()
-        currentNonce = nonce
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.fullName, .email]
@@ -172,9 +176,10 @@ final class AuthService: AuthServiceProtocol {
     
     // MARK: - Delete Account With Apple
     func deleteAccountWithApple(window: ASPresentationAnchor) async throws {
-        guard let user = Auth.auth().currentUser else { return }
+        guard let user = Auth.auth().currentUser else {
+            throw AuthError.noCurrentUser
+        }
         let nonce = randomNonceString()
-        currentNonce = nonce
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.fullName, .email]
@@ -218,5 +223,19 @@ final class AuthService: AuthServiceProtocol {
         let data = Data(input.utf8)
         let hash = SHA256.hash(data: data)
         return hash.map { String(format: "%02x", $0) }.joined()
+    }
+    
+    // MARK: - Errors
+    private enum AuthError: LocalizedError {
+        case noCurrentUser
+        case missingToken
+        var errorDescription: String? {
+            switch self {
+            case .noCurrentUser:
+                return "No current user"
+            case .missingToken:
+                return "Missing ID token"
+            }
+        }
     }
 }

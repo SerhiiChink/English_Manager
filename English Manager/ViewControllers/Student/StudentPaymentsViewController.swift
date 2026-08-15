@@ -55,6 +55,10 @@ final class StudentPaymentsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.refresh()
+        UNUserNotificationCenter.current().setBadgeCount(
+            0,
+            withCompletionHandler: nil
+        )
     }
     
     // MARK: - Setup UI
@@ -219,6 +223,7 @@ final class StudentPaymentsViewController: UIViewController {
         viewModel.onUpdate = { [weak self] in
             self?.scrollView.endRefreshing()
             self?.configure()
+            self?.updateTabBadge()
         }
         viewModel.onSuccess = { [weak self] message in
             guard let self else { return }
@@ -259,6 +264,12 @@ final class StudentPaymentsViewController: UIViewController {
         )
         payButton.isUserInteractionEnabled = !viewModel.hasPendingPayment
         payButton.alpha = viewModel.hasPendingPayment ? 0.4 : 1.0
+    }
+    
+    // MARK: - Private
+    private func updateTabBadge() {
+        let count = viewModel.pendingCount
+        navigationController?.tabBarItem.badgeValue = count > 0 ? "\(count)" : nil
     }
 }
 

@@ -63,6 +63,10 @@ final class TeacherLessonsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.fetchLessons()
+        UNUserNotificationCenter.current().setBadgeCount(
+            0,
+            withCompletionHandler: nil
+        )
     }
     
     // MARK: - Setup UI
@@ -131,6 +135,8 @@ final class TeacherLessonsViewController: UIViewController {
             self.reloadData()
             self.scheduleView.configure(student: self.viewModel.students,
                                         schedule: self.viewModel.schedules)
+            self.updateTabBadge()
+            self.showConfirmationIfNeeded()
         }
         viewModel.onError = { [weak self] message in
             self?.collectionView.endRefreshing()
@@ -191,6 +197,36 @@ final class TeacherLessonsViewController: UIViewController {
     
     private func refreshContoller() {
         collectionView.addRefreshControl(target: self, action: #selector(refreshTapped))
+    }
+    
+    private func showConfirmationIfNeeded() {
+        guard let occurrence = viewModel.currentConfirmation,
+              let student = viewModel.students.first(
+                where: { $0.id == occurrence.studentId }
+              ) else { return }
+        router.showLessonConfirmation(
+            occurrence: occurrence,
+            student: student,
+            onDismiss: { [weak self] in
+                self?.viewModel.fetchLessons()
+        },
+            onSwipeDown: { [weak self] in
+                guard let self,
+                      !viewModel.pendingConfirmations.isEmpty else { return }
+                ToastView.show(
+                    .warning("confirm_lesson_result".localized),
+                    in: view,
+                    duration: ToastDuration.long
+                )
+            }
+        )
+    }
+    
+    private func updateTabBadge() {
+        let count = viewModel.pendingConfirmations.count
+        let badgeText = count > 0 ? "\(count)" : nil
+        navigationController?.tabBarItem.badgeValue = badgeText
+        tabBarItem.badgeValue = badgeText
     }
 }
 
@@ -449,9 +485,12 @@ extension TeacherLessonsViewController {
 extension TeacherLessonsViewController {
     private func showScheduleOptions(for student: User) {
         let schedules = viewModel.schedules(for: student.id)
+        let rescheduled = viewModel.rescheduledLessons
+            .filter { $0.studentId == student.id }
         router.showScheduleDetail(
             student: student,
             schedules: schedules,
+            rescheduledLessons: rescheduled,
             onAdd: { [weak self] draft, completion in
                guard let self,
                      let teacherId = viewModel.currentTeacherId else { return }
@@ -466,9 +505,8 @@ extension TeacherLessonsViewController {
             onDelete: { [weak self] schedule in
                 self?.viewModel.deleteSchedule(schedule)
             },
-            onToggleAutoDebit: { [weak self] isEnabled in
-                self?.viewModel.updateAutoDebit(for: student,
-                                                isEnabled: isEnabled)
+            onDeleteRescheduled: { [weak self] id in
+                self?.viewModel.deleteRescheduled(id: id)
             }
         )
     }

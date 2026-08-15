@@ -11,7 +11,7 @@ protocol LessonFormatterProtocol {
     func lessonDateString(for lesson: Lesson) -> String
     func detailDateString(for lesson: Lesson) -> String
     func scheduledText(for lesson: Lesson) -> String
-    
+    func occurrenceDateString(for date: Date) -> String
 }
 
 final class LessonFormatter: LessonFormatterProtocol {
@@ -25,5 +25,9 @@ final class LessonFormatter: LessonFormatterProtocol {
     
     func scheduledText(for lesson: Lesson) -> String {
         "\("scheduled".localized) · \(SharedDateFormatter.short.string(from: lesson.date))"
+    }
+    
+    func occurrenceDateString(for date: Date) -> String {
+        SharedDateFormatter.longWithTime.string(from: date)
     }
 }

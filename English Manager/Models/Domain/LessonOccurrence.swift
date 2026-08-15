@@ -12,8 +12,8 @@ struct LessonOccurrence: Codable {
     @DocumentID var id: String?
     let studentId: String
     let teacherId: String
-    let scheduleId: String
-    let scheduledAt: Date
+    var scheduleId: String?
+    var scheduledAt: Date
     var status: OccurrenceStatus
     var cancelledBy: CancelledBy?
     var cancelledAt: Date?
@@ -24,6 +24,9 @@ struct LessonOccurrence: Codable {
 enum OccurrenceStatus: String, Codable {
     case scheduled
     case completed
+    case charged
+    case missed
+    case rescheduled
     case cancelled
 }
 

@@ -11,5 +11,4 @@ struct StudentChip {
     let student: User
     let hasSchedule: Bool
     let scheduleString: [String]
-    var isAutoDebitEnabled: Bool
 }

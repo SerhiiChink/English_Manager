@@ -19,8 +19,6 @@ final class TeacherHomeworkDetailViewController: UIViewController {
     private let descriptionTitleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let linkButton = UIButton(type: .system)
-//    private let statusBadge = UIView()
-//    private let statusLabel = UILabel()
     private let reviewCard = UIView()
     private let feedbackTitleLabel = UILabel()
     private let feedbackLabel = UILabel()
@@ -81,29 +79,11 @@ final class TeacherHomeworkDetailViewController: UIViewController {
             $0.top.equalToSuperview().offset(16)
             $0.left.right.equalToSuperview().inset(Layout.padding)
         }
-//        setupStatusBadge()
         setupDateLabel()
         setupTitleLabel()
         setupDescriptionSection()
         setupLinkButton()
     }
-    
-//    private func setupStatusBadge() {
-//        statusBadge.layer.cornerRadius = 8
-//        homeworkCard.addSubview(statusBadge)
-//        statusBadge.snp.makeConstraints {
-//            $0.top.equalToSuperview().offset(12)
-//            $0.right.equalToSuperview().inset(16)
-//            $0.height.equalTo(22)
-//        }
-//        statusLabel.font = .systemFont(ofSize: 11, weight: .semibold)
-//        statusLabel.textColor = .white
-//        statusBadge.addSubview(statusLabel)
-//        statusLabel.snp.makeConstraints {
-//            $0.top.bottom.equalToSuperview().inset(4)
-//            $0.left.right.equalToSuperview().inset(8)
-//        }
-//    }
     
     private func setupDateLabel() {
         dateLabel.font = .systemFont(ofSize: 13)
@@ -239,9 +219,6 @@ final class TeacherHomeworkDetailViewController: UIViewController {
             config?.title = homework.sourceLink
             linkButton.configuration = config
         }
-//        let style = HomeworkStatusMapper.style(for: homework)
-//        statusBadge.backgroundColor = style.badgeColor
-//        statusLabel.text = style.text
         
         switch homework.status {
         case .pending:

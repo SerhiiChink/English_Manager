@@ -8,14 +8,16 @@
 import UIKit
 
 protocol TeacherRouterProtocol: AnyObject {
+    func showStudents()
     func showEditProfile(user: User)
     func showScheduleDetail(
         student: User,
         schedules: [Schedule],
+        rescheduledLessons: [RescheduledLesson],
         onAdd: @escaping (ScheduleDraft,
                           @escaping (Schedule) -> Void) -> Void,
-        onDelete: @escaping(Schedule) -> Void,
-        onToggleAutoDebit: @escaping (Bool) -> Void
+        onDelete: @escaping (Schedule) -> Void,
+        onDeleteRescheduled: @escaping (String) -> Void
     )
     func showHomeworkDetail(
         _ homework: Homework,
@@ -28,6 +30,10 @@ protocol TeacherRouterProtocol: AnyObject {
         onReject: @escaping () -> Void,
         onEdit: @escaping (Int, PaymentReviewViewModelProtocol) -> Void)
     func showLogin()
+    func showLessonConfirmation(occurrence: LessonOccurrence,
+                                student: User,
+                                onDismiss: @escaping () -> Void,
+                                onSwipeDown: @escaping () -> Void)
 }
 
 final class TeacherRouter: TeacherRouterProtocol {
@@ -45,6 +51,11 @@ final class TeacherRouter: TeacherRouterProtocol {
     }
     
     // MARK: - Navigation
+    func showStudents() {
+        let vc = StudentsViewController(router: self)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func showEditProfile(user: User) {
         let vc = EditProfileViewController(user: user)
         navigationController?.pushViewController(vc, animated: true)
@@ -53,17 +64,20 @@ final class TeacherRouter: TeacherRouterProtocol {
     func showScheduleDetail(
         student: User,
         schedules: [Schedule],
+        rescheduledLessons: [RescheduledLesson],
         onAdd: @escaping (ScheduleDraft,
                           @escaping (Schedule) -> Void) -> Void,
         onDelete: @escaping(Schedule) -> Void,
-        onToggleAutoDebit: @escaping (Bool) -> Void
+        onDeleteRescheduled: @escaping(String) -> Void
     ) {
         let vc = ScheduleDetailViewController(
             student: student,
             schedules: schedules,
+            rescheduledLessons: rescheduledLessons,
             onAdd: onAdd,
             onDelete: onDelete,
-            onToggleAutoDebit: onToggleAutoDebit)
+            onDeleteRescheduled: onDeleteRescheduled
+        )
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -93,7 +107,8 @@ final class TeacherRouter: TeacherRouterProtocol {
                                             settings: settings)
         review.onConfirm = onConfirm
         review.onReject = onReject
-        review.onEdit = { newCount in
+        review.onEdit = { [weak review] newCount in
+            guard let review else { return }
             onEdit(newCount, review)
         }
         let vc = PaymentReviewViewController(viewModel: review)
@@ -105,5 +120,19 @@ final class TeacherRouter: TeacherRouterProtocol {
     
     func showLogin() {
         authRouter.showLogin()
+    }
+    
+    func showLessonConfirmation(occurrence: LessonOccurrence,
+                                student: User,
+                                onDismiss: @escaping () -> Void,
+                                onSwipeDown: @escaping () -> Void) {
+        let viewModel = LessonConfirmationViewModel(occurrence: occurrence,
+                                                    student: student)
+        viewModel.onDismiss = onDismiss
+        viewModel.onSwipedDown = onSwipeDown
+        let vc = LessonConfirmationViewController(viewModel: viewModel)
+        navigationController?.topViewController?.presentAsSheet(
+            vc, detent: .medium()
+        )
     }
 }

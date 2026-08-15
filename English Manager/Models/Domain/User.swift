@@ -19,7 +19,6 @@ struct User: Codable {
     var lessonsBalance: Int?
     var totalLessonsPaid: Int?
     var teacherId: String?
-    var isAutoDebitEnabled: Bool?
     var timezone: String?
     
     var fullName: String {

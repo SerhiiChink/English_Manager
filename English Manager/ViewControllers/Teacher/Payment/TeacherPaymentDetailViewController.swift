@@ -60,6 +60,10 @@ final class TeacherPaymentDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.fetchData()
+        UNUserNotificationCenter.current().setBadgeCount(
+            0,
+            withCompletionHandler: nil
+        )
     }
     
     // MARK: - Setup UI
@@ -77,7 +81,7 @@ final class TeacherPaymentDetailViewController: UIViewController {
         scrollView.addRefreshControl(target: self,
                                      action: #selector(refreshTapped))
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalToSuperview()
             $0.left.right.equalToSuperview()
             $0.bottom.equalTo(confirmButton.snp.top).offset(-8)
         }
@@ -251,7 +255,7 @@ final class TeacherPaymentDetailViewController: UIViewController {
         title = viewModel.student.displayName
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = .automatic
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plusminus"),
             style: .plain,
@@ -277,12 +281,6 @@ final class TeacherPaymentDetailViewController: UIViewController {
             ToastView.show(.error(message),
                            in: view,
                            duration: ToastDuration.short)
-        }
-        viewModel.onAutoDebitSuggestion = { [weak self] in
-            guard let self else { return }
-            ToastView.show(.warning("auto_debit_suggestion".localized),
-                           in: view,
-                           duration: ToastDuration.long)
         }
     }
     

@@ -11,7 +11,7 @@ import UIKit
 
 protocol StorageServiceProtocol {
     func uploadAvatar(userId: String,
-                      image: UIImage) async throws -> String
+                      imageData: Data) async throws -> String
 }
 
 final class StorageService: StorageServiceProtocol {
@@ -20,14 +20,7 @@ final class StorageService: StorageServiceProtocol {
     
     // MARK: - Up Load Avatar
     func uploadAvatar(userId: String,
-                      image: UIImage) async throws -> String {
-        guard let imageData = image.jpegData(compressionQuality: 0.7) else {
-            throw NSError(
-                domain: "StorageService",
-                code: 0,
-                userInfo: [NSLocalizedDescriptionKey: "Failed to convert image"]
-            )
-        }
+                      imageData: Data) async throws -> String {
         let ref = storage
             .child("avatars")
             .child(userId)

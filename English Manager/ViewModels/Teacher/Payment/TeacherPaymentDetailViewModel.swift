@@ -12,7 +12,6 @@ protocol TeacherPaymentDetailViewModelProtocol: AnyObject {
     var onSuccess: ((String) -> Void)? { get set }
     var onError: ((String) -> Void)? { get set }
     var onLoading: ((Bool) -> Void)? { get set }
-    var onAutoDebitSuggestion: (() -> Void)? { get set }
     var student: User { get }
     var payments: [PaymentRequest] { get }
     var settings: TeacherSettings? { get }
@@ -25,7 +24,6 @@ protocol TeacherPaymentDetailViewModelProtocol: AnyObject {
     var lastPaymentLessonsText: String? { get }
     var lastPaymentAmountText: String? { get }
     var totalConfirmedText: String { get }
-    var shouldShowAutoDebitBanner: Bool { get }
     func fetchData()
     func confirmPayment()
     func rejectPayment()
@@ -40,7 +38,6 @@ final class TeacherPaymentDetailViewModel: TeacherPaymentDetailViewModelProtocol
     var onSuccess: ((String) -> Void)?
     var onError: ((String) -> Void)?
     var onLoading: ((Bool) -> Void)?
-    var onAutoDebitSuggestion: (() -> Void)?
     
     // MARK: - Data
     private(set) var student: User
@@ -99,11 +96,6 @@ final class TeacherPaymentDetailViewModel: TeacherPaymentDetailViewModelProtocol
     var totalConfirmedText: String {
         formatter.totalReceivedText(amount: totalConfirmed)
     }
-    
-    var shouldShowAutoDebitBanner: Bool {
-        !(student.isAutoDebitEnabled ?? false)
-    }
-
         
     // MARK: - Properties
     private let paymentService: PaymentFirestoreServiceProtocol
@@ -180,9 +172,6 @@ final class TeacherPaymentDetailViewModel: TeacherPaymentDetailViewModelProtocol
                     }
                     onLoading?(false)
                     onUpdate?()
-                    if shouldShowAutoDebitBanner {
-                        onAutoDebitSuggestion?()
-                    }
                 }
             } catch {
                 await MainActor.run { [weak self] in

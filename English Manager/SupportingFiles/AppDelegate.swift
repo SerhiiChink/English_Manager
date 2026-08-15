@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseCore
+import FirebaseMessaging
 import UserNotifications
 import GoogleSignIn
 
@@ -75,6 +76,23 @@ private extension AppDelegate {
                 application.registerForRemoteNotifications()
             }
         }
+    }
+}
+
+// MARK: - Remote Notifications
+extension AppDelegate {
+    func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        Messaging.messaging().apnsToken = deviceToken
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
+    ) {
+        print("Failed to register for remote notifications: \(error)")
     }
 }
 

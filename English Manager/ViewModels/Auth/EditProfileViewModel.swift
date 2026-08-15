@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 protocol EditProfileViewModelProtocol: AnyObject {
     var onSuccess: (() -> Void)? { get set }
@@ -14,7 +13,7 @@ protocol EditProfileViewModelProtocol: AnyObject {
     var onLoading: ((Bool) -> Void)? { get set }
     var user: User { get }
     func save(name: String, surname: String)
-    func uploadAvatar(_ image: UIImage)
+    func uploadAvatar(_ imageData: Data)
 }
 
 final class EditProfileViewModel: EditProfileViewModelProtocol {
@@ -67,12 +66,12 @@ final class EditProfileViewModel: EditProfileViewModelProtocol {
     }
     
     // MARK: - Up Load Avatar
-    func uploadAvatar(_ image: UIImage) {
+    func uploadAvatar(_ imageData: Data) {
         onLoading?(true)
         Task {
             do {
-                let url = try await storageService.uploadAvatar(userId: user.id,
-                                                                image: image)
+                let url = try await storageService
+                    .uploadAvatar(userId: user.id, imageData: imageData)
                 try await firestoreService.updateUserAvatar(userId: user.id,
                                                             url: url)
                 await MainActor.run { [weak self] in

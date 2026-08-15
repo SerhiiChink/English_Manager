@@ -29,7 +29,6 @@ protocol FirestoreServiceProtocol {
     func saveSchedule(_ schedule: Schedule) async throws -> Schedule
     func fetchSchedules(teacherId: String) async throws -> [Schedule]
     func fetchStudentSchedule(studentId: String) async throws -> [Schedule]
-    func updateAutoDebit(studentId: String, isEnabled: Bool) async throws
     func deleteSchedule(id: String) async throws
     func findUserByEmail(_ email: String) async throws -> User?
     func updateTeacher(studentId: String,
@@ -170,7 +169,6 @@ final class FirestoreService: FirestoreServiceProtocol {
             .updateData([
                 "teacherId": FieldValue.delete(),
                 "teacherAlias": FieldValue.delete(),
-                "isAutoDebitEnabled": FieldValue.delete(),
                 "lessonsBalance": FieldValue.delete(),
                 "totalLessonsPaid": FieldValue.delete()
             ])
@@ -212,7 +210,13 @@ final class FirestoreService: FirestoreServiceProtocol {
     }
     
     func updateHomework(_ homework: Homework) async throws {
-        guard let id = homework.id else { return }
+        guard let id = homework.id else {
+            throw NSError(
+                domain: "FirestoreError",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Missing document ID"]
+            )
+        }
         try collection(Collections.homeworks)
             .document(id)
             .setData(from: homework)
@@ -244,12 +248,6 @@ final class FirestoreService: FirestoreServiceProtocol {
             .whereField("isActive", isEqualTo: true)
             .getDocuments()
         return try snapshot.decode(Schedule.self)
-    }
-    
-    func updateAutoDebit(studentId: String, isEnabled: Bool) async throws {
-        try await collection(Collections.users)
-            .document(studentId)
-            .updateData(["isAutoDebitEnabled": isEnabled])
     }
     
     func deleteSchedule(id: String) async throws {

@@ -29,7 +29,6 @@ final class StudentLessonsViewController: UIViewController {
         title: "no_lessons_yet".localized,
         subtitle: "student_lessons_hint".localized
     )
-    private var autoDebitButton: UIBarButtonItem?
     
     // MARK: - Properties
     private let router: StudentRouterProtocol
@@ -62,6 +61,10 @@ final class StudentLessonsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.fetchLessons()
+        UNUserNotificationCenter.current().setBadgeCount(
+            0,
+            withCompletionHandler: nil
+        )
     }
 
     // MARK: - Setup UI
@@ -103,12 +106,6 @@ final class StudentLessonsViewController: UIViewController {
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
-        autoDebitButton = UIBarButtonItem(
-            image: UIImage(systemName: "bolt.circle"),
-            style: .plain,
-            target: self,
-            action: #selector(autoDebitTapped))
-        navigationItem.rightBarButtonItem = autoDebitButton
     }
     
     // MARK: - Binding
@@ -116,9 +113,11 @@ final class StudentLessonsViewController: UIViewController {
         viewModel.onUpdate = { [weak self] in
             guard let self else { return }
             collectionView.endRefreshing()
-            scheduleBanner.configure(schedules: viewModel.schedules,
-                                     timezone: viewModel.teacherTimezone)
-            updateAutoDebitButton()
+            scheduleBanner.configure(
+                schedules: viewModel.schedules,
+                rescheduledLessons: viewModel.rescheduledLessons,
+                timezone: viewModel.teacherTimezone
+            )
             reloadData()
         }
         viewModel.onError = { [weak self] message in
@@ -138,11 +137,6 @@ final class StudentLessonsViewController: UIViewController {
         viewModel.refresh()
     }
     
-    @objc private func autoDebitTapped() {
-        let hasSchedule = !viewModel.schedules.isEmpty
-        hasSchedule ? showAutoPayStatusAlert() : showAutoPayInfoAlert()
-    }
-    
     // MARK: - Private
     private func reloadData() {
         let isEmpty = viewModel.lessons.isEmpty
@@ -153,36 +147,6 @@ final class StudentLessonsViewController: UIViewController {
     
     private func refreshContoller() {
         collectionView.addRefreshControl(target: self, action: #selector(refreshTapped))
-    }
-    
-    private func updateAutoDebitButton() {
-        let hasSchedule = !viewModel.schedules.isEmpty
-        let isEnabled = viewModel.isAutoDebitEnabled
-        let iconName = (hasSchedule && isEnabled)
-            ? "bolt.circle.fill"
-            : "bolt.circle"
-        let color: UIColor
-        if !hasSchedule {
-            color = .appTextSecondary
-        } else {
-            color = isEnabled ? .appGreen : .appRed
-        }
-        autoDebitButton?.image = UIImage(systemName: iconName)
-        autoDebitButton?.tintColor = color
-    }
-    
-    // MARK: - Helper
-    private func showAutoPayInfoAlert() {
-        showAlert(title: "auto_debit".localized,
-                  message: "auto_debit_description".localized)
-    }
-    
-    private func showAutoPayStatusAlert() {
-        let status = viewModel.isAutoDebitEnabled
-            ? "auto_pay_on".localized
-            : "auto_pay_off".localized
-        showAlert(title: status,
-                  message: "auto_debit_description".localized)
     }
 }
 

@@ -35,7 +35,7 @@ final class TeacherTabBarController: UITabBarController,
         setViewControllers([
             makeProfileTab(),
             makeLessonsTab(),
-            makeStudentsTab(),
+            makeLearnTab(),
             makeHomeworkTab(),
             makePaymentsTab()
         ], animated: false)
@@ -63,12 +63,17 @@ final class TeacherTabBarController: UITabBarController,
         return nav
     }
     
-    private func makeStudentsTab() -> UIViewController {
-        let nav = makeNav { StudentsViewController(router: $0) }
+    private func makeLearnTab() -> UIViewController {
+        let nav = UINavigationController()
+        let router = FeedRouter(navigationController: nav)
+        nav.viewControllers = [
+            FeedViewController(router: router,
+                               screenTitle: "materials".localized)
+        ]
         nav.tabBarItem = UITabBarItem(
-            title: "students".localized,
-            image: UIImage(systemName: "person.2"),
-            selectedImage: UIImage(systemName: "person.2.fill")
+            title: "materials".localized,
+            image: UIImage(systemName: "books.vertical"),
+            selectedImage: UIImage(systemName: "books.vertical.fill")
         )
         return nav
     }

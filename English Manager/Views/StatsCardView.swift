@@ -8,6 +8,11 @@
 import UIKit
 import SnapKit
 
+struct StatItem {
+    let title: String
+    let value: String
+}
+
 final class StatsCardView: UIView {
     // MARK: - UI
     private let stack = UIStackView()

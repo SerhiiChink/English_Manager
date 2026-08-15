@@ -19,4 +19,10 @@ enum SharedDateFormatter {
         f.dateFormat = "dd MMM yyyy"
         return f
     }()
+    
+    static let longWithTime: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "dd MMM yyyy, HH:mm"
+        return f
+    }()
 }

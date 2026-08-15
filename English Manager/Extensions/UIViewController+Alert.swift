@@ -42,8 +42,8 @@ extension UIViewController {
             style: .destructive) { [weak self] _ in
                 guard let email = alert.textFields?[0].text,
                       let password = alert.textFields?[1].text else { return }
-                let validatir = ValidationService()
-                if case .failure(let message) = validatir.validateLoginForm(
+                let validator = ValidationService()
+                if case .failure(let message) = validator.validateLoginForm(
                     email: email,
                     password: password
                 ) {

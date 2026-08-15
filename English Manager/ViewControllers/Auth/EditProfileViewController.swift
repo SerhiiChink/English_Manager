@@ -163,8 +163,9 @@ final class EditProfileViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func saveTapped() {
-        if let image = pendingAvatarImage {
-            viewModel.uploadAvatar(image)
+        if let image = pendingAvatarImage,
+           let data = image.jpegData(compressionQuality: 0.7) {
+            viewModel.uploadAvatar(data)
         }
         viewModel.save(
             name: nameField.text ?? "",

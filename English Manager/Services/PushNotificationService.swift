@@ -16,7 +16,7 @@ protocol PushNotificationServiceProtocol: AnyObject {
 
 final class PushNotificationService: NSObject, PushNotificationServiceProtocol {
     // MARK: - Properties
-    static let shared = PushNotificationService()
+    static let shared: PushNotificationServiceProtocol = PushNotificationService()
     var onTokenRefresh: ((String) -> Void)?
     var onNotificationTap: ((PushNavigationTarget) -> Void)?
     
@@ -46,6 +46,11 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let pushType = extractPushType(from: notification.request.content.userInfo)
+        if pushType == .lessonCompleted {
+            NotificationCenter.default.post(name: .lessonCompleted,
+                                            object: nil)
+        }
         completionHandler([.banner, .sound, .badge])
     }
     
@@ -53,11 +58,15 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        let userInfo = response.notification.request.content.userInfo
-        let rawType = userInfo["type"] as? String ?? ""
-        let pushType = PushType(rawValue: rawType)
+        let pushType = extractPushType(from: response.notification.request.content.userInfo)
         let target = PushNotificationMapper.navigationTarget(for: pushType)
         onNotificationTap?(target)
         completionHandler()
+    }
+    
+    // MARK: - Private
+    private func extractPushType(from userInfo: [AnyHashable: Any]) -> PushType {
+        let rawType = userInfo["type"] as? String ?? ""
+        return PushType(rawValue: rawType)
     }
 }

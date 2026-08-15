@@ -22,6 +22,7 @@ protocol StudentPaymentsViewModelProtocol: AnyObject {
     var priceText: String { get }
     var minLessonsText: String { get }
     var paymentAvailability: PaymentAvailability { get }
+    var pendingCount: Int { get }
     func fetchData()
     func refresh()
     func createPayment(lessonsCount: Int)
@@ -80,6 +81,10 @@ final class StudentPaymentsViewModel: StudentPaymentsViewModelProtocol {
         if settings.minLessons <= 0 { return .priceOnly(price: settings.lessonPrice) }
         return .full(price: settings.lessonPrice,
                      minLessons: settings.minLessons)
+    }
+    
+    var pendingCount: Int {
+        payments.filter { $0.status == .pending }.count
     }
     
     // MARK: - Properties
@@ -161,7 +166,6 @@ final class StudentPaymentsViewModel: StudentPaymentsViewModelProtocol {
                 await MainActor.run { [weak self] in
                     self?.payments.removeAll { $0.status != .pending }
                     self?.onLoading?(false)
-//                    self?.onSuccess?("history_cleared".localized)
                     self?.onUpdate?()
                 }
             } catch {

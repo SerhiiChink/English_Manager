@@ -15,6 +15,11 @@ protocol OccurrenceFirestoreServiceProtocol {
     func cancelOccurrence(id: String, by cancelledBy: CancelledBy) async throws
     func linkLesson(occurrenceId: String, lessonId: String) async throws
     func fetchTodayOccurrences(studentId: String) async throws -> [LessonOccurrence]
+    func fetchPendingConfirmations(teacherId: String) async throws -> [LessonOccurrence]
+    func resolveOccurrence(id: String,
+                           status: OccurrenceStatus) async throws
+    func createOneTimeOccurrence(_ occurrence: LessonOccurrence) async throws
+    func deleteOccurrence(id: String) async throws
 }
 
 final class OccurrenceFirestoreService: OccurrenceFirestoreServiceProtocol {
@@ -76,5 +81,34 @@ final class OccurrenceFirestoreService: OccurrenceFirestoreServiceProtocol {
             .whereField("scheduledAt", isLessThan: endOfDay)
             .getDocuments()
         return try snapshot.decode(LessonOccurrence.self)
+    }
+    
+    // MARK: - Confirmation
+    func fetchPendingConfirmations(teacherId: String) async throws -> [LessonOccurrence] {
+        let snapshot = try await collection(Collections.lessonOccurrences)
+            .whereField("teacherId", isEqualTo: teacherId)
+            .whereField("status", isEqualTo: OccurrenceStatus.completed.rawValue)
+            .order(by: "scheduledAt")
+            .getDocuments()
+        return try snapshot.decode(LessonOccurrence.self)
+    }
+    
+    func resolveOccurrence(id: String,
+                           status: OccurrenceStatus) async throws {
+        try await collection(Collections.lessonOccurrences)
+            .document(id)
+            .updateData(["status": status.rawValue])
+    }
+    
+    func createOneTimeOccurrence(_ occurrence: LessonOccurrence) async throws {
+        _ = try collection(Collections.lessonOccurrences)
+            .addDocument(from: occurrence)
+    }
+    
+    // MARK: - Delete Occurence
+    func deleteOccurrence(id: String) async throws {
+        try await collection(Collections.lessonOccurrences)
+            .document(id)
+            .delete()
     }
 }

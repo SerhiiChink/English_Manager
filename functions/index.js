@@ -7,9 +7,7 @@ const db = admin.firestore();
 
 const DEFAULT_TIMEZONE = 'Europe/Kiev';
 
-// ─────────────────────────────────────────
-// MARK: - Generate Occurrences (weekly)
-// ─────────────────────────────────────────
+// MARK: - Generate Occurrences
 exports.generateWeeklyOccurrences = functions
     .pubsub
     .schedule('0 20 * * 0')
@@ -55,9 +53,7 @@ exports.generateWeeklyOccurrences = functions
         return null
     })
 
-// ─────────────────────────────────────────
 // MARK: - Schedule Created
-// ─────────────────────────────────────────
 exports.onScheduleCreated = functions
     .firestore
     .document('schedules/{scheduleId}')
@@ -86,9 +82,7 @@ exports.onScheduleCreated = functions
         return null
     })
 
-// ─────────────────────────────────────────
 // MARK: - Schedule Updated
-// ─────────────────────────────────────────
 exports.onScheduleUpdated = functions
     .firestore
     .document('schedules/{scheduleId}')
@@ -131,9 +125,7 @@ exports.onScheduleUpdated = functions
         return null
     })
 
-// ─────────────────────────────────────────
 // MARK: - Schedule Deleted
-// ─────────────────────────────────────────
 exports.onScheduleDeleted = functions
     .firestore
     .document('schedules/{scheduleId}')
@@ -153,18 +145,17 @@ exports.onScheduleDeleted = functions
         return null
     })
 
-// ─────────────────────────────────────────
-// MARK: - Process Lessons (every 2 hours)
-// ─────────────────────────────────────────
+// MARK: - Process Completed Lessons
 exports.processCompletedLessons = functions
     .pubsub
-    .schedule('0 */2 * * *')
+    .schedule('0 * * * *')
     .timeZone('Europe/Kiev')
     .onRun(async () => {
         const now = new Date()
+        const thirtyMinAgo = new Date(now.getTime() - 30 * 60 * 1000)
 
         const snapshot = await db.collection('lessonOccurrences')
-            .where('scheduledAt', '<=', now)
+            .where('scheduledAt', '<=', thirtyMinAgo)
             .where('status', '==', 'scheduled')
             .get()
 
@@ -173,94 +164,51 @@ exports.processCompletedLessons = functions
             return null
         }
 
-        const studentIds = [...new Set(
-            snapshot.docs.map(d => d.data().studentId)
+        const teacherIds = [...new Set(
+            snapshot.docs.map(d => d.data().teacherId)
         )]
-        const studentDocs = await Promise.all(
-            studentIds.map(id => db.collection('users').doc(id).get())
+        const teacherDocs = await Promise.all(
+            teacherIds.map(id => db.collection('users').doc(id).get())
         )
-        const studentsMap = {}
-        studentDocs.forEach(doc => {
-            if (doc.exists) studentsMap[doc.id] = doc
+        const teachersMap = {}
+        teacherDocs.forEach(doc => {
+            if (doc.exists) teachersMap[doc.id] = doc.data()
         })
 
         const batch = db.batch()
         const pushPromises = []
-        const scheduleCache = {}
 
         for (const doc of snapshot.docs) {
             const occurrence = doc.data()
-            const studentDoc = studentsMap[occurrence.studentId]
-            if (!studentDoc) continue
-
-            const studentData = studentDoc.data()
-            const isAutoDebit = studentData?.isAutoDebitEnabled === true
 
             batch.update(doc.ref, {
                 status: 'completed',
                 processedAt: now
             })
 
-            if (isAutoDebit) {
-                const currentBalance = studentData?.lessonsBalance || 0
-                const newBalance = currentBalance - 1
-
-                batch.update(studentDoc.ref, {
-                    lessonsBalance: admin.firestore.FieldValue.increment(-1)
-                })
-
-                if (newBalance <= 0) {
-                    const fcmToken = studentData?.fcmToken
-                    if (fcmToken) {
-                        pushPromises.push(
-                            admin.messaging().send({
-                                token: fcmToken,
-                                apns: {
-                                    payload: {
-                                        aps: {
-                                            alert: {
-                                                'title-loc-key': 'push_balance_empty_title',
-                                                'loc-key': 'push_balance_empty_body'
-                                            },
-                                            sound: 'default'
-                                        }
-                                    }
-                                },
-                                data: { type: 'balance_empty' }
-                            })
-                        )
-                    }
-                }
-            }
-
-            if (!scheduleCache[occurrence.scheduleId]) {
-                scheduleCache[occurrence.scheduleId] = await db
-                    .collection('schedules')
-                    .doc(occurrence.scheduleId)
-                    .get()
-            }
-            const scheduleDoc = scheduleCache[occurrence.scheduleId]
-            if (!scheduleDoc.exists || !scheduleDoc.data().isActive) continue
-
-            const currentScheduledAt = occurrence.scheduledAt.toDate()
-            const nextDate = new Date(currentScheduledAt)
-            nextDate.setDate(nextDate.getDate() + 7)
-
-            const existing = await db.collection('lessonOccurrences')
-                .where('scheduleId', '==', occurrence.scheduleId)
-                .where('scheduledAt', '==', nextDate)
-                .get()
-
-            if (existing.empty) {
-                const newRef = db.collection('lessonOccurrences').doc()
-                batch.set(newRef, {
-                    studentId: occurrence.studentId,
-                    teacherId: occurrence.teacherId,
-                    scheduleId: occurrence.scheduleId,
-                    scheduledAt: nextDate,
-                    status: 'scheduled',
-                    createdAt: now
-                })
+            const teacher = teachersMap[occurrence.teacherId]
+            const fcmToken = teacher?.fcmToken
+            if (fcmToken) {
+                pushPromises.push(
+                    admin.messaging().send({
+                        token: fcmToken,
+                        apns: {
+                            payload: {
+                                aps: {
+                                    alert: {
+                                        'title-loc-key': 'push_lesson_completed_title',
+                                        'loc-key': 'push_lesson_completed_body'
+                                    },
+                                    sound: 'default'
+                                }
+                            }
+                        },
+                        data: {
+                            type: 'lesson_completed',
+                            occurrenceId: doc.id
+                        }
+                    })
+                )
             }
         }
 
@@ -270,21 +218,145 @@ exports.processCompletedLessons = functions
         return null
     })
 
-// ─────────────────────────────────────────
-// MARK: - Send Reminders (every hour, 2h before lesson)
-// ─────────────────────────────────────────
+// MARK: - Occurrence Resolved
+exports.onOccurrenceResolved = functions
+    .firestore
+    .document('lessonOccurrences/{occurrenceId}')
+    .onUpdate(async (change) => {
+        const before = change.before.data()
+        const after = change.after.data()
+
+        if (before.status === after.status) return null
+
+        const resolvedStatuses = ['charged', 'missed', 'cancelled']
+        if (!resolvedStatuses.includes(after.status)) return null
+
+        const batch = db.batch()
+
+        let newBalance = null
+        let fcmToken = null
+
+        if (after.status === 'charged' || after.status === 'missed') {
+            const studentRef = db.collection('users').doc(after.studentId)
+            const studentDoc = await studentRef.get()
+            const currentBalance = studentDoc.data()?.lessonsBalance || 0
+            newBalance = currentBalance - 1
+            fcmToken = studentDoc.data()?.fcmToken
+
+            batch.update(studentRef, {
+                lessonsBalance: admin.firestore.FieldValue.increment(-1)
+            })
+        }
+
+        if (after.scheduleId) {
+            const scheduleDoc = await db.collection('schedules')
+                .doc(after.scheduleId).get()
+
+            if (scheduleDoc.exists && scheduleDoc.data().isActive) {
+                const schedule = scheduleDoc.data()
+                const tz = await resolveTeacherTimezone(after.teacherId, {})
+                const nextDate = getNextDateForWeekday(
+                    after.scheduledAt.toDate(),
+                    schedule.weekday,
+                    schedule.time,
+                    tz
+                )
+
+                const existing = await db.collection('lessonOccurrences')
+                    .where('scheduleId', '==', after.scheduleId)
+                    .where('scheduledAt', '==', nextDate)
+                    .get()
+
+                if (existing.empty) {
+                    const newRef = db.collection('lessonOccurrences').doc()
+                    batch.set(newRef, {
+                        studentId: after.studentId,
+                        teacherId: after.teacherId,
+                        scheduleId: after.scheduleId,
+                        scheduledAt: nextDate,
+                        status: 'scheduled',
+                        createdAt: new Date()
+                    })
+                }
+            }
+        }
+
+        await batch.commit()
+
+        if (newBalance !== null && newBalance <= 0 && fcmToken) {
+            await admin.messaging().send({
+                token: fcmToken,
+                apns: {
+                    payload: {
+                        aps: {
+                            alert: {
+                                'title-loc-key': 'push_balance_empty_title',
+                                'loc-key': 'push_balance_empty_body'
+                            },
+                            sound: 'default',
+			    badge: 1
+                        }
+                    }
+                },
+                data: { type: 'balance_empty' }
+            })
+        }
+
+        console.log(`Occurrence ${change.after.id} resolved as ${after.status}`)
+        return null
+    })
+
+// MARK: - One-Time Occurrence Created
+exports.onOneTimeOccurrenceCreated = functions
+    .firestore
+    .document('lessonOccurrences/{occurrenceId}')
+    .onCreate(async (snap) => {
+        const occurrence = snap.data()
+
+        if (occurrence.scheduleId) return null
+
+        const studentDoc = await db.collection('users')
+            .doc(occurrence.studentId).get()
+        const fcmToken = studentDoc.data()?.fcmToken
+        if (!fcmToken) return null
+
+        await admin.messaging().send({
+            token: fcmToken,
+            apns: {
+                payload: {
+                    aps: {
+                        alert: {
+                            'title-loc-key': 'push_lesson_rescheduled_title',
+                            'loc-key': 'push_lesson_rescheduled_body'
+                        },
+                        sound: 'default',
+			badge: 1
+                    }
+                }
+            },
+            data: {
+                type: 'lesson_rescheduled',
+                occurrenceId: snap.id
+            }
+        })
+
+        console.log(`Rescheduled push sent to student ${occurrence.studentId}`)
+        return null
+    })
+
+// MARK: - Send Lesson Reminders
 exports.sendLessonReminders = functions
     .pubsub
     .schedule('0 * * * *')
     .timeZone('Europe/Kiev')
     .onRun(async () => {
         const now = new Date()
+        const inOneHour = new Date(now.getTime() + 60 * 60 * 1000)
         const inTwoHours = new Date(now.getTime() + 2 * 60 * 60 * 1000)
-        const inThreeHours = new Date(inTwoHours.getTime() + 60 * 60 * 1000)
 
         const snapshot = await db.collection('lessonOccurrences')
-            .where('scheduledAt', '>=', inTwoHours)
-            .where('scheduledAt', '<', inThreeHours)
+            .where('scheduledAt', '>=', inOneHour)
+            .where('scheduledAt', '<', inTwoHours)
             .where('status', '==', 'scheduled')
             .get()
 
@@ -340,9 +412,7 @@ exports.sendLessonReminders = functions
         return null
     })
 
-// ─────────────────────────────────────────
-// MARK: - Payment Created Push
-// ─────────────────────────────────────────
+// MARK: - Payment Created
 exports.onPaymentCreated = functions
     .firestore
     .document('payments/{paymentId}')
@@ -364,7 +434,8 @@ exports.onPaymentCreated = functions
                             'loc-key': 'push_payment_pending_body',
                             'loc-args': [payment.studentName, String(payment.lessonsCount)]
                         },
-                        sound: 'default'
+                        sound: 'default',
+			badge: 1
                     }
                 }
             },
@@ -376,9 +447,7 @@ exports.onPaymentCreated = functions
         return null
     })
 
-// ─────────────────────────────────────────
-// MARK: - Student Removed (cascade delete)
-// ─────────────────────────────────────────
+// MARK: - Student Removed
 exports.onStudentRemoved = functions
     .firestore
     .document('users/{studentId}')
@@ -391,16 +460,7 @@ exports.onStudentRemoved = functions
         const studentId = change.after.id
         const teacherId = before.teacherId
 
-        console.log(`Student ${studentId} removed from teacher ${teacherId}, starting cascade delete`)
-
-        const collections = [
-            'lessons',
-            'homeworks',
-            'payments',
-            'schedules',
-            'lessonOccurrences'
-        ]
-
+        const collections = ['lessons', 'homeworks', 'payments', 'schedules', 'lessonOccurrences']
         await Promise.all(
             collections.map(col => cascadeDelete(col, studentId, teacherId))
         )
@@ -409,9 +469,7 @@ exports.onStudentRemoved = functions
         return null
     })
 
-// ─────────────────────────────────────────
-// MARK: - Account Deleted (full cleanup)
-// ─────────────────────────────────────────
+// MARK: - Account Deleted
 exports.onAccountDeleted = functions
     .auth
     .user()
@@ -434,7 +492,6 @@ exports.onAccountDeleted = functions
                 batch.update(doc.ref, {
                     teacherId: admin.firestore.FieldValue.delete(),
                     teacherAlias: admin.firestore.FieldValue.delete(),
-                    isAutoDebitEnabled: admin.firestore.FieldValue.delete(),
                     lessonsBalance: admin.firestore.FieldValue.delete(),
                     totalLessonsPaid: admin.firestore.FieldValue.delete()
                 })
@@ -460,6 +517,7 @@ exports.onAccountDeleted = functions
         return null
     })
 
+// MARK: - Helpers
 async function cascadeDeleteByTeacher(collectionName, teacherId) {
     const snapshot = await db.collection(collectionName)
         .where('teacherId', '==', teacherId)
@@ -477,19 +535,13 @@ async function cascadeDeleteByTeacher(collectionName, teacherId) {
     console.log(`${collectionName}: deleted ${snapshot.size} docs for teacher ${teacherId}`)
 }
 
-// ─────────────────────────────────────────
-// MARK: - Cascade Delete Helper
-// ─────────────────────────────────────────
 async function cascadeDelete(collectionName, studentId, teacherId) {
     const snapshot = await db.collection(collectionName)
         .where('studentId', '==', studentId)
         .where('teacherId', '==', teacherId)
         .get()
 
-    if (snapshot.empty) {
-        console.log(`${collectionName}: nothing to delete`)
-        return
-    }
+    if (snapshot.empty) return
 
     const chunks = []
     for (let i = 0; i < snapshot.docs.length; i += 500) {
@@ -505,9 +557,6 @@ async function cascadeDelete(collectionName, studentId, teacherId) {
     console.log(`${collectionName}: deleted ${snapshot.size} docs`)
 }
 
-// ─────────────────────────────────────────
-// MARK: - Timezone Helper
-// ─────────────────────────────────────────
 async function resolveTeacherTimezone(teacherId, cache) {
     if (cache[teacherId]) return cache[teacherId]
     const doc = await db.collection('users').doc(teacherId).get()
@@ -518,9 +567,6 @@ async function resolveTeacherTimezone(teacherId, cache) {
     return tz
 }
 
-// ─────────────────────────────────────────
-// MARK: - Date Helpers
-// ─────────────────────────────────────────
 function getNextMonday() {
     const now = new Date()
     const day = now.getDay()

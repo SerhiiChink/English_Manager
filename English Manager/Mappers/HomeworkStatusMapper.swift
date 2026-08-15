@@ -7,6 +7,13 @@
 
 import UIKit
 
+struct HomeworkStatusStyle {
+    let text: String
+    let badgeColor: UIColor
+    let accentColor: UIColor
+    let icon: String
+}
+
 enum HomeworkStatusMapper {
     static func style(for homework: Homework) -> HomeworkStatusStyle {
         switch homework.status {

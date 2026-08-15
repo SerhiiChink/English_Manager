@@ -46,3 +46,8 @@ enum UDKeys {
         "lastTimezone_\(userId)"
     }
 }
+
+// MARK: - Notification Names
+extension Notification.Name {
+    static let lessonCompleted = Notification.Name("lessonCompleted")
+}

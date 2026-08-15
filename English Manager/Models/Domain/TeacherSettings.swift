@@ -12,5 +12,4 @@ struct TeacherSettings: Codable {
     var lessonPrice: Double
     var minLessons: Int
     var currency: String
-    var showAutoDebitPrompt: Bool = true
 }

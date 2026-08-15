@@ -17,17 +17,22 @@ final class ProfileView: UIView {
     private let fullNameLabel = UILabel()
     private let emailLabel = UILabel()
     private let teacherBannerView = TeacherBannerView()
+    private let studentsButton = UIButton(type: .system)
     private let editButton = UIButton(type: .system)
     private let changePasswordButton = UIButton(type: .system)
     private let signOutButton = UIButton(type: .system)
     private let deleteAccountButton = UIButton(type: .system)
     
     // MARK: - Callbacks
+    var onStudents: (() -> Void)?
     var onEdit: (() -> Void)?
     var onChangePassword: (() -> Void)?
     var onSignOut: (() -> Void)?
     var onRefresh: (() -> Void)?
     var onDeleteAccount: (() -> Void)?
+    
+    // MARK: - Properties
+    private var showStudentsButton = false
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -98,6 +103,10 @@ final class ProfileView: UIView {
     }
     
     private func setupButtons() {
+        setupActionButton(studentsButton,
+                          title: "students".localized,
+                          icon: "person.2",
+                          isDestructive: false)
         setupActionButton(editButton,
                           title: "edit_profile".localized,
                           icon: "pencil",
@@ -114,6 +123,9 @@ final class ProfileView: UIView {
                           title: "delete_account".localized,
                           icon: "trash",
                           isDestructive: true)
+        studentsButton.addTarget(self,
+                                 action: #selector(studentsTapped),
+                                 for: .touchUpInside)
         editButton.addTarget(self,
                              action: #selector(editTapped),
                              for: .touchUpInside)
@@ -184,7 +196,10 @@ final class ProfileView: UIView {
     }
     
     // MARK: - Public
-    func build(statsView: UIView, showTeacherBanner: Bool = false) {
+    func build(statsView: UIView,
+               showTeacherBanner: Bool = false,
+               showStudentsButton: Bool = false) {
+        self.showStudentsButton = showStudentsButton
         contentView.addSubview(statsView)
         statsView.snp.makeConstraints {
             $0.top.equalTo(profileCard.snp.bottom).offset(12)
@@ -203,9 +218,12 @@ final class ProfileView: UIView {
     }
     
     private func buildBottomStack(below anchor: UIView) {
+        var accountButtons: [UIButton] = [editButton, changePasswordButton]
+        if showStudentsButton {
+            accountButtons.insert(studentsButton, at: 0)
+        }
         let accountCard = groupCard(label: "account".localized,
-                                    buttons: [editButton,
-                                              changePasswordButton])
+                                    buttons: accountButtons)
         let sessionCard = groupCard(label: "session".localized,
                                     buttons: [signOutButton,
                                               deleteAccountButton])
@@ -242,6 +260,7 @@ final class ProfileView: UIView {
     }
     
     // MARK: - Actions
+    @objc private func studentsTapped() { onStudents?() }
     @objc private func editTapped() { onEdit?() }
     @objc private func changePasswordTapped() { onChangePassword?() }
     @objc private func signOutTapped() { onSignOut?() }
