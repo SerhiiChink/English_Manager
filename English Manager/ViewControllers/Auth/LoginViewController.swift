@@ -269,6 +269,12 @@ final class LoginViewController: UIViewController {
             ? self?.activityIndicator.startAnimating()
             : self?.activityIndicator.stopAnimating()
         }
+        viewModel.onResetSent = { [weak self] email in
+            self?.showAlert(
+                title: "email_sent".localized,
+                message: "reset_link_sent_to".localized + " \(email)"
+            )
+        }
     }
     
     // MARK: - Helper
@@ -322,6 +328,32 @@ final class LoginViewController: UIViewController {
         button.layer.cornerRadius = Layout.cornerRadius
     }
     
+    // MARK: - Alert
+    private func showForgotPasswordAlert() {
+        let alert = UIAlertController(
+            title: "forgot_password".localized,
+            message: "enter_your_email".localized,
+            preferredStyle: .alert
+        )
+        alert.addTextField {
+            $0.placeholder = "email".localized
+            $0.keyboardType = .emailAddress
+            $0.autocapitalizationType = .none
+            $0.text = self.emailField.text
+        }
+        alert.addAction(UIAlertAction(title: "cancel".localized,
+                                      style: .cancel))
+        alert.addAction(UIAlertAction(
+            title: "send".localized,
+            style: .default) { [weak self] _ in
+                guard let email = alert.textFields?.first?.text,
+                      !email.isEmpty else { return }
+                self?.viewModel.resetPassword(email: email)
+            }
+        )
+        present(alert, animated: true)
+    }
+    
     // MARK: - Actions
     @objc private func dismissKeyboard() {
         view.endEditing(true)
@@ -349,7 +381,7 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func forgotPasswordTapped() {
-        viewModel.resetPassword(email: emailField.text ?? "")
+        showForgotPasswordAlert()
     }
     
     @objc private func appleTapped() {

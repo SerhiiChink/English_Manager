@@ -32,6 +32,10 @@
 "sign_up_with_google" = "Продовжити з Google";
 "name" = "Ім’я";
 "are_you_sure" = "Ви впевнені ?";
+"forgot_password" = "Забули пароль?";
+"enter_your_email" = "Введіть email для скидання пароля";
+"email_sent" = "Лист надіслано";
+"reset_link_sent_to" = "Посилання для скидання пароля надіслано на";
 
 // MARK: - Navigation & Tabs
 "profile" = "Профіль";

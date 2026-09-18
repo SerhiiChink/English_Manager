@@ -7,7 +7,6 @@
 
 import Foundation
 import FirebaseStorage
-import UIKit
 
 protocol StorageServiceProtocol {
     func uploadAvatar(userId: String,

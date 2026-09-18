@@ -13,11 +13,12 @@ protocol LoginViewModelProtocol {
     var onSuccess: (() -> Void)? { get set }
     var onError: ((String) -> Void)? { get set }
     var onLoading: ((Bool) -> Void)? { get set }
+    var onResetSent: ((String) -> Void)? { get set }
     func login(email: String, password: String)
     func register(email: String, password: String, name: String)
     func signInWithGoogle(presenting: UIViewController)
     func signInWithApple(window: ASPresentationAnchor)
-    func  resetPassword(email: String)
+    func resetPassword(email: String)
 }
 
 final class LoginViewModel: LoginViewModelProtocol {
@@ -25,6 +26,7 @@ final class LoginViewModel: LoginViewModelProtocol {
     var onSuccess: (() -> Void)?
     var onError: ((String) -> Void)?
     var onLoading: ((Bool) -> Void)?
+    var onResetSent: ((String) -> Void)?
     
     // MARK: - Properties
     private let authService: AuthServiceProtocol
@@ -96,8 +98,20 @@ final class LoginViewModel: LoginViewModelProtocol {
             onError?(message)
             return
         }
-        performAuth {
-            try await self.authService.resetPassword(email: email)
+       onLoading?(true)
+        Task {
+            do {
+                try await authService.resetPassword(email: email)
+                await MainActor.run { [weak self]  in
+                    self?.onLoading?(false)
+                    self?.onResetSent?(email)
+                }
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.onLoading?(false)
+                    self?.onError?(error.localizedDescription)
+                }
+            }
         }
     }
     

@@ -92,18 +92,21 @@ final class StudentPaymentsViewModel: StudentPaymentsViewModelProtocol {
     private let firestoreService: FirestoreServiceProtocol
     private let authService: AuthServiceProtocol
     private let formatter: PaymentFormatterProtocol
+    private let cache: UserCacheProtocol
     
     // MARK: - Init
     init(
         paymentService: PaymentFirestoreServiceProtocol = PaymentFirestoreService(),
         firestoreService: FirestoreServiceProtocol = FirestoreService(),
         authService: AuthServiceProtocol = AuthService(),
-        formatter: PaymentFormatterProtocol = PaymentFormatter()
+        formatter: PaymentFormatterProtocol = PaymentFormatter(),
+        cache: UserCacheProtocol = UserCache()
     ) {
         self.paymentService = paymentService
         self.firestoreService = firestoreService
         self.authService = authService
         self.formatter = formatter
+        self.cache = cache
     }
     
     // MARK: - Fetch
@@ -186,7 +189,7 @@ final class StudentPaymentsViewModel: StudentPaymentsViewModelProtocol {
         onLoading?(currentUser == nil)
         Task {
             do {
-                let user = try await UserCache.shared.getUser(
+                let user = try await cache.getUser(
                     id: studentId,
                     service: firestoreService,
                     forceRefresh: forceRefresh

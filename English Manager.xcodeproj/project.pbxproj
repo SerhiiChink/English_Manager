@@ -19,6 +19,10 @@
 		57320AD02F82785A00D1A6E8 /* ScheduleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320ACF2F82785A00D1A6E8 /* ScheduleFormatter.swift */; };
 		57320AD32F82F05100D1A6E8 /* SchedulePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320AD22F82F05100D1A6E8 /* SchedulePickerViewController.swift */; };
 		57320AD52F82F3FC00D1A6E8 /* ScheduleDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57320AD42F82F3FC00D1A6E8 /* ScheduleDraft.swift */; };
+		573CA3DE305946A30015F064 /* MockUserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CA3DD305946A30015F064 /* MockUserCache.swift */; };
+		573CA3E0305950D40015F064 /* TeacherHomeworkViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CA3DF305950D40015F064 /* TeacherHomeworkViewModelTests.swift */; };
+		573CA3E2305952F40015F064 /* FeedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CA3E1305952F40015F064 /* FeedViewModelTests.swift */; };
+		573CA3E43059E7BE0015F064 /* BookmarksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CA3E33059E7BE0015F064 /* BookmarksViewModelTests.swift */; };
 		574B83DA2F6E05520042045B /* TeacherPaymentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83D52F6E05520042045B /* TeacherPaymentsViewController.swift */; };
 		574B83DB2F6E05520042045B /* StudentLessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83CD2F6E05520042045B /* StudentLessonsViewController.swift */; };
 		574B83DC2F6E05520042045B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574B83C42F6E05520042045B /* LoginViewController.swift */; };
@@ -39,7 +43,6 @@
 		575091C72F56F373002132EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 575091BB2F56F373002132EF /* Assets.xcassets */; };
 		575091C92F56F373002132EF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 575091BE2F56F373002132EF /* LaunchScreen.storyboard */; };
 		575091CA2F56F373002132EF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 575091C02F56F373002132EF /* Main.storyboard */; };
-		575091CD2F56F380002132EF /* English_ManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575091CB2F56F380002132EF /* English_ManagerTests.swift */; };
 		575091D12F56F385002132EF /* English_ManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575091CE2F56F385002132EF /* English_ManagerUITests.swift */; };
 		575091D22F56F385002132EF /* English_ManagerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575091CF2F56F385002132EF /* English_ManagerUITestsLaunchTests.swift */; };
 		575091DD2F584136002132EF /* UIColor+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575091DC2F584136002132EF /* UIColor+App.swift */; };
@@ -97,6 +100,28 @@
 		57BA70532F8AECDE0025389F /* StudentPaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA70522F8AECDE0025389F /* StudentPaymentsViewModel.swift */; };
 		57C3ABCB302E5D8800A9C066 /* String+RSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABCA302E5D8800A9C066 /* String+RSS.swift */; };
 		57C3ABCD302F348B00A9C066 /* FeedRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABCC302F348B00A9C066 /* FeedRouter.swift */; };
+		57C3ABCF303050CE00A9C066 /* MockRSSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABCE303050CE00A9C066 /* MockRSSService.swift */; };
+		57C3ABD13030514600A9C066 /* MockBookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABD03030514600A9C066 /* MockBookmarkService.swift */; };
+		57C3ABD33030540000A9C066 /* RSSItem+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABD23030540000A9C066 /* RSSItem+Mock.swift */; };
+		57C3ABD53030549500A9C066 /* FirestoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABD43030549500A9C066 /* FirestoreServiceTests.swift */; };
+		57C3ABD73030597900A9C066 /* MockValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABD63030597900A9C066 /* MockValidationService.swift */; };
+		57C3ABD9303059C300A9C066 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABD8303059C300A9C066 /* LoginViewModelTests.swift */; };
+		57C3ABDB30305B2700A9C066 /* EditProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABDA30305B2700A9C066 /* EditProfileViewModelTests.swift */; };
+		57C3ABDD30305FCE00A9C066 /* RoleConfirmViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABDC30305FCE00A9C066 /* RoleConfirmViewModelTests.swift */; };
+		57C3ABDF3030609600A9C066 /* SplashViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABDE3030609600A9C066 /* SplashViewModelTests.swift */; };
+		57C3ABE13030615000A9C066 /* AnimatedSplashViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABE03030615000A9C066 /* AnimatedSplashViewModelTests.swift */; };
+		57C3ABE53030996000A9C066 /* StudentLessonsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABE43030996000A9C066 /* StudentLessonsViewModelTests.swift */; };
+		57C3ABE730309B4600A9C066 /* StudentProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABE630309B4600A9C066 /* StudentProfileViewModelTests.swift */; };
+		57C3ABEB30309DD900A9C066 /* StudentHomeworkViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABEA30309DD900A9C066 /* StudentHomeworkViewModelTests.swift */; };
+		57C3ABED3030A02200A9C066 /* StudentPaymentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABEC3030A02200A9C066 /* StudentPaymentsViewModelTests.swift */; };
+		57C3ABF03031A98600A9C066 /* TeacherPaymentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABEF3031A98600A9C066 /* TeacherPaymentsViewModelTests.swift */; };
+		57C3ABF23031AAF400A9C066 /* TeacherPaymentDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABF13031AAF400A9C066 /* TeacherPaymentDetailViewModelTests.swift */; };
+		57C3ABF43031AC7F00A9C066 /* PaymentReviewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABF33031AC7F00A9C066 /* PaymentReviewViewModelTests.swift */; };
+		57C3ABF63031AD7800A9C066 /* TeacherLessonsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABF53031AD7800A9C066 /* TeacherLessonsViewModelTests.swift */; };
+		57C3ABF83031B1B300A9C066 /* LessonOccurrenceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABF73031B1B300A9C066 /* LessonOccurrenceViewModelTests.swift */; };
+		57C3ABFA3031B2C400A9C066 /* LessonConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABF93031B2C400A9C066 /* LessonConfirmationViewModelTests.swift */; };
+		57C3ABFC3031B36800A9C066 /* StudentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABFB3031B36800A9C066 /* StudentsViewModelTests.swift */; };
+		57C3ABFE3031B70D00A9C066 /* TeacherProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3ABFD3031B70D00A9C066 /* TeacherProfileViewModelTests.swift */; };
 		57C488E52FE9E62F00547839 /* AppleSignInDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C488E42FE9E62F00547839 /* AppleSignInDelegate.swift */; };
 		57C5DE7D2FCC347900476861 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 57C5DE7C2FCC347900476861 /* GoogleSignIn */; };
 		57C5DE7F2FCC347900476861 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 57C5DE7E2FCC347900476861 /* GoogleSignInSwift */; };
@@ -175,6 +200,21 @@
 		57F6C0612F6F42A60041E8BE /* StudentProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C0602F6F42A60041E8BE /* StudentProfileViewModel.swift */; };
 		57F6C0632F6F45F60041E8BE /* UIViewController+ProfileAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C0622F6F45F60041E8BE /* UIViewController+ProfileAlerts.swift */; };
 		57F6C0682F71481E0041E8BE /* HomeworkFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6C0672F71481E0041E8BE /* HomeworkFirestoreService.swift */; };
+		57FF88443059EB9B00C1FE16 /* OccurrenceStatusMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF88433059EB9B00C1FE16 /* OccurrenceStatusMapperTests.swift */; };
+		57FF8846305A9FB400C1FE16 /* MockLessonFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF8845305A9FB400C1FE16 /* MockLessonFormatter.swift */; };
+		57FF8848305AA18E00C1FE16 /* BalanceLevelMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF8847305AA18E00C1FE16 /* BalanceLevelMapperTests.swift */; };
+		57FF884A305AA25800C1FE16 /* PaymentStatusMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF8849305AA25800C1FE16 /* PaymentStatusMapperTests.swift */; };
+		57FF884C305B378700C1FE16 /* AccountStatusMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF884B305B378700C1FE16 /* AccountStatusMapperTests.swift */; };
+		57FF884E305B380D00C1FE16 /* RoleMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF884D305B380D00C1FE16 /* RoleMapperTests.swift */; };
+		57FF8850305B385200C1FE16 /* PushNotificationMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF884F305B385200C1FE16 /* PushNotificationMapperTests.swift */; };
+		57FF8852305B38D500C1FE16 /* HomeworkStatusMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF8851305B38D500C1FE16 /* HomeworkStatusMapperTests.swift */; };
+		57FF8857305B3A2B00C1FE16 /* LessonFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF8856305B3A2B00C1FE16 /* LessonFormatterTests.swift */; };
+		57FF8859305B3A8800C1FE16 /* HomeworkFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF8858305B3A8800C1FE16 /* HomeworkFormatterTests.swift */; };
+		57FF885B305B3AF600C1FE16 /* ScheduleFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF885A305B3AF600C1FE16 /* ScheduleFormatterTests.swift */; };
+		57FF885D305B3BB800C1FE16 /* PaymentFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF885C305B3BB800C1FE16 /* PaymentFormatterTests.swift */; };
+		57FF885F305B3CCE00C1FE16 /* SharedDateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF885E305B3CCE00C1FE16 /* SharedDateFormatterTests.swift */; };
+		57FF8861305B3D2500C1FE16 /* RSSDateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF8860305B3D2500C1FE16 /* RSSDateFormatterTests.swift */; };
+		57FF8863305B3D9B00C1FE16 /* FeedDateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF8862305B3D9B00C1FE16 /* FeedDateFormatterTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -207,6 +247,10 @@
 		57320ACF2F82785A00D1A6E8 /* ScheduleFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleFormatter.swift; sourceTree = "<group>"; };
 		57320AD22F82F05100D1A6E8 /* SchedulePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePickerViewController.swift; sourceTree = "<group>"; };
 		57320AD42F82F3FC00D1A6E8 /* ScheduleDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDraft.swift; sourceTree = "<group>"; };
+		573CA3DD305946A30015F064 /* MockUserCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserCache.swift; sourceTree = "<group>"; };
+		573CA3DF305950D40015F064 /* TeacherHomeworkViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherHomeworkViewModelTests.swift; sourceTree = "<group>"; };
+		573CA3E1305952F40015F064 /* FeedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModelTests.swift; sourceTree = "<group>"; };
+		573CA3E33059E7BE0015F064 /* BookmarksViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewModelTests.swift; sourceTree = "<group>"; };
 		574B83C32F6E05520042045B /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		574B83C42F6E05520042045B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		574B83C52F6E05520042045B /* RoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleViewController.swift; sourceTree = "<group>"; };
@@ -231,7 +275,6 @@
 		575091BD2F56F373002132EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		575091BF2F56F373002132EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		575091C12F56F373002132EF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		575091CB2F56F380002132EF /* English_ManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = English_ManagerTests.swift; sourceTree = "<group>"; };
 		575091CE2F56F385002132EF /* English_ManagerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = English_ManagerUITests.swift; sourceTree = "<group>"; };
 		575091CF2F56F385002132EF /* English_ManagerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = English_ManagerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		575091DC2F584136002132EF /* UIColor+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+App.swift"; sourceTree = "<group>"; };
@@ -287,6 +330,28 @@
 		57BA70522F8AECDE0025389F /* StudentPaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPaymentsViewModel.swift; sourceTree = "<group>"; };
 		57C3ABCA302E5D8800A9C066 /* String+RSS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RSS.swift"; sourceTree = "<group>"; };
 		57C3ABCC302F348B00A9C066 /* FeedRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedRouter.swift; sourceTree = "<group>"; };
+		57C3ABCE303050CE00A9C066 /* MockRSSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRSSService.swift; sourceTree = "<group>"; };
+		57C3ABD03030514600A9C066 /* MockBookmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBookmarkService.swift; sourceTree = "<group>"; };
+		57C3ABD23030540000A9C066 /* RSSItem+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RSSItem+Mock.swift"; sourceTree = "<group>"; };
+		57C3ABD43030549500A9C066 /* FirestoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceTests.swift; sourceTree = "<group>"; };
+		57C3ABD63030597900A9C066 /* MockValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockValidationService.swift; sourceTree = "<group>"; };
+		57C3ABD8303059C300A9C066 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABDA30305B2700A9C066 /* EditProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABDC30305FCE00A9C066 /* RoleConfirmViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleConfirmViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABDE3030609600A9C066 /* SplashViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABE03030615000A9C066 /* AnimatedSplashViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedSplashViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABE43030996000A9C066 /* StudentLessonsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLessonsViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABE630309B4600A9C066 /* StudentProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentProfileViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABEA30309DD900A9C066 /* StudentHomeworkViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentHomeworkViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABEC3030A02200A9C066 /* StudentPaymentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPaymentsViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABEF3031A98600A9C066 /* TeacherPaymentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPaymentsViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABF13031AAF400A9C066 /* TeacherPaymentDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPaymentDetailViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABF33031AC7F00A9C066 /* PaymentReviewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentReviewViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABF53031AD7800A9C066 /* TeacherLessonsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherLessonsViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABF73031B1B300A9C066 /* LessonOccurrenceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonOccurrenceViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABF93031B2C400A9C066 /* LessonConfirmationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonConfirmationViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABFB3031B36800A9C066 /* StudentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsViewModelTests.swift; sourceTree = "<group>"; };
+		57C3ABFD3031B70D00A9C066 /* TeacherProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherProfileViewModelTests.swift; sourceTree = "<group>"; };
 		57C488E32FE9DD5600547839 /* English Manager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "English Manager.entitlements"; sourceTree = "<group>"; };
 		57C488E42FE9E62F00547839 /* AppleSignInDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInDelegate.swift; sourceTree = "<group>"; };
 		57C5DE802FCC363C00476861 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -363,6 +428,21 @@
 		57F6C0602F6F42A60041E8BE /* StudentProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentProfileViewModel.swift; sourceTree = "<group>"; };
 		57F6C0622F6F45F60041E8BE /* UIViewController+ProfileAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ProfileAlerts.swift"; sourceTree = "<group>"; };
 		57F6C0672F71481E0041E8BE /* HomeworkFirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkFirestoreService.swift; sourceTree = "<group>"; };
+		57FF88433059EB9B00C1FE16 /* OccurrenceStatusMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccurrenceStatusMapperTests.swift; sourceTree = "<group>"; };
+		57FF8845305A9FB400C1FE16 /* MockLessonFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLessonFormatter.swift; sourceTree = "<group>"; };
+		57FF8847305AA18E00C1FE16 /* BalanceLevelMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceLevelMapperTests.swift; sourceTree = "<group>"; };
+		57FF8849305AA25800C1FE16 /* PaymentStatusMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusMapperTests.swift; sourceTree = "<group>"; };
+		57FF884B305B378700C1FE16 /* AccountStatusMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStatusMapperTests.swift; sourceTree = "<group>"; };
+		57FF884D305B380D00C1FE16 /* RoleMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleMapperTests.swift; sourceTree = "<group>"; };
+		57FF884F305B385200C1FE16 /* PushNotificationMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationMapperTests.swift; sourceTree = "<group>"; };
+		57FF8851305B38D500C1FE16 /* HomeworkStatusMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkStatusMapperTests.swift; sourceTree = "<group>"; };
+		57FF8856305B3A2B00C1FE16 /* LessonFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonFormatterTests.swift; sourceTree = "<group>"; };
+		57FF8858305B3A8800C1FE16 /* HomeworkFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeworkFormatterTests.swift; sourceTree = "<group>"; };
+		57FF885A305B3AF600C1FE16 /* ScheduleFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleFormatterTests.swift; sourceTree = "<group>"; };
+		57FF885C305B3BB800C1FE16 /* PaymentFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFormatterTests.swift; sourceTree = "<group>"; };
+		57FF885E305B3CCE00C1FE16 /* SharedDateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDateFormatterTests.swift; sourceTree = "<group>"; };
+		57FF8860305B3D2500C1FE16 /* RSSDateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSDateFormatterTests.swift; sourceTree = "<group>"; };
+		57FF8862305B3D9B00C1FE16 /* FeedDateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDateFormatterTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -423,7 +503,6 @@
 		574B83C72F6E05520042045B /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				57F02D1B2FB7A10A0089DA31 /* Splash */,
 				574B83C42F6E05520042045B /* LoginViewController.swift */,
 				574B83C52F6E05520042045B /* RoleViewController.swift */,
 				574B83C32F6E05520042045B /* EditProfileViewController.swift */,
@@ -473,6 +552,7 @@
 				574B83D82F6E05520042045B /* Teacher */,
 				574B83D02F6E05520042045B /* Student */,
 				57D14EBD302DC2D100ED5D06 /* FeedViewControllers */,
+				57F02D1B2FB7A10A0089DA31 /* Splash */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -523,8 +603,15 @@
 		575091CC2F56F380002132EF /* English ManagerTests */ = {
 			isa = PBXGroup;
 			children = (
+				57FF8853305B3A0C00C1FE16 /* FormatterTests */,
+				57FF88423059EA3B00C1FE16 /* MapperTests */,
+				57C3ABEE3031A93A00A9C066 /* TeacherTests */,
+				57C3ABE33030995000A9C066 /* StudentTests */,
+				57C3ABE2303098A900A9C066 /* AuthTests */,
 				57D14E95302CDBE900ED5D06 /* Mocks */,
-				575091CB2F56F380002132EF /* English_ManagerTests.swift */,
+				57C3ABD43030549500A9C066 /* FirestoreServiceTests.swift */,
+				573CA3E1305952F40015F064 /* FeedViewModelTests.swift */,
+				573CA3E33059E7BE0015F064 /* BookmarksViewModelTests.swift */,
 			);
 			path = "English ManagerTests";
 			sourceTree = "<group>";
@@ -647,6 +734,7 @@
 				575091EF2F598E9B002132EF /* Student */,
 				575091EE2F598E94002132EF /* Teacher */,
 				575091ED2F598E8A002132EF /* Auth */,
+				57D14EC2302DC48C00ED5D06 /* Feed */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -702,7 +790,6 @@
 		575091EF2F598E9B002132EF /* Student */ = {
 			isa = PBXGroup;
 			children = (
-				57D14EC2302DC48C00ED5D06 /* Feed */,
 				57D9D1D92F68BC670061605F /* StudentLessonsViewModel.swift */,
 				57F6C0602F6F42A60041E8BE /* StudentProfileViewModel.swift */,
 				5773F8A52F715B4900D73305 /* StudentHomeworkViewModel.swift */,
@@ -781,6 +868,45 @@
 			path = Payment;
 			sourceTree = "<group>";
 		};
+		57C3ABE2303098A900A9C066 /* AuthTests */ = {
+			isa = PBXGroup;
+			children = (
+				57C3ABD8303059C300A9C066 /* LoginViewModelTests.swift */,
+				57C3ABDA30305B2700A9C066 /* EditProfileViewModelTests.swift */,
+				57C3ABDC30305FCE00A9C066 /* RoleConfirmViewModelTests.swift */,
+				57C3ABDE3030609600A9C066 /* SplashViewModelTests.swift */,
+				57C3ABE03030615000A9C066 /* AnimatedSplashViewModelTests.swift */,
+			);
+			path = AuthTests;
+			sourceTree = "<group>";
+		};
+		57C3ABE33030995000A9C066 /* StudentTests */ = {
+			isa = PBXGroup;
+			children = (
+				57C3ABE43030996000A9C066 /* StudentLessonsViewModelTests.swift */,
+				57C3ABE630309B4600A9C066 /* StudentProfileViewModelTests.swift */,
+				57C3ABEA30309DD900A9C066 /* StudentHomeworkViewModelTests.swift */,
+				57C3ABEC3030A02200A9C066 /* StudentPaymentsViewModelTests.swift */,
+			);
+			path = StudentTests;
+			sourceTree = "<group>";
+		};
+		57C3ABEE3031A93A00A9C066 /* TeacherTests */ = {
+			isa = PBXGroup;
+			children = (
+				57C3ABEF3031A98600A9C066 /* TeacherPaymentsViewModelTests.swift */,
+				57C3ABF13031AAF400A9C066 /* TeacherPaymentDetailViewModelTests.swift */,
+				57C3ABF33031AC7F00A9C066 /* PaymentReviewViewModelTests.swift */,
+				57C3ABF53031AD7800A9C066 /* TeacherLessonsViewModelTests.swift */,
+				57C3ABF73031B1B300A9C066 /* LessonOccurrenceViewModelTests.swift */,
+				57C3ABF93031B2C400A9C066 /* LessonConfirmationViewModelTests.swift */,
+				57C3ABFB3031B36800A9C066 /* StudentsViewModelTests.swift */,
+				57C3ABFD3031B70D00A9C066 /* TeacherProfileViewModelTests.swift */,
+				573CA3DF305950D40015F064 /* TeacherHomeworkViewModelTests.swift */,
+			);
+			path = TeacherTests;
+			sourceTree = "<group>";
+		};
 		57D14E95302CDBE900ED5D06 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -791,6 +917,12 @@
 				57D14E9E302D025900ED5D06 /* MockHomeworkFirestoreService.swift */,
 				57D14EA0302D036400ED5D06 /* MockStorageService.swift */,
 				57D14EA2302D041100ED5D06 /* MockPushNotificationService.swift */,
+				57C3ABCE303050CE00A9C066 /* MockRSSService.swift */,
+				57C3ABD03030514600A9C066 /* MockBookmarkService.swift */,
+				57C3ABD23030540000A9C066 /* RSSItem+Mock.swift */,
+				57C3ABD63030597900A9C066 /* MockValidationService.swift */,
+				573CA3DD305946A30015F064 /* MockUserCache.swift */,
+				57FF8845305A9FB400C1FE16 /* MockLessonFormatter.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -943,6 +1075,34 @@
 				575091FF2F599B22002132EF /* AuthService.swift */,
 			);
 			path = Firestore;
+			sourceTree = "<group>";
+		};
+		57FF88423059EA3B00C1FE16 /* MapperTests */ = {
+			isa = PBXGroup;
+			children = (
+				57FF88433059EB9B00C1FE16 /* OccurrenceStatusMapperTests.swift */,
+				57FF8847305AA18E00C1FE16 /* BalanceLevelMapperTests.swift */,
+				57FF8849305AA25800C1FE16 /* PaymentStatusMapperTests.swift */,
+				57FF884B305B378700C1FE16 /* AccountStatusMapperTests.swift */,
+				57FF884D305B380D00C1FE16 /* RoleMapperTests.swift */,
+				57FF884F305B385200C1FE16 /* PushNotificationMapperTests.swift */,
+				57FF8851305B38D500C1FE16 /* HomeworkStatusMapperTests.swift */,
+			);
+			path = MapperTests;
+			sourceTree = "<group>";
+		};
+		57FF8853305B3A0C00C1FE16 /* FormatterTests */ = {
+			isa = PBXGroup;
+			children = (
+				57FF8856305B3A2B00C1FE16 /* LessonFormatterTests.swift */,
+				57FF8858305B3A8800C1FE16 /* HomeworkFormatterTests.swift */,
+				57FF885A305B3AF600C1FE16 /* ScheduleFormatterTests.swift */,
+				57FF885C305B3BB800C1FE16 /* PaymentFormatterTests.swift */,
+				57FF885E305B3CCE00C1FE16 /* SharedDateFormatterTests.swift */,
+				57FF8860305B3D2500C1FE16 /* RSSDateFormatterTests.swift */,
+				57FF8862305B3D9B00C1FE16 /* FeedDateFormatterTests.swift */,
+			);
+			path = FormatterTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1279,14 +1439,54 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				575091CD2F56F380002132EF /* English_ManagerTests.swift in Sources */,
+				57C3ABD53030549500A9C066 /* FirestoreServiceTests.swift in Sources */,
+				57C3ABF43031AC7F00A9C066 /* PaymentReviewViewModelTests.swift in Sources */,
+				57FF8861305B3D2500C1FE16 /* RSSDateFormatterTests.swift in Sources */,
 				57D14E97302CDC6700ED5D06 /* MockFirestoreService.swift in Sources */,
 				57D14EA3302D041100ED5D06 /* MockPushNotificationService.swift in Sources */,
+				57FF884A305AA25800C1FE16 /* PaymentStatusMapperTests.swift in Sources */,
+				57FF8852305B38D500C1FE16 /* HomeworkStatusMapperTests.swift in Sources */,
+				57C3ABD9303059C300A9C066 /* LoginViewModelTests.swift in Sources */,
+				57FF884E305B380D00C1FE16 /* RoleMapperTests.swift in Sources */,
+				57C3ABF83031B1B300A9C066 /* LessonOccurrenceViewModelTests.swift in Sources */,
+				573CA3E2305952F40015F064 /* FeedViewModelTests.swift in Sources */,
+				57FF884C305B378700C1FE16 /* AccountStatusMapperTests.swift in Sources */,
+				57C3ABEB30309DD900A9C066 /* StudentHomeworkViewModelTests.swift in Sources */,
+				57C3ABE53030996000A9C066 /* StudentLessonsViewModelTests.swift in Sources */,
+				57C3ABFC3031B36800A9C066 /* StudentsViewModelTests.swift in Sources */,
+				57FF885D305B3BB800C1FE16 /* PaymentFormatterTests.swift in Sources */,
+				573CA3DE305946A30015F064 /* MockUserCache.swift in Sources */,
+				573CA3E43059E7BE0015F064 /* BookmarksViewModelTests.swift in Sources */,
 				57D14E9D302CFEAE00ED5D06 /* MockPaymentFirestoreService.swift in Sources */,
+				57C3ABD73030597900A9C066 /* MockValidationService.swift in Sources */,
+				57FF8850305B385200C1FE16 /* PushNotificationMapperTests.swift in Sources */,
+				57C3ABE730309B4600A9C066 /* StudentProfileViewModelTests.swift in Sources */,
 				57D14EA1302D036400ED5D06 /* MockStorageService.swift in Sources */,
 				57D14E9F302D025900ED5D06 /* MockHomeworkFirestoreService.swift in Sources */,
 				57D14E9B302CEFF500ED5D06 /* MockOccurrenceFirestoreService.swift in Sources */,
+				57C3ABF23031AAF400A9C066 /* TeacherPaymentDetailViewModelTests.swift in Sources */,
+				57FF88443059EB9B00C1FE16 /* OccurrenceStatusMapperTests.swift in Sources */,
+				57C3ABF03031A98600A9C066 /* TeacherPaymentsViewModelTests.swift in Sources */,
+				57C3ABD33030540000A9C066 /* RSSItem+Mock.swift in Sources */,
+				57C3ABDD30305FCE00A9C066 /* RoleConfirmViewModelTests.swift in Sources */,
+				57FF8846305A9FB400C1FE16 /* MockLessonFormatter.swift in Sources */,
+				57C3ABFA3031B2C400A9C066 /* LessonConfirmationViewModelTests.swift in Sources */,
+				57FF8863305B3D9B00C1FE16 /* FeedDateFormatterTests.swift in Sources */,
+				57C3ABFE3031B70D00A9C066 /* TeacherProfileViewModelTests.swift in Sources */,
+				57FF885B305B3AF600C1FE16 /* ScheduleFormatterTests.swift in Sources */,
+				57C3ABE13030615000A9C066 /* AnimatedSplashViewModelTests.swift in Sources */,
+				57FF8857305B3A2B00C1FE16 /* LessonFormatterTests.swift in Sources */,
+				57FF885F305B3CCE00C1FE16 /* SharedDateFormatterTests.swift in Sources */,
+				57FF8859305B3A8800C1FE16 /* HomeworkFormatterTests.swift in Sources */,
+				57C3ABDB30305B2700A9C066 /* EditProfileViewModelTests.swift in Sources */,
+				57C3ABF63031AD7800A9C066 /* TeacherLessonsViewModelTests.swift in Sources */,
+				57C3ABD13030514600A9C066 /* MockBookmarkService.swift in Sources */,
+				57FF8848305AA18E00C1FE16 /* BalanceLevelMapperTests.swift in Sources */,
+				57C3ABED3030A02200A9C066 /* StudentPaymentsViewModelTests.swift in Sources */,
 				57D14E99302CE87E00ED5D06 /* MockAuthService.swift in Sources */,
+				57C3ABCF303050CE00A9C066 /* MockRSSService.swift in Sources */,
+				57C3ABDF3030609600A9C066 /* SplashViewModelTests.swift in Sources */,
+				573CA3E0305950D40015F064 /* TeacherHomeworkViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1561,7 +1761,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y69SCP5F9J;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.serhii.kliepikov.English-ManagerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1583,7 +1783,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y69SCP5F9J;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.serhii.kliepikov.English-ManagerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1604,6 +1804,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y69SCP5F9J;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.serhii.kliepikov.English-ManagerUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1624,6 +1825,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y69SCP5F9J;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.serhii.kliepikov.English-ManagerUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

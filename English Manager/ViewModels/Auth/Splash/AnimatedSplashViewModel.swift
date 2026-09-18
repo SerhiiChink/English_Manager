@@ -20,15 +20,19 @@ final class AnimatedSplashViewModel: AnimatedSplashViewModelProtocol {
     var onFinish: ((UserRole) -> Void)?
     private let role: UserRole
     
+    // MARK: - Properties
+    private let delay: TimeInterval
+    
     // MARK: - Init
-    init(role: UserRole) {
+    init(role: UserRole, delay: TimeInterval = 2.4) {
         self.role = role
+        self.delay = delay
     }
     
     // MARK: - Animated
     func start() {
         DispatchQueue.main.asyncAfter(
-            deadline: .now() + 2.4
+            deadline: .now() + delay
         ) { [weak self] in
             self?.onReadyToStart?()
         }

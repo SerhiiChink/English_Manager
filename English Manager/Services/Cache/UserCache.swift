@@ -7,9 +7,17 @@
 
 import Foundation
 
-final class UserCache {
-    static let shared = UserCache()
-    private init() {}
+protocol UserCacheProtocol: AnyObject {
+    func getUser(id: String,
+                 service: FirestoreServiceProtocol,
+                 forceRefresh: Bool) async throws -> User
+    func save(_ user: User)
+    func invalidate(userId: String)
+}
+
+final class UserCache: UserCacheProtocol {
+//    static let shared = UserCache()
+    init() {}
     
     // MARK: - Keys
     private enum Keys {

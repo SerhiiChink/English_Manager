@@ -55,14 +55,17 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
     private let authService: AuthServiceProtocol
+    private let cache: UserCacheProtocol
     private var isFetching = false
     
     init(
         firestoreService: FirestoreServiceProtocol = FirestoreService(),
-        authService: AuthServiceProtocol = AuthService()
+        authService: AuthServiceProtocol = AuthService(),
+        cache: UserCacheProtocol = UserCache()
     ) {
         self.firestoreService = firestoreService
         self.authService = authService
+        self.cache = cache
     }
     
     // MARK: - Fetch
@@ -84,14 +87,14 @@ final class StudentProfileViewModel: StudentProfileViewModelProtocol {
         onLoading?(true)
         Task {
             do {
-                let fetchedUser = try await UserCache.shared.getUser(
+                let fetchedUser = try await cache.getUser(
                     id: userId,
                     service: firestoreService,
                     forceRefresh: forceRefresh
                 )
                 let fetchedTeacher: User?
                 if let teacherId = fetchedUser.teacherId {
-                    fetchedTeacher = try? await UserCache.shared.getUser(
+                    fetchedTeacher = try? await cache.getUser(
                         id: teacherId,
                         service: firestoreService,
                         forceRefresh: forceRefresh

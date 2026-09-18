@@ -29,14 +29,17 @@ final class StudentsViewModel: StudentsViewModelProtocol {
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
     private let authService: AuthServiceProtocol
+    private let cache: UserCacheProtocol
     
     // MARK: - Init
     init(
         firestoreService: FirestoreServiceProtocol = FirestoreService(),
-        authService: AuthServiceProtocol = AuthService()
+        authService: AuthServiceProtocol = AuthService(),
+        cache: UserCacheProtocol = UserCache()
     ) {
         self.firestoreService = firestoreService
         self.authService = authService
+        self.cache = cache
     }
     
     // MARK: - Fetch
@@ -107,7 +110,7 @@ final class StudentsViewModel: StudentsViewModelProtocol {
         Task {
             do {
                 try await firestoreService.removeStudent(studentId: student.id)
-                UserCache.shared.invalidate(userId: student.id)
+                cache.invalidate(userId: student.id)
                 await MainActor.run { [weak self] in
                     self?.students.removeAll { $0.id == student.id }
                     self?.onUpdate?()

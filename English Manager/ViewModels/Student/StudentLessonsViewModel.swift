@@ -52,21 +52,24 @@ final class StudentLessonsViewModel: StudentLessonsViewModelProtocol {
     private let firestoreService: FirestoreServiceProtocol
     private let authService: AuthServiceProtocol
     private let occurrenceService: OccurrenceFirestoreServiceProtocol
+    private let cache: UserCacheProtocol
     
     // MARK: - Init
     init(
         firestoreService: FirestoreServiceProtocol = FirestoreService(),
         authService: AuthServiceProtocol = AuthService(),
-        occurrenceService: OccurrenceFirestoreServiceProtocol = OccurrenceFirestoreService()
+        occurrenceService: OccurrenceFirestoreServiceProtocol = OccurrenceFirestoreService(),
+        cache: UserCacheProtocol = UserCache()
     ) {
         self.firestoreService = firestoreService
         self.authService = authService
         self.occurrenceService = occurrenceService
+        self.cache = cache
     }
     
     // MARK: - Fetch
     func fetchLessons() {
-        performFetch(forceRefresh: true)
+        performFetch(forceRefresh: false)
     }
     
     func refresh() {
@@ -83,7 +86,7 @@ final class StudentLessonsViewModel: StudentLessonsViewModelProtocol {
         onLoading?(true)
         Task {
             do {
-                let user = try await UserCache.shared.getUser(
+                let user = try await cache.getUser(
                     id: studentId,
                     service: firestoreService,
                     forceRefresh: forceRefresh
@@ -99,8 +102,8 @@ final class StudentLessonsViewModel: StudentLessonsViewModelProtocol {
                     }
                     return
                 }
-                let fetchedTeacher = try await UserCache.shared
-                    .getUser(id: teacherId, service: firestoreService)
+                let fetchedTeacher = try await cache
+                    .getUser(id: teacherId, service: firestoreService, forceRefresh: forceRefresh)
                 let isNewTeacher = checkNewTeacher(studentId: studentId,
                                                    teacherId: teacherId)
                 async let lessons = firestoreService

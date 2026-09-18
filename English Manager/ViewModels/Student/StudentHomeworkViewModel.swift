@@ -43,16 +43,19 @@ final class StudentHomeworkViewModel: StudentHomeworkViewModelProtocol {
     private let firestoreService: FirestoreServiceProtocol
     private let authService: AuthServiceProtocol
     private let formatter: HomeworkFormatterProtocol = HomeworkFormatter()
+    private let cache: UserCacheProtocol
     
     // MARK: - Init
     init(
         homeworkService: HomeworkFirestoreServiceProtocol = HomeworkFirestoreService(),
         firestoreService: FirestoreServiceProtocol = FirestoreService(),
-        authService: AuthServiceProtocol = AuthService()
+        authService: AuthServiceProtocol = AuthService(),
+        cache: UserCacheProtocol = UserCache()
     ) {
         self.homeworkService = homeworkService
         self.firestoreService = firestoreService
         self.authService = authService
+        self.cache = cache
     }
     
     // MARK: - Fetch
@@ -193,7 +196,7 @@ final class StudentHomeworkViewModel: StudentHomeworkViewModelProtocol {
             do {
                 async let homeworks = homeworkService
                     .fetchStudentHomework(studentId: studentId)
-                let user = try await UserCache.shared.getUser(
+                let user = try await cache.getUser(
                     id: studentId,
                     service: firestoreService,
                     forceRefresh: forceRefresh
